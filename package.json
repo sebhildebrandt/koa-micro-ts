@@ -1,0 +1,27 @@
+{
+  "name": "koa-micro",
+  "version": "1.0.0",
+  "description": "Microservice Typescript Framework - based on koa",
+  "main": "dist/application.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebhildebrandt/koa-micro.git"
+  },
+  "author": "plusinnovations <hildebrandt@plus-innovations.com> (https://www.plus-innovations.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sebhildebrandt/koa-micro/issues"
+  },
+  "homepage": "https://github.com/sebhildebrandt/koa-micro#readme",
+  "dependencies": {
+    "@koa/router": "^10.0.0",
+    "@types/koa": "^2.13.1",
+    "@types/koa__router": "^8.0.4",
+    "http-graceful-shutdown": "^3.0.1",
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0"
+  }
+}
