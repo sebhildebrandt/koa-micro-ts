@@ -15,10 +15,6 @@
       "always"
     ],
     "eqeqeq": "off",
-    "curly": "error",
-    "quotes": [
-      "error",
-      "single"
-    ]
+    "curly": "error"
   }
 }

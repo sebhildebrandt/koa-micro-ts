@@ -3,7 +3,7 @@
     "target": "es6",
     "module": "commonjs",
     "sourceMap": true,
-    "outDir": "./test/dist",
+    "outDir": "./dist",
     "strict": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
@@ -13,7 +13,7 @@
         "node_modules/*"
       ],
       "rootDirs": [
-        "./test/src"
+        "./src"
       ]
     },
     "esModuleInterop": true

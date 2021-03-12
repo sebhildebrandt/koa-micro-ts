@@ -4,9 +4,9 @@
   "description": "Microservice Typescript Framework - based on koa",
   "main": "dist/application.js",
   "scripts": {
-    "build": "tsc --build --clean",
+    "build": "tsc --build",
     "dev": "ts-node-dev -r tsconfig-paths/register test/dist/dev.js",
-    "build-dev": "tsc --build ./test/tsconfig.json",
+    "build-test": "tsc --build ./test/tsconfig.json",
     "test": "node test/dist/simple.js",
     "testdummy": "node test/dist/dummy.js"
   },
