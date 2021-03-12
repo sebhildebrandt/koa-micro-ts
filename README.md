@@ -37,8 +37,8 @@ This is a work in progress project in early stage:
 3. [X] koa import & provide koa
 4. [X] koa router
 5. [ ] auto routes
-6. [ ] eigenes CORS
-7. [ ] eigenes JWT
+6. [X] eigenes CORS
+7. [X] eigenes JWT
 8. [X] http-graceful-shutdown
 9. [X] static
 10. [X] body parser

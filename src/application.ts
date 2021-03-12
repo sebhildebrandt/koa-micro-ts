@@ -20,6 +20,8 @@ import gracefulShutdown from 'http-graceful-shutdown';
 import helmet from 'koa-helmet';
 import Router from '@koa/router';
 import serve = require('koa-static')
+import cors from './cors';
+import jwt from './jwt';
 
 const app: any = new koa();
 
@@ -66,7 +68,15 @@ app.useRouter = (router: Router) => {
     .use(router.allowedMethods());
 }
 
+app.cors = (options: any = {}) => {
+  app.use(cors(options));
+}
+
+app.jwt = (options: any = {}) => {
+  jwt.init(options);
+  return jwt;
+}
+
 export {
-  app,
-  config
+  app
 }

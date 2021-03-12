@@ -22,7 +22,9 @@
   "homepage": "https://github.com/sebhildebrandt/koa-micro#readme",
   "dependencies": {
     "@koa/router": "^10.0.0",
+    "@types/jsonwebtoken": "^8.5.0",
     "http-graceful-shutdown": "^3.0.1",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
     "koa-helmet": "^6.0.0",
