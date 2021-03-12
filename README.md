@@ -32,18 +32,18 @@ Configuration is super simple and lets you create your micro service within minu
 
 This is a work in progress project in early stage:
 
-1. [ ] typescript einrichten
-2. [ ] package.json
-3. [ ] koa import & provide koa
-4. [ ] koa router
-5. [ ] eigenes CORS
-6. [ ] eigenes JWT
-7. [ ] http-graceful-shutdown
-8. [ ] static
-9. [ ] body parser
-10. [ ] health api endpoint
-
-
+1. [X] typescript einrichten
+2. [X] package.json
+3. [X] koa import & provide koa
+4. [X] koa router
+5. [ ] auto routes
+6. [ ] eigenes CORS
+7. [ ] eigenes JWT
+8. [X] http-graceful-shutdown
+9. [X] static
+10. [X] body parser
+11. [X] helmet
+12. [X] health api endpoint
 
 ### Installation
 

@@ -12,6 +12,9 @@
       "*": [
         "node_modules/*"
       ],
+      "koa-helmet": [
+        "src/types.d.ts"
+      ],
       "rootDirs": [
         "src"
       ]
