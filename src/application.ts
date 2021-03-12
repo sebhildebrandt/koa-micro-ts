@@ -13,3 +13,14 @@
 import koa from 'koa';
 import koaBody from 'koa-body';
 import gracefulShutdown from 'http-graceful-shutdown';
+
+const app = new koa();
+
+const config = {
+  hello: 'world'
+}
+
+export {
+  app,
+  config
+}
