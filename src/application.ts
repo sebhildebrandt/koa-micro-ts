@@ -27,10 +27,6 @@ const app: any = new koa();
 
 app.use(koaBody());
 
-const config = {
-  hello: 'world'
-}
-
 app.helmet = () => {
   app.use(helmet());
 }
@@ -48,7 +44,7 @@ app.health = (path: string) => {
     prefix: path
   });
 
-  router.get('/', (ctx, next) => {
+  router.get('/', (ctx) => {
     ctx.body = 'OK';
   });
 
@@ -75,6 +71,10 @@ app.cors = (options: any = {}) => {
 app.jwt = (options: any = {}) => {
   jwt.init(options);
   return jwt;
+}
+
+app.start = (port: number) => {
+  app.listen(port)
 }
 
 export {

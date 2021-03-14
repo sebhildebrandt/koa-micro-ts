@@ -85,11 +85,7 @@ export = (options: any = {}) => {
       // }
       ctx.status = 204; // No Content
     } else {
-      try {
-        await next();
-      } catch (err) {
-        throw err;
-      }
+      await next();
     }
   };
 }

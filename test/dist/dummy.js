@@ -13,8 +13,14 @@ const application_js_1 = require("../../dist/application.js");
 const a = 1;
 console.log('DUMMY TEST');
 console.log(a);
+application_js_1.app.health('/health');
 application_js_1.app.use((ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    ctx.body = application_js_1.config;
+    ctx.body = { hello: 'world' };
 }));
-application_js_1.app.listen(3000);
+application_js_1.app.gracefulShutdown({
+    finally() {
+        console.log('Server gracefulls shutted down.....');
+    }
+});
+application_js_1.app.start(3000);
 //# sourceMappingURL=dummy.js.map

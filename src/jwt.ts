@@ -5,7 +5,7 @@
 // ----------------------------------------------------------------------------------
 // Description:   jsonwebtoken wrapper (for koa)
 //                for Node.js
-// Copyright:     (c) 2020
+// Copyright:     (c) 2021
 // Author:        Sebastian Hildebrandt
 // ----------------------------------------------------------------------------------
 // Contributors:  -
@@ -13,7 +13,13 @@
 // Usage:
 //
 // - handles keys as provides in config
-// - catches errors
+// - config default values
+// - config: any = {
+//     algorithm: 'RS256',
+//     expires: 43200, // in seconds. Default: 12h
+//     privateKey: 'rs256.priv',
+//     publicKey: 'rs256.pub'
+//   };
 // ----------------------------------------------------------------------------------
 // License:       MIT
 // ==================================================================================
@@ -28,8 +34,8 @@ let privateKey: any;
 const config: any = {
   algorithm: 'RS256',
   expires: 43200, // in seconds. Default: 12h
-  privateKey: 'jwtRS256.key',
-  publicKey: 'jwtRS256.key.pub'
+  privateKey: 'rs256.priv',
+  publicKey: 'rs256.pub'
 };
 
 const JWT: any = {
@@ -165,6 +171,7 @@ async function check(ctx: any) {
         ctx.jwt.user = user;
       } catch (e) {
         msg = 'Invalid token' + (opts.debug ? ' - ' + e.message + '\n' : '\n');
+        throw msg;
       }
     } catch (e) {
       ctx.jwt = {};

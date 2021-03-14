@@ -1,10 +1,11 @@
-import { app, config } from '../../dist/application.js';
-const a: number = 1;
+import { app } from '../../dist/application.js';
 
-console.log('DUMMY TEST')
-console.log(a);
+app.health('/health');
 
 app.use(async (ctx: any) => {
-  ctx.body = config;
+  ctx.body = { hello: 'world' };
 })
-app.listen(3000);
+
+app.gracefulShutdown();
+
+app.start(3000);
