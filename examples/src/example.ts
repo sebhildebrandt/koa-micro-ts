@@ -24,7 +24,7 @@ router.get('/route2', (ctx: Application.Context, next: Application.Next) => {
 
 app.useRouter(router);
 
-// using autoRoute
+// using autoRoute: use all routes in path /api and mount it to /api/v1
 app.autoRoute(path.join(__dirname, '/api'), '/api/v1');
 
 // gracefull shutdown (optional)

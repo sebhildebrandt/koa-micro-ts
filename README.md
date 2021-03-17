@@ -100,6 +100,15 @@ Routes from autoRouter
 - `http://localhost:3000/api/v1/hello/`
 - `http://localhost:3000/api/v1/resource/?param=value`
 
+## Advanced usage
+
+As `@koa/micro` uses some external apps, you can alo refer to those packages to see the options:
+
+- [koa-router][koa-router-url]
+- [koa-static][koa-static-url]
+- [http-graceful-shutdown][gracefulShutdown-url]
+- [koa-helmet][koa-helmet-url]
+
 ## License [![MIT license][license-img]][license-url]
 
 >The [`MIT`][license-url] License (MIT)
@@ -129,3 +138,8 @@ Routes from autoRouter
 [license-url]: https://github.com/sebhildebrandt/systeminformation/blob/master/LICENSE
 [license-img]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [koa-url]: https://github.com/koajs/koa
+
+[koa-static-url]: https://github.com/koajs/static
+[gracefulShutdown-url]: https://github.com/sebhildebrandt/http-graceful-shutdown
+[koa-router-url]: https://github.com/koajs/router
+[koa-helmet-url]: https://github.com/venables/koa-helmet
