@@ -61,6 +61,39 @@ import { app } from '@koa/micro';
 ...
 ```
 
+### Examples
+
+The example shows how to use @koa/micro and
+
+- enable helmet
+- enable cors
+- serving static pages
+- using standard router
+- using auto routes
+#### Build Exampla App
+
+```
+git clone https://github.com/sebhildebrandt/koa-micro.git
+cd koa-micro
+npm install
+npm run build-example
+npm run example
+```
+
+Try the folloing routes:
+
+Static Page:
+- `http://localhost:3000/`
+
+Standard Routes
+- `http://localhost:3000/route`
+- `http://localhost:3000/route2``
+
+Routes from autoRouter
+- `http://localhost:3000/api/v1/`
+- `http://localhost:3000/api/v1/hello/`
+- `http://localhost:3000/api/v1/resource/?param=value`
+
 ## License [![MIT license][license-img]][license-url]
 
 >The [`MIT`][license-url] License (MIT)

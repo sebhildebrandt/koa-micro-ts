@@ -1,5 +1,7 @@
 // Type definitions
 
+import * as Koa from "koa";
+
 export namespace KoaMicro {
 
   interface App {
@@ -7,12 +9,15 @@ export namespace KoaMicro {
     use: any;
     gracefulShutdown: any;
     start: any;
+    static: any;
     cors: any;
     jwt: any;
     newRouter: any;
     useRouter: any;
+    autoRoute: any;
     helmet: any;
     listen: any;
   }
 }
 export const app: KoaMicro.App;
+

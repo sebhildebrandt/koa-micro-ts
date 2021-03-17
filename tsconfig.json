@@ -23,6 +23,6 @@
     "esModuleInterop": true
   },
   "exclude": [
-    "test"
+    "examples"
   ],
 }

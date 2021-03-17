@@ -5,10 +5,9 @@
   "main": "dist/application.js",
   "scripts": {
     "build": "tsc --build",
-    "dev": "ts-node-dev -r tsconfig-paths/register test/dist/dev.js",
-    "build-test": "tsc --build ./test/tsconfig.json",
-    "test": "node test/dist/simple.js",
-    "testdummy": "node test/dist/dummy.js"
+    "dev": "ts-node-dev -r tsconfig-paths/register examples/dist/dev.js",
+    "build-example": "tsc --build ./examples/tsconfig.json",
+    "example": "node examples/dist/example.js"
   },
   "repository": {
     "type": "git",

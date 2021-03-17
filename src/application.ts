@@ -22,60 +22,75 @@ import Router from '@koa/router';
 import serve = require('koa-static')
 import cors from './cors';
 import jwt from './jwt';
+import { autoRoute } from './autoRoute';
+import Application = require('koa');
 
-const app: any = new koa();
+class KoaMicro extends Application {
+
+  constructor() {
+    super();
+  }
+  helmet = () => {
+    this.use(helmet());
+  }
+
+  gracefulShutdown = (options = {}) => {
+    gracefulShutdown(app, options);
+  }
+
+  static = (path: string, mountpoint?: string) => {
+    mountpoint = mountpoint || '';
+    this.use(serve(path));
+  }
+
+  health = (path: string) => {
+    const router = new Router({
+      prefix: path
+    });
+
+    router.get('/', (ctx) => {
+      ctx.body = 'OK';
+    });
+
+    this
+      .use(router.routes())
+      .use(router.allowedMethods());
+  }
+
+  newRouter = (prefix: string) => {
+    return new Router({
+      prefix
+    });
+  }
+  useRouter = (router: Router) => {
+    this
+      .use(router.routes())
+      .use(router.allowedMethods());
+  }
+
+  cors = (options: any = {}) => {
+    this.use(cors(options));
+  }
+
+  jwt = (options: any = {}) => {
+    jwt.init(options);
+    return jwt;
+  }
+
+  start = (port: number) => {
+    this.listen(port)
+  }
+
+  autoRoute = (routepath: string, mountpoint?: string, auth?: boolean) => {
+    mountpoint = mountpoint || '';
+    auth = auth || false;
+    autoRoute(this, routepath, mountpoint, auth);
+  }
+}
+
+const app: any = new KoaMicro();
 
 app.use(koaBody());
-
-app.helmet = () => {
-  app.use(helmet());
-}
-
-app.gracefulShutdown = (options = {}) => {
-  gracefulShutdown(app, options);
-}
-
-app.static = (path: string) => {
-  app.use(serve(path));
-}
-
-app.health = (path: string) => {
-  const router = new Router({
-    prefix: path
-  });
-
-  router.get('/', (ctx) => {
-    ctx.body = 'OK';
-  });
-
-  app
-    .use(router.routes())
-    .use(router.allowedMethods());
-}
-
-app.newRouter = (prefix: string) => {
-  return new Router({
-    prefix
-  });
-}
-app.useRouter = (router: Router) => {
-  app
-    .use(router.routes())
-    .use(router.allowedMethods());
-}
-
-app.cors = (options: any = {}) => {
-  app.use(cors(options));
-}
-
-app.jwt = (options: any = {}) => {
-  jwt.init(options);
-  return jwt;
-}
-
-app.start = (port: number) => {
-  app.listen(port)
-}
 
 export {
   app

@@ -1,3 +1,19 @@
+# MacOS
+.DS_Store
+.Spotlight-V100
+.Trashes
+Icon?
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.directory
+*~
+
 # Logs
 logs
 *.log
@@ -50,3 +66,5 @@ jspm_packages/
 .env.test
 .cache
 
+# dist files
+examples/dist
