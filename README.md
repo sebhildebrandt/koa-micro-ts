@@ -2,20 +2,29 @@
 Microservice framework based on koa
 
 ```
-    ____  _                  __         _
-   / __ \| | _____   __ _   / / __ ___ (_) ___ _ __ ___
-  / / _` | |/ / _ \ / _` | / / '_ ` _ \| |/ __| '__/ _ \
- | | (_| |   < (_) | (_| |/ /| | | | | | | (__| | | (_) |
-  \ \__,_|_|\_\___/ \__,_/_/ |_| |_| |_|_|\___|_|  \___/
-   \____/
+    _                               _                      _
+  | | _____   __ _       _ __ ___ (_) ___ _ __ ___       | |_ ___
+  | |/ / _ \ / _` |_____| '_ ` _ \| |/ __| '__/ _ \ _____| __/ __|
+  |   < (_) | (_| |_____| | | | | | | (__| | | (_) |_____| |_\__ \
+  |_|\_\___/ \__,_|     |_| |_| |_|_|\___|_|  \___/       \__|___/
 
-     TypeScript Microservice Framework - based on koa
+     Koa TypeScript Microservice Framework - batteries included
 
 ```
 
+  [![NPM Version][npm-image]][npm-url]
+  [![NPM Downloads][downloads-image]][downloads-url]
+  [![Git Issues][issues-img]][issues-url]
+  [![Closed Issues][closed-issues-img]][closed-issues-url]
+  [![deps status][daviddm-img]][daviddm-url]
+  [![Code Quality: Javascript][lgtm-badge]][lgtm-badge-url]
+  [![Total alerts][lgtm-alerts]][lgtm-alerts-url]
+  [![Caretaker][caretaker-image]][caretaker-url]
+  [![MIT license][license-img]][license-url]
+
 ## Quick Start
 
-This package provides a simple to use [koa][koa-url] based minimalistic micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT and auto routes. Included middleware/libs:
+This package provides a minimalistic, simple to use, [koa][koa-url] based micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT-wrapper and auto routes. Included middleware/libs:
 
 - basic router
 - auto router
@@ -31,19 +40,25 @@ Configuration is super simple and lets you create your micro service within minu
 ## Installation
 
 ```bash
-$ npm install @koa/micro
+$ npm install koa-micro-ts
 ```
 
 ## Usage
 
-Here some examples how you can use @koa/micro. Depending on your use case most of the things here are optional and only required if you want to use them:
+Here some examples how you can use `koa-micro-ts`. Depending on your use case most of the things here are optional and only required if you want to use them:
 
 ```ts
-import { app } from '@koa/micro';
+import { app } from 'koa-micro-ts';
 import Application from 'koa';
 
+process.env.APP_NAME = 'micro-service';
+process.env.VERSION = 'micro-version';
+
+// enable helpth endpoint (defaults to /health)
+app.health();
+
 // enable helmet (optional)
-app.health('/health');
+app.helmet()
 
 // enable cors (optional)
 app.cors();
@@ -68,7 +83,7 @@ app.start(3000);
 
 ### Examples
 
-The example in the path `examples` shows how to use `@koa/micro` and
+The example in the path `examples` shows how to use `koa-micro-ts` and
 
 - enable helmet
 - enable cors
@@ -102,7 +117,7 @@ Routes from autoRouter
 
 ## Advanced usage
 
-As `@koa/micro` uses some external apps, you can alo refer to those packages to see the options:
+As `koa-micro-ts` uses some external apps, you can alo refer to those packages to see the options:
 
 - [koa-router][koa-router-url]
 - [koa-static][koa-static-url]
@@ -143,3 +158,20 @@ As `@koa/micro` uses some external apps, you can alo refer to those packages to 
 [gracefulShutdown-url]: https://github.com/sebhildebrandt/http-graceful-shutdown
 [koa-router-url]: https://github.com/koajs/router
 [koa-helmet-url]: https://github.com/venables/koa-helmet
+
+[npm-image]: https://img.shields.io/npm/v/koa-micro-ts.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/koa-micro-ts
+[downloads-image]: https://img.shields.io/npm/dm/koa-micro-ts.svg?style=flat-square
+[downloads-url]: https://npmjs.org/package/koa-micro-ts
+[issues-img]: https://img.shields.io/github/issues/sebhildebrandt/koa-micro-ts.svg?style=flat-square
+[issues-url]: https://github.com/sebhildebrandt/koa-micro-ts/issues
+[closed-issues-img]: https://img.shields.io/github/issues-closed-raw/sebhildebrandt/koa-micro-ts.svg?style=flat-square&color=brightgreen
+[closed-issues-url]: https://github.com/sebhildebrandt/koa-micro-ts/issues?q=is%3Aissue+is%3Aclosed
+[daviddm-url]: https://david-dm.org/sebhildebrandt/koa-micro-ts
+[daviddm-img]: https://img.shields.io/david/sebhildebrandt/koa-micro-ts.svg?style=flat-square
+[lgtm-badge]: https://img.shields.io/lgtm/grade/javascript/g/sebhildebrandt/koa-micro-ts.svg?style=flat-square
+[lgtm-badge-url]: https://lgtm.com/projects/g/sebhildebrandt/koa-micro-ts/context:javascript
+[lgtm-alerts]: https://img.shields.io/lgtm/alerts/g/sebhildebrandt/koa-micro-ts.svg?style=flat-square
+[lgtm-alerts-url]: https://lgtm.com/projects/g/sebhildebrandt/koa-micro-ts/alerts
+[caretaker-url]: https://github.com/sebhildebrandt
+[caretaker-image]: https://img.shields.io/badge/caretaker-sebhildebrandt-blue.svg?style=flat-square

@@ -27,11 +27,20 @@ class KoaMicro extends Application {
             this.use(serve(path));
         };
         this.health = (path) => {
+            path = path || '/health';
             const router = new router_1.default({
                 prefix: path
             });
             router.get('/', (ctx) => {
-                ctx.body = 'OK';
+                const status = {};
+                if (process.env.APP_NAME) {
+                    status.name = process.env.APP_NAME;
+                }
+                if (process.env.VERSION) {
+                    status.version = process.env.VERSION;
+                }
+                status.status = 'ok';
+                ctx.body = status;
             });
             this
                 .use(router.routes())

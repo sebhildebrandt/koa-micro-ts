@@ -44,12 +44,17 @@ class KoaMicro extends Application {
   }
 
   health = (path: string) => {
+    path = path || '/health';
     const router = new Router({
       prefix: path
     });
 
     router.get('/', (ctx) => {
-      ctx.body = 'OK';
+      const status: any = {};
+      if (process.env.APP_NAME) { status.name = process.env.APP_NAME; }
+      if (process.env.VERSION) { status.version = process.env.VERSION; }
+      status.status = 'ok';
+      ctx.body = status;
     });
 
     this

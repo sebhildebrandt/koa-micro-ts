@@ -2,6 +2,6 @@
 
 exports.index = async (ctx: any, next: any) => {
   ctx.body = {
-    message: 'Hello @koa/micro API'
+    message: 'Hello koa-micro-ts API'
   }
 };

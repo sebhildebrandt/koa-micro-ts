@@ -2,8 +2,14 @@ import Application from 'koa';
 import { app } from '../../dist/application';
 import path from 'path';
 
+process.env.APP_NAME = 'example-service';
+process.env.VERSION = '1.0.0';
+
+// enable helpth endpoint (defaults to /health)
+app.health();
+
 // enable helmet (optional)
-app.health('/health');
+app.helmet()
 
 // enable cors (optional)
 app.cors();
