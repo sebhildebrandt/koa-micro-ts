@@ -28,35 +28,42 @@ This package provides a simple to use [koa][koa-url] based minimalistic micro se
 
 Configuration is super simple and lets you create your micro service within minutes.
 
-## TODOs
-
-This is a work in progress project in early stage:
-
-1. [X] typescript einrichten
-2. [X] package.json
-3. [X] koa import & provide koa
-4. [X] koa router
-5. [ ] auto routes
-6. [X] eigenes CORS
-7. [X] eigenes JWT
-8. [X] http-graceful-shutdown
-9. [X] static
-10. [X] body parser
-11. [X] helmet
-12. [X] health api endpoint
-
-### Installation
+## Installation
 
 ```bash
 $ npm install @koa/micro
 ```
 
-### Usage
+## Usage
 
 some text
 
 ```ts
 import { app } from '@koa/micro';
+import Application from 'koa';
+
+// enable helmet (optional)
+app.health('/health');
+
+// enable cors (optional)
+app.cors();
+
+// set up static server (optional)
+app.static(path.join(__dirname, '/static'));
+
+// using router
+const router: any = app.newRouter();
+
+router.get('/route', (ctx: Application.Context, next: Application.Next) => {
+  ctx.body = 'OK from static route';
+});
+
+app.useRouter(router);
+
+// gracefull shutdown (optional)
+app.gracefulShutdown();
+
+app.start(3000);
 
 ...
 ```

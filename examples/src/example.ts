@@ -31,7 +31,7 @@ app.autoRoute(path.join(__dirname, '/api'), '/api/v1');
 app.gracefulShutdown({
   finally: () => {
     console.log();
-    console.log('Server grathfully terminated');
+    console.log('Server gracefully terminated');
   }
 });
 
