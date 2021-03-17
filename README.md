@@ -64,8 +64,6 @@ app.useRouter(router);
 app.gracefulShutdown();
 
 app.start(3000);
-
-...
 ```
 
 ### Examples
