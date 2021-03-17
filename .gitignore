@@ -44,6 +44,7 @@ coverage
 # Dependency directories
 node_modules/
 jspm_packages/
+package-lock.json
 
 # TypeScript cache
 *.tsbuildinfo
@@ -67,4 +68,5 @@ jspm_packages/
 .cache
 
 # dist files
-examples/dist
+examples/dist/api
+examples/dist/example*
