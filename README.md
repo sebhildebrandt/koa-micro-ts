@@ -15,7 +15,7 @@ Microservice framework based on koa
 
 ## Quick Start
 
-This package provides a simple to use [koa][koa-url] based minimalistic micro service template. Most common used middleware packages or libraries are already included but still we try to be as small as possible. Included middleware:
+This package provides a simple to use [koa][koa-url] based minimalistic micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT and auto routes. Included middleware/libs:
 
 - basic router
 - auto router
@@ -36,7 +36,7 @@ $ npm install @koa/micro
 
 ## Usage
 
-some text
+Here some examples how you can use @koa/micro. Depending on your use case most of the things here are optional and only required if you want to use them:
 
 ```ts
 import { app } from '@koa/micro';
@@ -68,14 +68,15 @@ app.start(3000);
 
 ### Examples
 
-The example shows how to use @koa/micro and
+The example in the path `examples` shows how to use `@koa/micro` and
 
 - enable helmet
 - enable cors
 - serving static pages
 - using standard router
 - using auto routes
-#### Build Exampla App
+
+#### Building Example App
 
 ```
 git clone https://github.com/sebhildebrandt/koa-micro.git
@@ -85,7 +86,7 @@ npm run build-example
 npm run example
 ```
 
-Try the folloing routes:
+Now try the following routes in your browser:
 
 Static Page:
 - `http://localhost:3000/`
