@@ -28,7 +28,7 @@ This package provides a minimalistic, simple to use, [koa][koa-url] based micro 
 
 - body parser
 - basic router
-- auto router - smart autogeneration of routes - detailes docs [AUTOROUTES.md](docs/AUTOROUTES.md)
+- auto router - smart auto-generation of routes - detailed docs [AUTOROUTES.md](docs/AUTOROUTES.md)
 - CORS - detailed docs [CORS.md](docs/CORS.md)
 - JWT - detailed docs [JWT.md](docs/JWT.md)
 - static files serving
@@ -123,7 +123,7 @@ Routes from autoRouter
 
 ## Advanced usage
 
-As `koa-micro-ts` uses some external apps, you can alo refer to those packages to see the options:
+As `koa-micro-ts` uses some external packages, you can also refer to the documentation of the used packages to see their options:
 
 - [koa-router][koa-router-url]
 - [koa-static][koa-static-url]

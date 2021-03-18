@@ -45,7 +45,7 @@ export = (options: any = {}) => {
     if (typeof options.origin === 'function') {
       origin = options.origin(ctx);
     } else {
-      origin = options.origin || ctx.get('Origin') || '*';
+      origin = options.origin || ctx.get('Access-Control-Allow-Origin') || '*';
     }
     if (!origin) {
       return await next();
