@@ -52,7 +52,8 @@ import { app } from 'koa-micro-ts';
 import Application from 'koa';
 import * as path from 'path';
 
-// set here only for demo purposes. you can set this as environment variables
+// setting variables only for demo purposes.
+// You can set this as environment variables
 process.env.APP_NAME = 'micro-service';
 process.env.VERSION = 'micro-version';
 
