@@ -26,16 +26,16 @@ Microservice framework based on koa
 
 This package provides a minimalistic, simple to use, [koa][koa-url] based micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT-wrapper and auto routes. Included middleware/libs:
 
-- basic router
-- auto router (docs [AUTOROUTES.md](docs/AUTOROUTES.md))
 - body parser
-- CORS (docs [CORS.md](docs/CORS.md))
-- JWT (docs [JWT.md](docs/JWT.md))
+- basic router
+- auto router - smart autogeneration of routes - detailes docs [AUTOROUTES.md](docs/AUTOROUTES.md)
+- CORS - detailed docs [CORS.md](docs/CORS.md)
+- JWT - detailed docs [JWT.md](docs/JWT.md)
 - static files serving
 - health API endpoint
-- graceful shutdown (docs [SHUTDOWN.md](docs/SHUTDOWN.md))
+- graceful shutdown - detailes docs [SHUTDOWN.md](docs/SHUTDOWN.md)
 
-Configuration is super simple and lets you create your micro service within minutes.
+Most of these modules can be enabled with just **one line of code**. Configuration is super simple and lets you create your micro service within minutes.
 
 ## Installation
 
@@ -45,11 +45,12 @@ $ npm install koa-micro-ts
 
 ## Usage
 
-Here some examples how you can use `koa-micro-ts`. Depending on your use case most of the things here are optional and only required if you want to use them:
+Here is an example how you can use `koa-micro-ts`. Depending on your use case most of the things here are optional and only required if you want to use them:
 
 ```ts
 import { app } from 'koa-micro-ts';
 import Application from 'koa';
+import * as path from 'path';
 
 // set here only for demo purposes. you can set this as environment variables
 process.env.APP_NAME = 'micro-service';
@@ -59,7 +60,7 @@ process.env.VERSION = 'micro-version';
 app.health();
 
 // enable helmet (optional)
-app.helmet()
+app.helmet();
 
 // enable cors (optional)
 app.cors();
