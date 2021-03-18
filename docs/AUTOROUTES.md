@@ -51,10 +51,10 @@ exports.index = async (ctx: any, next: any) => {
 
   // just return, what your GET method should return ;-)
   ctx.body = {
-    method: 'GET'
+    method: 'GET',
     message: 'simple get route - koa-micro-ts',
   }
-)
+}
 ```
 
 #### Using query parameters
@@ -64,10 +64,10 @@ All query parameters are available in `ctx.query`. This get route would just ret
 ```
 exports.index = async (ctx: any, next: any) => {
   ctx.body = {
-    method: 'GET'
+    method: 'GET',
     query: ctx.query
   }
-)
+}
 ```
 
 ### GET /:id endpoint
@@ -80,10 +80,10 @@ exports.detail = async (ctx: any, next: any) => {
   const id = ctx.params.id;   // this is the params ID
 
   ctx.body = {
-    method: 'GET'
+    method: 'GET',
     paramsId: id;
   }
-)
+}
 ```
 
 if you need somthing like `GET /:id/:id` you can just create a function line this:
@@ -94,11 +94,11 @@ exports.detail_detail = async (ctx: any, next: any) => {
   const id2 = ctx.params.id2;   // this is the second params ID
 
   ctx.body = {
-    method: 'GET'
-    paramsId: id;
-    paramsId2: id2;
+    method: 'GET',
+    paramsId: id,
+    paramsId2: id2
   }
-)
+}
 ```
 
 You of course can do it the same for `put`, `post`, and `delete` methods and this works up to three levels `/:id/:/id2/:id3`
@@ -114,10 +114,10 @@ exports.put = async (ctx: any, next: any) => {
   const bodyData = ctx.request.body;    // this is your body data
 
   ctx.body = {
-    method: 'PUT'
-    bodyData: bodyData;
+    method: 'PUT',
+    bodyData: bodyData
   }
-)
+}
 ```
 
 ### PUT /:id endpoint
@@ -130,11 +130,11 @@ exports.put_detail = async (ctx: any, next: any) => {
   const bodyData = ctx.request.body;    // this is your body data
 
   ctx.body = {
-    method: 'PUT'
-    paramsId: id;
-    bodyData: bodyData;
+    method: 'PUT',
+    paramsId: id,
+    bodyData: bodyData
   }
-)
+}
 ```
 
 ### POST endpoint
@@ -145,10 +145,10 @@ exports.post = async (ctx: any, next: any) => {
   const bodyData = ctx.request.body;    // this is your body data
 
   ctx.body = {
-    method: 'POST'
-    bodyData: bodyData;
+    method: 'POST',
+    bodyData: bodyData
   }
-)
+}
 ```
 
 
@@ -161,11 +161,11 @@ exports.post_detail = async (ctx: any, next: any) => {
   const bodyData = ctx.request.body;    // this is your body data
 
   ctx.body = {
-    method: 'POST'
-    paramsId: id;
-    bodyData: bodyData;
+    method: 'POST',
+    paramsId: id,
+    bodyData: bodyData
   }
-)
+}
 ```
 
 ### DELETE endpoint
@@ -176,7 +176,7 @@ exports.delete = async (ctx: any, next: any) => {
   ctx.body = {
     method: 'DELETE'
   }
-)
+}
 ```
 
 
@@ -188,8 +188,8 @@ exports.delete_detail = async (ctx: any, next: any) => {
   const id = ctx.params.id;   // this is the params ID
 
   ctx.body = {
-    method: 'DELETE'
-    paramsId: id;
+    method: 'DELETE',
+    paramsId: id
   }
 )
 ```
