@@ -14,7 +14,6 @@
 // application.js - version 1.0
 // --------------------------------------------------------------------
 
-import koa from 'koa';
 import koaBody from 'koa-body';
 import gracefulShutdown, { Options } from 'http-graceful-shutdown';
 import helmet from 'koa-helmet';
@@ -24,7 +23,7 @@ import cors from './cors';
 import jwt from './jwt';
 import { autoRoute } from './autoRoute';
 import * as validators from './validators';
-import Application = require('koa');
+import Application from 'koa';
 
 class KoaMicro extends Application {
 
@@ -116,5 +115,6 @@ app.use(koaBody());
 
 export {
   app,
-  validators
+  validators,
+  Application
 }

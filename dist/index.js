@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validators = exports.app = void 0;
+exports.Application = exports.validators = exports.app = void 0;
 const koa_body_1 = __importDefault(require("koa-body"));
 const http_graceful_shutdown_1 = __importDefault(require("http-graceful-shutdown"));
 const koa_helmet_1 = __importDefault(require("koa-helmet"));
@@ -33,8 +33,9 @@ const jwt_1 = __importDefault(require("./jwt"));
 const autoRoute_1 = require("./autoRoute");
 const validators = __importStar(require("./validators"));
 exports.validators = validators;
-const Application = require("koa");
-class KoaMicro extends Application {
+const koa_1 = __importDefault(require("koa"));
+exports.Application = koa_1.default;
+class KoaMicro extends koa_1.default {
     constructor() {
         super();
         this.helmet = () => {

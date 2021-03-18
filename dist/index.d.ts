@@ -1,4 +1,5 @@
 import * as validators from './validators';
+import Application from 'koa';
 interface App {
     health: any;
     use: any;
@@ -14,4 +15,4 @@ interface App {
     listen: any;
 }
 declare const app: App;
-export { app, validators };
+export { app, validators, Application };

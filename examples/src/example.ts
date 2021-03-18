@@ -1,5 +1,4 @@
-import Application from 'koa';
-import { app } from '../../dist/index';
+import { app, Application } from '../../dist/index';
 import * as path from 'path';
 
 // setting variables only for demo purposes.

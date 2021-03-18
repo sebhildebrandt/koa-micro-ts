@@ -48,8 +48,7 @@ $ npm install koa-micro-ts
 Here is an example how you can use `koa-micro-ts`. Depending on your use case most of the things here are optional and only required if you want to use them:
 
 ```ts
-import { app } from 'koa-micro-ts';
-import Application from 'koa';
+import { app, Application } from 'koa-micro-ts';
 import * as path from 'path';
 
 // setting variables only for demo purposes.
