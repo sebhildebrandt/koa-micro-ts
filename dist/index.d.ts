@@ -1,10 +1,5 @@
-// Type definitions
-
-import * as Koa from "koa";
-
-export namespace KoaMicro {
-
-  interface App {
+import * as validators from './validators';
+interface App {
     health: any;
     use: any;
     gracefulShutdown: any;
@@ -17,7 +12,6 @@ export namespace KoaMicro {
     autoRoute: any;
     helmet: any;
     listen: any;
-  }
 }
-export const app: KoaMicro.App;
-
+declare const app: App;
+export { app, validators };

@@ -2,12 +2,15 @@
   "name": "koa-micro-ts",
   "version": "1.0.2",
   "description": "Microservice Typescript Framework - based on koa",
-  "main": "dist/application.js",
+  "main": "dist/index.js",
   "scripts": {
+    "clean": "rm -rf ./dist",
     "build": "tsc --build",
     "dev": "ts-node-dev -r tsconfig-paths/register examples/dist/dev.js",
     "build-example": "tsc --build ./examples/tsconfig.json",
-    "example": "node examples/dist/example.js"
+    "example": "node examples/dist/example.js",
+    "prepare": "npm run build",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",

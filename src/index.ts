@@ -23,6 +23,7 @@ import serve = require('koa-static')
 import cors from './cors';
 import jwt from './jwt';
 import { autoRoute } from './autoRoute';
+import * as validators from './validators';
 import Application = require('koa');
 
 class KoaMicro extends Application {
@@ -38,8 +39,7 @@ class KoaMicro extends Application {
     gracefulShutdown(app, options);
   }
 
-  static = (path: string, mountpoint?: string) => {
-    mountpoint = mountpoint || '';
+  static = (path: string) => {
     this.use(serve(path));
   }
 
@@ -52,9 +52,9 @@ class KoaMicro extends Application {
     router.get('/', (ctx) => {
       const status: any = {};
       if (process.env.APP_NAME) { status.name = process.env.APP_NAME; }
-      if (option.name) { status.name = option.name; }
+      if (option && option.name) { status.name = option.name; }
       if (process.env.APP_VERSION) { status.version = process.env.APP_VERSION; }
-      if (option.version) { status.version = option.version; }
+      if (option && option.version) { status.version = option.version; }
       status.status = 'ok';
       ctx.body = status;
     });
@@ -95,10 +95,26 @@ class KoaMicro extends Application {
   }
 }
 
-const app: any = new KoaMicro();
+interface App {
+  health: any;
+  use: any;
+  gracefulShutdown: any;
+  start: any;
+  static: any;
+  cors: any;
+  jwt: any;
+  newRouter: any;
+  useRouter: any;
+  autoRoute: any;
+  helmet: any;
+  listen: any;
+}
+
+const app: App = new KoaMicro();
 
 app.use(koaBody());
 
 export {
-  app
+  app,
+  validators
 }

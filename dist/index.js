@@ -1,9 +1,28 @@
 'use strict';
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.app = void 0;
+exports.validators = exports.app = void 0;
 const koa_body_1 = __importDefault(require("koa-body"));
 const http_graceful_shutdown_1 = __importDefault(require("http-graceful-shutdown"));
 const koa_helmet_1 = __importDefault(require("koa-helmet"));
@@ -12,6 +31,8 @@ const serve = require("koa-static");
 const cors_1 = __importDefault(require("./cors"));
 const jwt_1 = __importDefault(require("./jwt"));
 const autoRoute_1 = require("./autoRoute");
+const validators = __importStar(require("./validators"));
+exports.validators = validators;
 const Application = require("koa");
 class KoaMicro extends Application {
     constructor() {
@@ -22,8 +43,7 @@ class KoaMicro extends Application {
         this.gracefulShutdown = (options = {}) => {
             http_graceful_shutdown_1.default(app, options);
         };
-        this.static = (path, mountpoint) => {
-            mountpoint = mountpoint || '';
+        this.static = (path) => {
             this.use(serve(path));
         };
         this.health = (path, option) => {
@@ -36,13 +56,13 @@ class KoaMicro extends Application {
                 if (process.env.APP_NAME) {
                     status.name = process.env.APP_NAME;
                 }
-                if (option.name) {
+                if (option && option.name) {
                     status.name = option.name;
                 }
                 if (process.env.APP_VERSION) {
                     status.version = process.env.APP_VERSION;
                 }
-                if (option.version) {
+                if (option && option.version) {
                     status.version = option.version;
                 }
                 status.status = 'ok';
@@ -82,4 +102,4 @@ class KoaMicro extends Application {
 const app = new KoaMicro();
 exports.app = app;
 app.use(koa_body_1.default());
-//# sourceMappingURL=application.js.map
+//# sourceMappingURL=index.js.map

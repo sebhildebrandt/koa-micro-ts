@@ -8,21 +8,14 @@
     "noImplicitAny": true,
     "moduleResolution": "node",
     "removeComments": true,
-    "baseUrl": ".",
-    "paths": {
-      "*": [
-        "node_modules/*"
-      ],
-      "koa-helmet": [
-        "src/types.d.ts"
-      ],
-      "rootDirs": [
-        "src"
-      ]
-    },
+    "declaration": true,
     "esModuleInterop": true
   },
-  "exclude": [
-    "examples"
+  "include": [
+    "src"
   ],
+  "exclude": [
+    "node_modules",
+    "examples"
+  ]
 }
