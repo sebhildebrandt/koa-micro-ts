@@ -66,10 +66,6 @@ function autoRoute(app, routepath, mountpoint, auth) {
                             method = 'get';
                             url = path_1.default.join(url, '/get');
                             break;
-                        case 'set':
-                            method = 'get';
-                            url = path_1.default.join(url, '/set');
-                            break;
                         case 'detail':
                             method = 'get';
                             url = path_1.default.join(url, '/:id');
@@ -89,6 +85,10 @@ function autoRoute(app, routepath, mountpoint, auth) {
                             method = 'get';
                             url = path_1.default.join(url, '/*');
                             break;
+                        case 'set':
+                            method = 'get';
+                            url = path_1.default.join(url, '/set');
+                            break;
                         case 'post':
                             method = 'post';
                             break;
@@ -96,13 +96,40 @@ function autoRoute(app, routepath, mountpoint, auth) {
                             method = 'post';
                             url = path_1.default.join(url, '/:id');
                             break;
+                        case 'post_detail_detail':
+                            method = 'post';
+                            url = path_1.default.join(url, '/:id/:id2');
+                            break;
+                        case 'post_detail_detail_detail':
+                            method = 'post';
+                            url = path_1.default.join(url, '/:id/:id2/:id3');
+                            break;
+                        case 'put':
+                            method = 'put';
+                            break;
+                        case 'put_detail':
+                            method = 'put';
+                            url = path_1.default.join(url, '/:id');
+                            break;
+                        case 'put_detail_detail':
+                            method = 'put';
+                            url = path_1.default.join(url, '/:id/:id2');
+                            break;
+                        case 'put_detail_detail_detail':
+                            method = 'put';
+                            url = path_1.default.join(url, '/:id/:id2/:id3');
+                            break;
                         case 'delete_detail':
                             method = 'delete';
                             url = path_1.default.join(url, '/:id');
                             break;
-                        case 'post_detail_detail':
-                            method = 'post';
+                        case 'delete_detail_detail':
+                            method = 'delete';
                             url = path_1.default.join(url, '/:id/:id2');
+                            break;
+                        case 'delete_detail_detail_detail':
+                            method = 'delete';
+                            url = path_1.default.join(url, '/:id/:id2/:id3');
                             break;
                         default:
                             throw new Error('unrecognized route: ' + relfile + '.' + key);

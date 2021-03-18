@@ -2,7 +2,7 @@
 
 This is one of the smart features of this package:
 
-`autoRoute` allows you to just write your API endpoints and place them into a directory structure. When calling `app.autoRoute(...directory..., mountpoint)`, this directory will be parsed recursivly and all TS files with extension `.route.ts` are added to as routes. All routes then will be mounted to the given `mountpoint`. Your API structure then matches exactly your directory structure. This makes writing and maintaining your API endpoints super simple.
+`autoRoute` allows you to just write your API endpoints and place them into a directory structure. When calling `app.autoRoute(...directory..., mountpoint)`, this directory will be parsed recursivly and all TS files with extension `.route.ts` are added as routes. All routes then will be mounted to the given `mountpoint`. Your API structure then matches exactly your directory structure. This makes writing and maintaining your API endpoints super simple.
 
 Adding additional files in your routes directory will now automatically create API endpoints without having to manage an additional routes file.
 
