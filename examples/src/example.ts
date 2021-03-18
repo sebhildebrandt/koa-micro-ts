@@ -2,6 +2,7 @@ import Application from 'koa';
 import { app } from '../../dist/application';
 import path from 'path';
 
+// set here only for demo purposes. you can set this as environment variables
 process.env.APP_NAME = 'example-service';
 process.env.VERSION = '1.0.0';
 
@@ -15,7 +16,7 @@ app.helmet()
 app.cors();
 
 // set up static server (optional)
-app.static(path.join(__dirname, '/static'));
+app.static(path.join(__dirname, '/public'));
 
 // using router
 const router: any = app.newRouter();
@@ -30,8 +31,8 @@ router.get('/route2', (ctx: Application.Context, next: Application.Next) => {
 
 app.useRouter(router);
 
-// using autoRoute: use all routes in path /api and mount it to /api/v1
-app.autoRoute(path.join(__dirname, '/api'), '/api/v1');
+// using autoRoute: use all routes in path /routes and mount it to /api/v1
+app.autoRoute(path.join(__dirname, '/routes'), '/api/v1');
 
 // gracefull shutdown (optional)
 app.gracefulShutdown({

@@ -18,6 +18,9 @@
   "bugs": {
     "url": "https://github.com/sebhildebrandt/koa-micro-ts/issues"
   },
+  "files": [
+    "dist/"
+  ],
   "homepage": "https://github.com/sebhildebrandt/koa-micro-ts#readme",
   "keywords": [
     "http",

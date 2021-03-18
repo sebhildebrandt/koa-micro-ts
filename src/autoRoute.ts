@@ -112,10 +112,6 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
               method = 'get';
               url = path.join(url, '/get');
               break;
-            case 'set':
-              method = 'get';
-              url = path.join(url, '/set');
-              break;
             case 'detail':
               method = 'get';
               url = path.join(url, '/:id');
@@ -135,6 +131,10 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
               method = 'get';
               url = path.join(url, '/*');
               break;
+            case 'set':
+              method = 'get';
+              url = path.join(url, '/set');
+              break;
             case 'post':
               method = 'post';
               break;
@@ -142,12 +142,27 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
               method = 'post';
               url = path.join(url, '/:id');
               break;
+            case 'post_detail_detail':
+              method = 'post';
+              url = path.join(url, '/:id/:id2');
+              break;
+            case 'put':
+              method = 'put';
+              break;
+            case 'put_detail':
+              method = 'put';
+              url = path.join(url, '/:id');
+              break;
+            case 'put_detail_detail':
+              method = 'put';
+              url = path.join(url, '/:id/:id2');
+              break;
             case 'delete_detail':
               method = 'delete';
               url = path.join(url, '/:id');
               break;
-            case 'post_detail_detail':
-              method = 'post';
+            case 'delete_detail_detail':
+              method = 'delete';
               url = path.join(url, '/:id/:id2');
               break;
             default:

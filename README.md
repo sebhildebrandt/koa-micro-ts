@@ -27,13 +27,13 @@ Microservice framework based on koa
 This package provides a minimalistic, simple to use, [koa][koa-url] based micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT-wrapper and auto routes. Included middleware/libs:
 
 - basic router
-- auto router
+- auto router (docs [AUTOROUTES.md](docs/AUTOROUTES.md))
 - body parser
-- CORS
-- JWT
+- CORS (docs [CORS.md](docs/CORS.md))
+- JWT (docs [JWT.md](docs/JWT.md))
 - static files serving
 - health API endpoint
-- graceful shutdown
+- graceful shutdown (docs [SHUTDOWN.md](docs/SHUTDOWN.md))
 
 Configuration is super simple and lets you create your micro service within minutes.
 
@@ -51,6 +51,7 @@ Here some examples how you can use `koa-micro-ts`. Depending on your use case mo
 import { app } from 'koa-micro-ts';
 import Application from 'koa';
 
+// set here only for demo purposes. you can set this as environment variables
 process.env.APP_NAME = 'micro-service';
 process.env.VERSION = 'micro-version';
 
@@ -64,7 +65,7 @@ app.helmet()
 app.cors();
 
 // set up static server (optional)
-app.static(path.join(__dirname, '/static'));
+app.static(path.join(__dirname, '/public'));
 
 // using router
 const router: any = app.newRouter();
@@ -75,7 +76,7 @@ router.get('/route', (ctx: Application.Context, next: Application.Next) => {
 
 app.useRouter(router);
 
-// gracefull shutdown (optional)
+// enable gracefull shutdown (optional)
 app.gracefulShutdown();
 
 app.start(3000);
@@ -85,6 +86,7 @@ app.start(3000);
 
 The example in the path `examples` shows how to use `koa-micro-ts` and
 
+- enable health endpoint
 - enable helmet
 - enable cors
 - serving static pages
@@ -108,7 +110,10 @@ Static Page:
 
 Standard Routes
 - `http://localhost:3000/route`
-- `http://localhost:3000/route2``
+- `http://localhost:3000/route2`
+
+Health Route
+- `http://localhost:3000/health`
 
 Routes from autoRouter
 - `http://localhost:3000/api/v1/`
