@@ -32,8 +32,8 @@ This package provides a minimalistic, simple to use, [koa][koa-url] based micro 
 - CORS - detailed docs [CORS.md](docs/CORS.md)
 - JWT - detailed docs [JWT.md](docs/JWT.md)
 - static files serving
-- health API endpoint
-- graceful shutdown - detailes docs [SHUTDOWN.md](docs/SHUTDOWN.md)
+- health API endpoint - detailed docs [HEALTH.md](docs/HEALTH.md)
+- graceful shutdown - detailed docs [SHUTDOWN.md](docs/SHUTDOWN.md)
 
 Most of these modules can be enabled with just **one line of code**. Configuration is super simple and lets you create your micro service within minutes.
 

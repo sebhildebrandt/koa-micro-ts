@@ -26,7 +26,7 @@ class KoaMicro extends Application {
             mountpoint = mountpoint || '';
             this.use(serve(path));
         };
-        this.health = (path) => {
+        this.health = (path, option) => {
             path = path || '/health';
             const router = new router_1.default({
                 prefix: path
@@ -36,8 +36,14 @@ class KoaMicro extends Application {
                 if (process.env.APP_NAME) {
                     status.name = process.env.APP_NAME;
                 }
-                if (process.env.VERSION) {
-                    status.version = process.env.VERSION;
+                if (option.name) {
+                    status.name = option.name;
+                }
+                if (process.env.APP_VERSION) {
+                    status.version = process.env.APP_VERSION;
+                }
+                if (option.version) {
+                    status.version = option.version;
                 }
                 status.status = 'ok';
                 ctx.body = status;

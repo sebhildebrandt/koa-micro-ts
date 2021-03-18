@@ -16,7 +16,7 @@
 
 import koa from 'koa';
 import koaBody from 'koa-body';
-import gracefulShutdown from 'http-graceful-shutdown';
+import gracefulShutdown, { Options } from 'http-graceful-shutdown';
 import helmet from 'koa-helmet';
 import Router from '@koa/router';
 import serve = require('koa-static')
@@ -43,7 +43,7 @@ class KoaMicro extends Application {
     this.use(serve(path));
   }
 
-  health = (path: string) => {
+  health = (path: string, option?: any) => {
     path = path || '/health';
     const router = new Router({
       prefix: path
@@ -52,7 +52,9 @@ class KoaMicro extends Application {
     router.get('/', (ctx) => {
       const status: any = {};
       if (process.env.APP_NAME) { status.name = process.env.APP_NAME; }
-      if (process.env.VERSION) { status.version = process.env.VERSION; }
+      if (option.name) { status.name = option.name; }
+      if (process.env.APP_VERSION) { status.version = process.env.APP_VERSION; }
+      if (option.version) { status.version = option.version; }
       status.status = 'ok';
       ctx.body = status;
     });
