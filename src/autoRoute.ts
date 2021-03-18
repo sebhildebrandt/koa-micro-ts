@@ -146,6 +146,10 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
               method = 'post';
               url = path.join(url, '/:id/:id2');
               break;
+            case 'post_detail_detail_detail':
+              method = 'post';
+              url = path.join(url, '/:id/:id2/:id3');
+              break;
             case 'put':
               method = 'put';
               break;
@@ -157,6 +161,10 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
               method = 'put';
               url = path.join(url, '/:id/:id2');
               break;
+            case 'put_detail_detail_detail':
+              method = 'put';
+              url = path.join(url, '/:id/:id2/:id3');
+              break;
             case 'delete_detail':
               method = 'delete';
               url = path.join(url, '/:id');
@@ -164,6 +172,10 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
             case 'delete_detail_detail':
               method = 'delete';
               url = path.join(url, '/:id/:id2');
+              break;
+            case 'delete_detail_detail_detail':
+              method = 'delete';
+              url = path.join(url, '/:id/:id2/:id3');
               break;
             default:
               throw new Error('unrecognized route: ' + relfile + '.' + key);

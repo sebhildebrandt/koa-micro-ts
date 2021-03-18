@@ -1,4 +1,4 @@
-# koa-micro
+# koa-micro-ts
 Microservice framework based on koa
 
 ```
