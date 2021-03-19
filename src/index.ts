@@ -42,7 +42,7 @@ class KoaMicro extends Application {
     this.use(serve(path));
   }
 
-  health = (path: string, option?: any) => {
+  health = (path?: string, option?: any) => {
     path = path || '/health';
     const router = new Router({
       prefix: path
@@ -63,7 +63,7 @@ class KoaMicro extends Application {
       .use(router.allowedMethods());
   }
 
-  newRouter = (prefix: string) => {
+  newRouter = (prefix?: string) => {
     return new Router({
       prefix
     });
@@ -94,22 +94,7 @@ class KoaMicro extends Application {
   }
 }
 
-interface App {
-  health: any;
-  use: any;
-  gracefulShutdown: any;
-  start: any;
-  static: any;
-  cors: any;
-  jwt: any;
-  newRouter: any;
-  useRouter: any;
-  autoRoute: any;
-  helmet: any;
-  listen: any;
-}
-
-const app: App = new KoaMicro();
+const app = new KoaMicro();
 
 app.use(koaBody());
 
