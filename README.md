@@ -32,6 +32,7 @@ This package provides a minimalistic, simple to use, [koa][koa-url] based micro 
 - CORS - detailed docs [CORS.md](docs/CORS.md)
 - JWT - detailed docs [JWT.md](docs/JWT.md)
 - static files serving
+- validators - detailed docs [VALIDATORS.md](docs/VALIDATORS.md)
 - health API endpoint - detailed docs [HEALTH.md](docs/HEALTH.md)
 - graceful shutdown - detailed docs [SHUTDOWN.md](docs/SHUTDOWN.md)
 

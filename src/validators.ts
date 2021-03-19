@@ -44,22 +44,28 @@ const validator = {
   isNumeric(str: string) {
     return (str.match(/^-?[0-9]+$/) !== null);
   },
-  isNumber(n: any) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
+  isNumber(n: string | number) {
+    if (typeof n === 'string') {
+      n = parseFloat(n);
+    }
+    return !isNaN(n) && isFinite(n);
   }
   ,
   isHex(str: string) {
-    const re = /^([a-fA-F0-9]{2})+$/;
-    return (re.test(str) !== null);
+    const re = /^([a-f0-9]{2})+$/;
+    return (re.test(str.toLowerCase()) !== null);
   },
-  isInt(str: string) {
-    const floatVal = parseFloat(str);
-    const intVal = parseInt(str, 10);
-    if (!isNaN(intVal) && (floatVal === intVal)) {
-      return true;
+  isInt(n: string | number) {
+    let floatVal = 0;
+    let intVal = 0;
+    if (typeof n === 'string') {
+      floatVal = parseFloat(n);
+      intVal = parseInt(n, 10);
     } else {
-      return false;
+      floatVal = n;
+      intVal = Math.trunc(n);
     }
+    return (!isNaN(intVal) && (floatVal === intVal));
   },
   isDecimal(str: string) {
     return str !== '' && str.match(/^(?:-?(?:[0-9]+))?(?:\.[0-9]*)?(?:[eE][\+\-]?(?:[0-9]+))?$/);

@@ -49,21 +49,27 @@ const validator = {
         return (str.match(/^-?[0-9]+$/) !== null);
     },
     isNumber(n) {
-        return !isNaN(parseFloat(n)) && isFinite(n);
+        if (typeof n === 'string') {
+            n = parseFloat(n);
+        }
+        return !isNaN(n) && isFinite(n);
     },
     isHex(str) {
-        const re = /^([a-fA-F0-9]{2})+$/;
-        return (re.test(str) !== null);
+        const re = /^([a-f0-9]{2})+$/;
+        return (re.test(str.toLowerCase()) !== null);
     },
-    isInt(str) {
-        const floatVal = parseFloat(str);
-        const intVal = parseInt(str, 10);
-        if (!isNaN(intVal) && (floatVal === intVal)) {
-            return true;
+    isInt(n) {
+        let floatVal = 0;
+        let intVal = 0;
+        if (typeof n === 'string') {
+            floatVal = parseFloat(n);
+            intVal = parseInt(n, 10);
         }
         else {
-            return false;
+            floatVal = n;
+            intVal = Math.trunc(n);
         }
+        return (!isNaN(intVal) && (floatVal === intVal));
     },
     isDecimal(str) {
         return str !== '' && str.match(/^(?:-?(?:[0-9]+))?(?:\.[0-9]*)?(?:[eE][\+\-]?(?:[0-9]+))?$/);

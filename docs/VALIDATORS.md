@@ -1,0 +1,29 @@
+# Validators
+
+`koa-micro-ts` comes wirh a set of simple validators that you can use to check query and body params:
+
+- `isAlpha`: string ... contains only a-z, A-Z
+- `isAlphanumeric`: string ...contains only a-z, A-Z and 0-9
+- `isNumeric`: string ... contains only 0-9
+- `isNumber`: string|number ... is a number or can be converted to valid number
+- `isHex`: string ...contains only a-f, A-F and 0-9
+- `isInt`: string|number ... is integer value or converted value is integer
+- `isDecimal`: string ... string represents a decimal
+- `isDate`: string ... can be converted to date value
+- `isEmail`: string ... structure seems to be valid email address
+- `isUrl`: string ... structure seems to be valid URL
+- `isIP`: string ... structure seems to be valid IP address
+- `isIP4`: string ... structure seems to be valid IP4 address
+- `isIP6`: string ... structure seems to be valid IP6 address
+
+Here is an example how you can use the build-in validators:
+
+```
+import { validators } from 'koa-micro-ts';
+
+const email = ctx.query.email || '';
+
+if (validators.isEmail(email)) {
+  ...
+}
+```
