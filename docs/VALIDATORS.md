@@ -10,6 +10,7 @@
 - `isInt`: string|number ... is integer value or converted value is integer
 - `isDecimal`: string ... string represents a decimal
 - `isDate`: string ... can be converted to date value
+- `isTime`: string ... can be converted to time value
 - `isEmail`: string ... structure seems to be valid email address
 - `isUrl`: string ... structure seems to be valid URL
 - `isIP`: string ... structure seems to be valid IP address
