@@ -20,6 +20,7 @@ import helmet from 'koa-helmet';
 import Router from '@koa/router';
 import serve = require('koa-static')
 import cors from './cors';
+import logger from './log';
 import jwt from './jwt';
 import { autoRoute } from './autoRoute';
 import * as validators from './validators';
@@ -100,6 +101,7 @@ app.use(koaBody());
 
 export {
   app,
+  logger,
   validators,
   Application
 }

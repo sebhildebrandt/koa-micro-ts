@@ -13,5 +13,6 @@ declare const validator: {
     isInt(n: string | number): boolean;
     isDecimal(str: string): false | RegExpMatchArray | null;
     isDate(str: string): boolean;
+    isTime(str: string): boolean;
 };
 export default validator;

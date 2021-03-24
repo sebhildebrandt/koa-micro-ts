@@ -1,5 +1,6 @@
 /// <reference types="koa__router" />
 import Router from '@koa/router';
+import logger from './log';
 import * as validators from './validators';
 import Application from 'koa';
 declare class KoaMicro extends Application {
@@ -24,4 +25,4 @@ declare class KoaMicro extends Application {
     autoRoute: (routepath: string, mountpoint?: string | undefined, auth?: boolean | undefined) => void;
 }
 declare const app: KoaMicro;
-export { app, validators, Application };
+export { app, logger, validators, Application };

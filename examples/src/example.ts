@@ -1,4 +1,4 @@
-import { app, Application } from '../../dist/index';
+import { app, Application, logger } from '../../dist/index';
 import * as path from 'path';
 
 // setting variables only for demo purposes.
@@ -34,12 +34,20 @@ app.useRouter(router);
 // using autoRoute: use all routes in path /routes and mount it to /api/v1
 app.autoRoute(path.join(__dirname, '/routes'), '/api/v1');
 
+// initialize logger
+const log = logger(7); // highest level, log all
+
+log.info('hallo', false, false)
+log.error('hallo', false, true)
+log.error('hallo', true, false)
+
 // gracefull shutdown (optional)
 app.gracefulShutdown({
   finally: () => {
     console.log();
-    console.log('Server gracefully terminated');
+    log.info('Server gracefully terminated');
   }
 });
 
 app.start(3000);
+log.trace('Server started');
