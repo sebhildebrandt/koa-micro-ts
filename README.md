@@ -35,6 +35,8 @@ This package provides a minimalistic, simple to use, [koa][koa-url] based micro 
 - validators - detailed docs [VALIDATORS.md](docs/VALIDATORS.md)
 - health API endpoint - detailed docs [HEALTH.md](docs/HEALTH.md)
 - graceful shutdown - detailed docs [SHUTDOWN.md](docs/SHUTDOWN.md)
+- logger - detailed docs [LOGGER.md](docs/LOGGER.md)
+- parsing command line arguments - detailed docs [ARGS.md](docs/ARGS.md)
 
 Most of these modules can be enabled with just **one line of code**. Configuration is super simple and lets you create your micro service within minutes.
 

@@ -1,6 +1,6 @@
 {
   "name": "koa-micro-ts",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "Microservice Typescript Framework - based on koa",
   "main": "dist/index.js",
   "scripts": {

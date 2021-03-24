@@ -20,6 +20,8 @@ import helmet from 'koa-helmet';
 import Router from '@koa/router';
 import serve = require('koa-static')
 import cors from './cors';
+import { logger, logLevel, logOptions } from './log';
+import getArgs from './args';
 import jwt from './jwt';
 import { autoRoute } from './autoRoute';
 import * as validators from './validators';
@@ -92,6 +94,14 @@ class KoaMicro extends Application {
     auth = auth || false;
     autoRoute(this, routepath, mountpoint, auth);
   }
+
+  logger(options: logOptions) {
+    return logger(options);
+  }
+
+  getArgs(alias: any) {
+    return getArgs(alias);
+  }
 }
 
 const app = new KoaMicro();
@@ -100,6 +110,7 @@ app.use(koaBody());
 
 export {
   app,
+  logLevel,
   validators,
   Application
 }

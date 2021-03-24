@@ -22,13 +22,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Application = exports.validators = exports.app = void 0;
+exports.Application = exports.validators = exports.logLevel = exports.app = void 0;
 const koa_body_1 = __importDefault(require("koa-body"));
 const http_graceful_shutdown_1 = __importDefault(require("http-graceful-shutdown"));
 const koa_helmet_1 = __importDefault(require("koa-helmet"));
 const router_1 = __importDefault(require("@koa/router"));
 const serve = require("koa-static");
 const cors_1 = __importDefault(require("./cors"));
+const log_1 = require("./log");
+Object.defineProperty(exports, "logLevel", { enumerable: true, get: function () { return log_1.logLevel; } });
+const args_1 = __importDefault(require("./args"));
 const jwt_1 = __importDefault(require("./jwt"));
 const autoRoute_1 = require("./autoRoute");
 const validators = __importStar(require("./validators"));
@@ -98,6 +101,12 @@ class KoaMicro extends koa_1.default {
             auth = auth || false;
             autoRoute_1.autoRoute(this, routepath, mountpoint, auth);
         };
+    }
+    logger(options) {
+        return log_1.logger(options);
+    }
+    getArgs(alias) {
+        return args_1.default(alias);
     }
 }
 const app = new KoaMicro();
