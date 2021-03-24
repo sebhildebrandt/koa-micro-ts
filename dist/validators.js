@@ -77,6 +77,16 @@ const validator = {
     isDate(str) {
         const intDate = Date.parse(str);
         return !isNaN(intDate);
+    },
+    isTime(str) {
+        str = str.trim();
+        const parts = str.split(':');
+        if (parts.length === 2 && str.length >= 3 && str.length <= 5) {
+            const hours = parseInt(parts[0], 10);
+            const mins = parseInt(parts[1], 10);
+            return (hours >= 0 && hours <= 23 && mins >= 0 && mins <= 59);
+        }
+        return false;
     }
 };
 exports.default = validator;
