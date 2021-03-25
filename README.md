@@ -17,14 +17,12 @@ Microservice framework based on koa
   [![Git Issues][issues-img]][issues-url]
   [![Closed Issues][closed-issues-img]][closed-issues-url]
   [![deps status][daviddm-img]][daviddm-url]
-  [![Code Quality: Javascript][lgtm-badge]][lgtm-badge-url]
-  [![Total alerts][lgtm-alerts]][lgtm-alerts-url]
   [![Caretaker][caretaker-image]][caretaker-url]
   [![MIT license][license-img]][license-url]
 
 ## Quick Start
 
-This package provides a minimalistic, simple to use, [koa][koa-url] based micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT-wrapper and auto routes. Included middleware/libs:
+This package provides a minimalistic, simple to use, [koa][koa-url] based micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT-wrapper, AUTO ROUTES, LOGGER, VALIDATORS. Included middleware/libs:
 
 - body parser
 - basic router

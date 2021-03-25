@@ -2,15 +2,13 @@
 
 ### Getting commang line arguments
 
-`koa-micro-ts` comes with a build in tiny argument parser. It parses all command line arguments and returns them as amn JSON object.
+`koa-micro-ts` comes with a build in tiny argument parser. It parses all command line arguments and returns them as a JSON object:
 
 ```
 app.getArgs();
 ```
 
-This parses command line params and provide hem as a JSOn object:
-
-They will be parsed as follows:
+This will invoke parsing of command line arguments. They will be parsed as follows:
 
 | Example Parameter | Comment | JSON result |
 |---------|---------|---------|
@@ -40,7 +38,7 @@ OR
 node ./examples/dist/example.js --verbose --name "This is a string"
 ```
 
-will lead to the same args JSON object:
+will lead to the same arguments JSON object:
 
 ```
 {
