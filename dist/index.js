@@ -101,12 +101,13 @@ class KoaMicro extends koa_1.default {
             auth = auth || false;
             autoRoute_1.autoRoute(this, routepath, mountpoint, auth);
         };
+        this.args = {};
     }
     logger(options) {
         return log_1.logger(options);
     }
     getArgs(alias) {
-        return args_1.default(alias);
+        this.args = args_1.default(alias);
     }
 }
 const app = new KoaMicro();

@@ -68,6 +68,9 @@ app.helmet();
 // enable cors (optional)
 app.cors();
 
+// parse command line params (optional)
+app.getArgs();
+
 // set up static server (optional)
 app.static(path.join(__dirname, '/public'));
 

@@ -5,13 +5,27 @@
 `koa-micro-ts` comes with a build in tiny argument parser. It parses all command line arguments and returns them as amn JSON object.
 
 ```
-const args = app.getArgs();
+app.getArgs();
 ```
+
+This parses command line params and provide hem as a JSOn object:
+
+They will be parsed as follows:
+
+| Example Parameter | Comment | JSON result |
+|---------|---------|---------|
+| -v | single dash with one single character | v: true |
+| --verbose | double dash with more than character | verbose: true |
+| --name 'abc' | double dash with more than character followed by string | name: 'abc' |
+
+Command line arguments are now available as a JSON object as a property of app: `app.args`
+
+### Argument aliases
 
 You can also provide alias names for parameters as an option object:
 
 ```
-const args = app.getArgs({
+app.getArgs({
   v: 'verbose'       // alternative arg
 });
 ```

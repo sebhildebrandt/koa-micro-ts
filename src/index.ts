@@ -99,8 +99,10 @@ class KoaMicro extends Application {
     return logger(options);
   }
 
+  args: any = {};
+
   getArgs(alias: any) {
-    return getArgs(alias);
+    this.args = getArgs(alias);
   }
 }
 

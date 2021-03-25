@@ -39,7 +39,7 @@ const log = app.logger({
   level: logLevel.all  // highest level, log all
 });
 
-const args = app.getArgs({ // get command line arguments
+app.getArgs({ // Example - get command line arguments with alias - see docs
   v: 'verbose'             // alias - alternative arg
 });
 
