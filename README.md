@@ -90,7 +90,7 @@ app.start(3000);
 
 ### Dev / Production Mode
 
-The `app` instance has a `development` property that is set to true when providing a `--dev` or `--development` argument when starting the node microservice or then the environment variable `DEVELOPMENT` exists.
+The `app` instance has a `development` property that is set to true when providing a `--dev` or `--development` argument during startup or if the environment variable `DEVELOPMENT` exists.
 
 You can use this property e.g. like this:
 
