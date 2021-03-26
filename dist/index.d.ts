@@ -34,7 +34,8 @@ declare class KoaMicro extends Application {
         warn: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
     };
     args: any;
-    getArgs(alias: any): void;
+    development: boolean;
+    parseArgs(alias: any): void;
 }
 declare const app: KoaMicro;
 export { app, logLevel, validators, Application };

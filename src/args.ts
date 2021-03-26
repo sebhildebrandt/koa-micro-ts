@@ -13,7 +13,7 @@
 // Usage:
 //
 // import Args from './args';
-// const args = getArgs({
+// const args = parseArgs({
 //   v: 'verbose'       // alternative arg
 // });
 // returns an object with all CLI Arguments parsed

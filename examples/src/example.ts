@@ -39,7 +39,7 @@ const log = app.logger({
   level: logLevel.all  // highest level, log all
 });
 
-app.getArgs({ // Example - get command line arguments with alias - see docs
+app.parseArgs({ // Example - get command line arguments with alias - see docs
   v: 'verbose'             // alias - alternative arg
 });
 
@@ -53,3 +53,4 @@ app.gracefulShutdown({
 
 app.start(3000);
 log.trace('Server started');
+log.trace('Mode: ' + (app.development ? 'Development' : 'Production'));

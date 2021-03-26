@@ -21,7 +21,7 @@ import Router from '@koa/router';
 import serve = require('koa-static')
 import cors from './cors';
 import { logger, logLevel, logOptions } from './log';
-import getArgs from './args';
+import parseArgs from './args';
 import jwt from './jwt';
 import { autoRoute } from './autoRoute';
 import * as validators from './validators';
@@ -31,6 +31,7 @@ class KoaMicro extends Application {
 
   constructor() {
     super();
+    this.development = (process.env && process.env.DEVELOPMENT) ? true : false;
   }
   helmet = () => {
     this.use(helmet());
@@ -101,8 +102,13 @@ class KoaMicro extends Application {
 
   args: any = {};
 
-  getArgs(alias: any) {
-    this.args = getArgs(alias);
+  development: boolean;
+
+  parseArgs(alias: any) {
+    this.args = parseArgs(alias);
+    if (this.args.development || this.args.dev) {
+      this.development = true;
+    }
   }
 }
 

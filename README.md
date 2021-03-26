@@ -35,6 +35,7 @@ This package provides a minimalistic, simple to use, [koa][koa-url] based micro 
 - graceful shutdown - detailed docs [SHUTDOWN.md](docs/SHUTDOWN.md)
 - logger - detailed docs [LOGGER.md](docs/LOGGER.md)
 - parsing command line arguments - detailed docs [ARGS.md](docs/ARGS.md)
+- dev/production mode detection - see below in ths README.md
 
 Most of these modules can be enabled with just **one line of code**. Configuration is super simple and lets you create your micro service within minutes.
 
@@ -85,6 +86,18 @@ app.useRouter(router);
 app.gracefulShutdown();
 
 app.start(3000);
+```
+
+### Dev / Production Mode
+
+The `app` instance has a `development` property that is set to true when providing a `--dev` or `--development` argument when starting the node microservice or then the environment variable `DEVELOPMENT` exists.
+
+You can use this property e.g. like this:
+
+```
+if (app.development) {
+  ...
+}
 ```
 
 ### Examples
