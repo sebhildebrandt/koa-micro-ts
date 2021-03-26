@@ -35,7 +35,7 @@ declare class KoaMicro extends Application {
     };
     args: any;
     development: boolean;
-    parseArgs(alias: any): void;
+    parseArgs(alias?: any): void;
 }
 declare const app: KoaMicro;
 export { app, logLevel, validators, Application };

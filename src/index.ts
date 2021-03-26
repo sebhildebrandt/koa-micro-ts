@@ -104,7 +104,7 @@ class KoaMicro extends Application {
 
   development: boolean;
 
-  parseArgs(alias: any) {
+  parseArgs(alias?: any) {
     this.args = parseArgs(alias);
     if (this.args.development || this.args.dev) {
       this.development = true;
