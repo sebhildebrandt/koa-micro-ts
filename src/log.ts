@@ -135,7 +135,6 @@ function logger(options: logOptions) {
   if (options.destination) { // log to file
     const file = path.parse(options.destination);
     logToFile = true;
-    console.log(file);
     mkdirSync(file.dir);
     fileStream = fs.createWriteStream(options.destination, { flags: 'a' });
   }

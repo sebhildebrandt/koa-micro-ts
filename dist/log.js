@@ -90,7 +90,6 @@ function logger(options) {
     if (options.destination) {
         const file = path_1.default.parse(options.destination);
         logToFile = true;
-        console.log(file);
         mkdirSync(file.dir);
         fileStream = fs_1.default.createWriteStream(options.destination, { flags: 'a' });
     }
