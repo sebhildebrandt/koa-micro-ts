@@ -1,4 +1,4 @@
-import { app, Application, logLevel } from '../../dist/index';
+import { app, Application, KoaMicro, logLevel } from '../../dist/index';
 import * as path from 'path';
 
 // setting variables only for demo purposes.

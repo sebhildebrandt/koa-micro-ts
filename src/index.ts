@@ -111,7 +111,9 @@ class KoaMicro extends Application {
     }
   }
 }
-
+namespace KoaMicro {
+  export class KoaMicro { }
+}
 const app = new KoaMicro();
 
 app.use(koaBody());
@@ -120,5 +122,6 @@ export {
   app,
   logLevel,
   validators,
-  Application
+  Application,
+  KoaMicro
 }

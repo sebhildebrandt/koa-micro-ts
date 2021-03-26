@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Application = exports.validators = exports.logLevel = exports.app = void 0;
+exports.KoaMicro = exports.Application = exports.validators = exports.logLevel = exports.app = void 0;
 const koa_body_1 = __importDefault(require("koa-body"));
 const http_graceful_shutdown_1 = __importDefault(require("http-graceful-shutdown"));
 const koa_helmet_1 = __importDefault(require("koa-helmet"));
@@ -114,6 +114,13 @@ class KoaMicro extends koa_1.default {
         }
     }
 }
+exports.KoaMicro = KoaMicro;
+(function (KoaMicro_1) {
+    class KoaMicro {
+    }
+    KoaMicro_1.KoaMicro = KoaMicro;
+})(KoaMicro || (KoaMicro = {}));
+exports.KoaMicro = KoaMicro;
 const app = new KoaMicro();
 exports.app = app;
 app.use(koa_body_1.default());
