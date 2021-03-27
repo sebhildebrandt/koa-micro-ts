@@ -88,6 +88,14 @@ app.gracefulShutdown();
 app.start(3000);
 ```
 
+### Auto-Routes
+
+This is one of the smart features of this package:
+
+`autoRoute` allows you to just write your API endpoints and place them into a directory structure. When calling `app.autoRoute(...directory..., mountpoint)`, this directory will be parsed recursivly and all TS files with extension `.route.ts` are added as routes. All routes then will be mounted to the given `mountpoint`. Your API structure then matches exactly your directory structure. This makes writing and maintaining your API endpoints super simple.
+
+Detailed docs can be found here: [AUTOROUTES.md](docs/AUTOROUTES.md)
+
 ### Dev / Production Mode
 
 The `app` instance has a `development` property that is set to true when providing a `--dev` or `--development` argument during startup or if the environment variable `DEVELOPMENT` exists.
