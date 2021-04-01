@@ -105,12 +105,68 @@ interface logOptions {
   logType?: boolean;
   destination?: string;
 }
-function logger(options: logOptions) {
 
-  const level = options.level || logLevel.all;
-  const logTimestamp = options.logTimestamp !== undefined ? options.logTimestamp : true;
-  const logType = options.logType !== undefined ? options.logType : true;
-  const levels: any = {
+function str(obj: any) {
+  if (typeof (obj) === 'object') {
+    return util.inspect(obj, false, null);
+  } else {
+    return obj;
+  }
+}
+
+function mkdirSync(p: string, opts?: any, made?: any) {
+  const _0777 = parseInt('0777', 8);
+  if (!opts || typeof opts !== 'object') {
+    opts = { mode: opts };
+  }
+
+  let mode = opts.mode;
+  const xfs = opts.fs || fs;
+
+  if (mode === undefined) {
+    // tslint:disable-next-line:no-bitwise
+    mode = _0777 & (~process.umask());
+  }
+  if (!made) {
+    made = null;
+  }
+
+  p = path.resolve(p);
+
+  try {
+    xfs.mkdirSync(p, mode);
+    made = made || p;
+  } catch (err0) {
+    switch (err0.code) {
+      case 'ENOENT':
+        made = mkdirSync(path.dirname(p), opts, made);
+        mkdirSync(p, opts, made);
+        break;
+
+      default:
+        let stat;
+        try {
+          stat = xfs.statSync(p);
+        } catch (err1) {
+          throw err0;
+        }
+        if (!stat.isDirectory()) {
+          throw err0;
+        }
+        break;
+    }
+  }
+  return made;
+}
+
+
+class Logger {
+
+  private logToFile = false;
+  private fileStream: any;
+  private logTimestamp = true;
+  private logType = true;
+  private levels: any = {
     error: true,
     warn: true,
     trace: true,
@@ -119,44 +175,142 @@ function logger(options: logOptions) {
     all: true,
   };
 
-  let logToFile = false;
-  let fileStream: any;
+  constructor(options?: logOptions) {
+    const level = options ? options.level || logLevel.all : logLevel.all;
+    this.logTimestamp = options ? (options.logTimestamp !== undefined ? options.logTimestamp : true) : true;
+    this.logType = options ? (options.logType !== undefined ? options.logType : true) : true;
 
-  let index = 0;
-  if (Array.isArray(level)) {
-    for (const property in levels) {
-      if (levels.hasOwnProperty(property)) {
-        levels[property] = level.indexOf(property) > -1;
-        index++;
+    let index = 0;
+    if (Array.isArray(level)) {
+      for (const property in this.levels) {
+        if (this.levels.hasOwnProperty(property)) {
+          this.levels[property] = level.indexOf(property) > -1;
+          index++;
+        }
+      }
+    }
+
+    if (options && options.destination) { // log to file
+      const file = path.parse(options.destination);
+      this.logToFile = true;
+      mkdirSync(file.dir);
+      this.fileStream = fs.createWriteStream(options.destination, { flags: 'a' });
+    }
+  }
+
+  log = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // white
+    if (this.levels.all) {
+      forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
+      forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
+      const logMsg = this.formatMessage(7, forceTimestamp, forceLogtype, msg || '')
+      if (this.logToFile) {
+        this.fileStream.write(logMsg);
+      } else {
+        console.log(logMsg);
       }
     }
   }
 
-  if (options.destination) { // log to file
-    const file = path.parse(options.destination);
-    logToFile = true;
-    mkdirSync(file.dir);
-    fileStream = fs.createWriteStream(options.destination, { flags: 'a' });
+  light = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // grey
+    if (this.levels.all) {
+      forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
+      forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
+      const logMsg = this.formatMessage(6, forceTimestamp, forceLogtype, msg || '')
+      if (this.logToFile) {
+        this.fileStream.write(logMsg);
+      } else {
+        console.log(logMsg);
+      }
+    }
   }
 
-  /**
-   * ==================================================
-   * Logging
-   * ==================================================
-   */
+  note = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // blue
+    if (this.levels.note) {
+      forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
+      forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
+      const logMsg = this.formatMessage(5, forceTimestamp, forceLogtype, msg || '')
+      if (this.logToFile) {
+        this.fileStream.write(logMsg);
+      } else {
+        console.log(logMsg);
+      }
+    }
+  }
 
-  function formatMessage(loglevel: number, forceTimestamp: boolean, forceLogtype: boolean, msg: string) {
+  info = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // green
+    if (this.levels.info) {
+      forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
+      forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
+      const logMsg = this.formatMessage(4, forceTimestamp, forceLogtype, msg || '')
+      if (this.logToFile) {
+        this.fileStream.write(logMsg);
+      } else {
+        console.log(logMsg);
+      }
+    }
+  }
+
+  trace = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // cyan
+    if (this.levels.trace) {
+      forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
+      forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
+      const logMsg = this.formatMessage(3, forceTimestamp, forceLogtype, msg || '')
+      if (this.logToFile) {
+        this.fileStream.write(logMsg);
+      } else {
+        console.log(logMsg);
+      }
+    }
+  }
+
+  warn = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // yellow
+    if (this.levels.warn) {
+      forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
+      forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
+      const logMsg = this.formatMessage(2, forceTimestamp, forceLogtype, msg || '')
+      if (this.logToFile) {
+        this.fileStream.write(logMsg);
+      } else {
+        console.log(logMsg);
+      }
+    }
+  }
+
+  error = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // red
+    if (this.levels.error) {
+      forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
+      forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
+      const logMsg = this.formatMessage(1, forceTimestamp, forceLogtype, msg || '')
+      if (this.logToFile) {
+        this.fileStream.write(logMsg);
+      } else {
+        console.log(logMsg);
+      }
+    }
+  }
+
+  clear = (num: number) => {			// clears given lines of numbers in console
+    if (!num) { num = 1; }
+    for (let i = 0; i < num; i++) {
+      readline.clearLine(process.stdout, 0);
+      readline.cursorTo(process.stdout, 0);
+      readline.moveCursor(process.stdout, 0, -1);
+      readline.clearLine(process.stdout, 0);
+    }
+  }
+
+  private formatMessage = (loglevel: number, forceTimestamp: boolean, forceLogtype: boolean, msg: string) => {
     let level = '';
     let l = 0;
     let timestamp = '';
     if (forceLogtype) {
-      if (loglevel === 1) { level = logToFile ? 'ERROR' : chalk.red('ERROR'); l = 5; }
-      if (loglevel === 2) { level = logToFile ? 'WARN' : chalk.yellow('WARN'); l = 4; }
-      if (loglevel === 3) { level = logToFile ? 'TRACE' : chalk.cyan('TRACE'); l = 5; }
-      if (loglevel === 4) { level = logToFile ? 'INFO' : chalk.green('INFO'); l = 4; }
-      if (loglevel === 5) { level = logToFile ? 'NOTE' : chalk.blue('NOTE'); l = 4; }
-      if (loglevel === 6) { level = logToFile ? 'LOG' : chalk.grey('LOG'); l = 3; }
-      if (loglevel === 7) { level = logToFile ? 'LOG' : chalk.white('LOG'); l = 3; }
+      if (loglevel === 1) { level = this.logToFile ? 'ERROR' : chalk.red('ERROR'); l = 5; }
+      if (loglevel === 2) { level = this.logToFile ? 'WARN' : chalk.yellow('WARN'); l = 4; }
+      if (loglevel === 3) { level = this.logToFile ? 'TRACE' : chalk.cyan('TRACE'); l = 5; }
+      if (loglevel === 4) { level = this.logToFile ? 'INFO' : chalk.green('INFO'); l = 4; }
+      if (loglevel === 5) { level = this.logToFile ? 'NOTE' : chalk.blue('NOTE'); l = 4; }
+      if (loglevel === 6) { level = this.logToFile ? 'LOG' : chalk.grey('LOG'); l = 3; }
+      if (loglevel === 7) { level = this.logToFile ? 'LOG' : chalk.white('LOG'); l = 3; }
     }
     if (forceTimestamp) {
       const now = new Date();
@@ -167,7 +321,7 @@ function logger(options: logOptions) {
     }
     const header = (timestamp ? timestamp + '  ' : '') + (level ? '[' + level + ']         '.substr(0, 7 - l) : '');
 
-    if (!level && !logToFile) {
+    if (!level && !this.logToFile) {
       if (loglevel === 1) { msg = chalk.red(msg) }
       if (loglevel === 2) { msg = chalk.yellow(msg) }
       if (loglevel === 3) { msg = chalk.cyan(msg) }
@@ -177,177 +331,13 @@ function logger(options: logOptions) {
       if (loglevel === 7) { msg = chalk.white(msg) }
     }
 
-    return ((header ? header + ': ' + msg : msg) + (logToFile ? '\n' : ''));
+    return ((header ? header + ': ' + msg : msg) + (this.logToFile ? '\n' : ''));
   }
 
-  function str(obj: any) {
-    if (typeof (obj) === 'object') {
-      return util.inspect(obj, false, null);
-    } else {
-      return obj;
-    }
-  }
-
-  function mkdirSync(p: string, opts?: any, made?: any) {
-    const _0777 = parseInt('0777', 8);
-    if (!opts || typeof opts !== 'object') {
-      opts = { mode: opts };
-    }
-
-    let mode = opts.mode;
-    const xfs = opts.fs || fs;
-
-    if (mode === undefined) {
-      // tslint:disable-next-line:no-bitwise
-      mode = _0777 & (~process.umask());
-    }
-    if (!made) {
-      made = null;
-    }
-
-    p = path.resolve(p);
-
-    try {
-      xfs.mkdirSync(p, mode);
-      made = made || p;
-    } catch (err0) {
-      switch (err0.code) {
-        case 'ENOENT':
-          made = mkdirSync(path.dirname(p), opts, made);
-          mkdirSync(p, opts, made);
-          break;
-
-        default:
-          let stat;
-          try {
-            stat = xfs.statSync(p);
-          } catch (err1) {
-            throw err0;
-          }
-          if (!stat.isDirectory()) {
-            throw err0;
-          }
-          break;
-      }
-    }
-    return made;
-  }
-
-  function log(msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) { // white
-    if (levels.all) {
-      forceLogtype = forceLogtype === undefined ? logType : forceLogtype;
-      forceTimestamp = forceTimestamp === undefined ? logTimestamp : forceTimestamp;
-      const logMsg = formatMessage(7, forceTimestamp, forceLogtype, msg || '')
-      if (logToFile) {
-        fileStream.write(logMsg);
-      } else {
-        console.log(logMsg);
-      }
-    }
-  }
-
-  function light(msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) { // grey
-    if (levels.all) {
-      forceLogtype = forceLogtype === undefined ? logType : forceLogtype;
-      forceTimestamp = forceTimestamp === undefined ? logTimestamp : forceTimestamp;
-      const logMsg = formatMessage(6, forceTimestamp, forceLogtype, msg || '')
-      if (logToFile) {
-        fileStream.write(logMsg);
-      } else {
-        console.log(logMsg);
-      }
-    }
-  }
-
-  function note(msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) { // blue
-    if (levels.note) {
-      forceLogtype = forceLogtype === undefined ? logType : forceLogtype;
-      forceTimestamp = forceTimestamp === undefined ? logTimestamp : forceTimestamp;
-      const logMsg = formatMessage(5, forceTimestamp, forceLogtype, msg || '')
-      if (logToFile) {
-        fileStream.write(logMsg);
-      } else {
-        console.log(logMsg);
-      }
-    }
-  }
-
-  function info(msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) { // green
-    if (levels.info) {
-      forceLogtype = forceLogtype === undefined ? logType : forceLogtype;
-      forceTimestamp = forceTimestamp === undefined ? logTimestamp : forceTimestamp;
-      const logMsg = formatMessage(4, forceTimestamp, forceLogtype, msg || '')
-      if (logToFile) {
-        fileStream.write(logMsg);
-      } else {
-        console.log(logMsg);
-      }
-    }
-  }
-
-  function trace(msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) { // cyan
-    if (levels.trace) {
-      forceLogtype = forceLogtype === undefined ? logType : forceLogtype;
-      forceTimestamp = forceTimestamp === undefined ? logTimestamp : forceTimestamp;
-      const logMsg = formatMessage(3, forceTimestamp, forceLogtype, msg || '')
-      if (logToFile) {
-        fileStream.write(logMsg);
-      } else {
-        console.log(logMsg);
-      }
-    }
-  }
-
-  function warn(msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) { // yellow
-    if (levels.warn) {
-      forceLogtype = forceLogtype === undefined ? logType : forceLogtype;
-      forceTimestamp = forceTimestamp === undefined ? logTimestamp : forceTimestamp;
-      const logMsg = formatMessage(2, forceTimestamp, forceLogtype, msg || '')
-      if (logToFile) {
-        fileStream.write(logMsg);
-      } else {
-        console.log(logMsg);
-      }
-    }
-  }
-
-  function error(msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) { // red
-    if (levels.error) {
-      forceLogtype = forceLogtype === undefined ? logType : forceLogtype;
-      forceTimestamp = forceTimestamp === undefined ? logTimestamp : forceTimestamp;
-      const logMsg = formatMessage(1, forceTimestamp, forceLogtype, msg || '')
-      if (logToFile) {
-        fileStream.write(logMsg);
-      } else {
-        console.log(logMsg);
-      }
-    }
-  }
-
-  function clear(num: number) {			// clears given lines of numbers in console
-    if (!num) { num = 1; }
-    for (let i = 0; i < num; i++) {
-      readline.clearLine(process.stdout, 0);
-      readline.cursorTo(process.stdout, 0);
-      readline.moveCursor(process.stdout, 0, -1);
-      readline.clearLine(process.stdout, 0);
-    }
-  }
-
-  return {
-    clear,
-    error,
-    info,
-    light,
-    log,
-    note,
-    trace,
-    warn
-  };
 }
 
 export {
-  logger,
+  Logger,
   logLevel,
   logOptions
 }

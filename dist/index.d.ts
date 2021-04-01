@@ -1,6 +1,6 @@
 /// <reference types="koa__router" />
 import Router from '@koa/router';
-import { logLevel, logOptions } from './log';
+import { Logger, logLevel, logOptions } from './log';
 import * as validators from './validators';
 import Application from 'koa';
 declare class KoaMicro extends Application {
@@ -22,17 +22,9 @@ declare class KoaMicro extends Application {
         catchErrors: (message?: any) => (ctx: any, next: any) => Promise<void>;
     };
     start: (port: number) => void;
+    log: Logger;
     autoRoute: (routepath: string, mountpoint?: string | undefined, auth?: boolean | undefined) => void;
-    logger(options: logOptions): {
-        clear: (num: number) => void;
-        error: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
-        info: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
-        light: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
-        log: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
-        note: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
-        trace: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
-        warn: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
-    };
+    logger(options: logOptions): Logger;
     args: any;
     development: boolean;
     parseArgs(alias?: any): void;

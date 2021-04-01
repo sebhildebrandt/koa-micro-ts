@@ -13,14 +13,21 @@ interface logOptions {
     logType?: boolean;
     destination?: string;
 }
-declare function logger(options: logOptions): {
-    clear: (num: number) => void;
-    error: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
-    info: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
-    light: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
+declare class Logger {
+    private logToFile;
+    private fileStream;
+    private logTimestamp;
+    private logType;
+    private levels;
+    constructor(options?: logOptions);
     log: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
+    light: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
     note: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
+    info: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
     trace: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
     warn: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
-};
-export { logger, logLevel, logOptions };
+    error: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
+    clear: (num: number) => void;
+    private formatMessage;
+}
+export { Logger, logLevel, logOptions };

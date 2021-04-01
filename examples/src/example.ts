@@ -35,7 +35,7 @@ app.useRouter(router);
 app.autoRoute(path.join(__dirname, '/routes'), '/api/v1');
 
 // initialize logger
-const log = app.logger({
+app.logger({
   level: logLevel.all  // highest level, log all
 });
 
@@ -47,10 +47,10 @@ app.parseArgs({ // Example - get command line arguments with alias - see docs
 app.gracefulShutdown({
   finally: () => {
     console.log();
-    log.info('Server gracefully terminated');
+    app.log.info('Server gracefully terminated');
   }
 });
 
 app.start(3000);
-log.trace('Server started');
-log.trace('Mode: ' + (app.development ? 'Development' : 'Production'));
+app.log.trace('Server started');
+app.log.trace('Mode: ' + (app.development ? 'Development' : 'Production'));

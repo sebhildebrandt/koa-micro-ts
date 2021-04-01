@@ -96,6 +96,7 @@ class KoaMicro extends koa_1.default {
         this.start = (port) => {
             this.listen(port);
         };
+        this.log = new log_1.Logger();
         this.autoRoute = (routepath, mountpoint, auth) => {
             mountpoint = mountpoint || '';
             auth = auth || false;
@@ -105,7 +106,8 @@ class KoaMicro extends koa_1.default {
         this.development = (process.env && process.env.DEVELOPMENT) ? true : false;
     }
     logger(options) {
-        return log_1.logger(options);
+        this.log = new log_1.Logger(options);
+        return this.log;
     }
     parseArgs(alias) {
         this.args = args_1.default(alias);
