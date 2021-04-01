@@ -1,5 +1,7 @@
 /// <reference types="koa__router" />
 import Router from '@koa/router';
+import { HttpStatusCode } from './httpStatus';
+import { KoaErrors } from './error.interface';
 import { Logger, logLevel, logOptions } from './log';
 import * as validators from './validators';
 import Application from 'koa';
@@ -27,6 +29,8 @@ declare class KoaMicro extends Application {
     logger(options: logOptions): Logger;
     args: any;
     development: boolean;
+    private catchErrorsFn;
+    catchErrors(): void;
     parseArgs(alias?: any): void;
 }
 declare namespace KoaMicro {
@@ -34,4 +38,4 @@ declare namespace KoaMicro {
     }
 }
 declare const app: KoaMicro;
-export { app, logLevel, validators, Application, KoaMicro };
+export { app, logLevel, validators, Application, KoaMicro, HttpStatusCode, KoaErrors };

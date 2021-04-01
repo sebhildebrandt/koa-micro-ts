@@ -18,16 +18,27 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.KoaMicro = exports.Application = exports.validators = exports.logLevel = exports.app = void 0;
+exports.HttpStatusCode = exports.KoaMicro = exports.Application = exports.validators = exports.logLevel = exports.app = void 0;
 const koa_body_1 = __importDefault(require("koa-body"));
 const http_graceful_shutdown_1 = __importDefault(require("http-graceful-shutdown"));
 const koa_helmet_1 = __importDefault(require("koa-helmet"));
 const router_1 = __importDefault(require("@koa/router"));
 const serve = require("koa-static");
+const httpStatus_1 = require("./httpStatus");
+Object.defineProperty(exports, "HttpStatusCode", { enumerable: true, get: function () { return httpStatus_1.HttpStatusCode; } });
 const cors_1 = __importDefault(require("./cors"));
 const log_1 = require("./log");
 Object.defineProperty(exports, "logLevel", { enumerable: true, get: function () { return log_1.logLevel; } });
@@ -96,18 +107,46 @@ class KoaMicro extends koa_1.default {
         this.start = (port) => {
             this.listen(port);
         };
-        this.log = new log_1.Logger();
+        this.log = new log_1.Logger({
+            level: log_1.logLevel.none
+        });
         this.autoRoute = (routepath, mountpoint, auth) => {
             mountpoint = mountpoint || '';
             auth = auth || false;
             autoRoute_1.autoRoute(this, routepath, mountpoint, auth);
         };
         this.args = {};
+        this.catchErrorsFn = (ctx, next) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield next();
+            }
+            catch (err) {
+                if (err === null) {
+                    err = {};
+                }
+                const status = err.status || 500;
+                const code = err.code || -1;
+                const message = err.message || 'Error';
+                const description = err.description || '';
+                this.log.error(`Status: ${status}, Code: ${code}, Message: ${message}, Description: ${description}`);
+                ctx.status = status;
+                ctx.type = 'application/json';
+                ctx.body = JSON.stringify({
+                    status,
+                    code,
+                    message,
+                    description
+                });
+            }
+        });
         this.development = (process.env && process.env.DEVELOPMENT) ? true : false;
     }
     logger(options) {
         this.log = new log_1.Logger(options);
         return this.log;
+    }
+    catchErrors() {
+        this.use(this.catchErrorsFn);
     }
     parseArgs(alias) {
         this.args = args_1.default(alias);

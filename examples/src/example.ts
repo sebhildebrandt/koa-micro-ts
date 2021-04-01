@@ -15,6 +15,9 @@ app.helmet();
 // enable cors (optional)
 app.cors();
 
+// catch uncatched errors - must be 'used' before adding routes
+app.catchErrors();
+
 // set up static server (optional)
 app.static(path.join(__dirname, '/public'));
 
@@ -39,7 +42,8 @@ app.logger({
   level: logLevel.all  // highest level, log all
 });
 
-app.parseArgs({ // Example - get command line arguments with alias - see docs
+// get command line arguments with alias (example) - see docs
+app.parseArgs({
   v: 'verbose'             // alias - alternative arg
 });
 

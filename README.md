@@ -35,7 +35,8 @@ This package provides a minimalistic, simple to use, [koa][koa-url] based micro 
 - graceful shutdown - detailed docs [SHUTDOWN.md](docs/SHUTDOWN.md)
 - logger - detailed docs [LOGGER.md](docs/LOGGER.md)
 - parsing command line arguments - detailed docs [ARGS.md](docs/ARGS.md)
-- dev/production mode detection - see below in ths README.md
+- dev/production mode detection - see below in this README.md
+- catch errors - detailed docs [CATCHERRORS.md](docs/CATCHERRORS.md)
 
 Most of these modules can be enabled with just **one line of code**. Configuration is super simple and lets you create your micro service within minutes.
 
@@ -69,6 +70,9 @@ app.cors();
 
 // parse command line params (optional)
 app.getArgs();
+
+// catch uncatched errors - must be 'used' before adding routes
+app.catchErrors();
 
 // set up static server (optional)
 app.static(path.join(__dirname, '/public'));
@@ -107,7 +111,6 @@ if (app.development) {
   ...
 }
 ```
-
 ### Examples
 
 The example in the path `examples` shows how to use `koa-micro-ts` and
@@ -144,6 +147,7 @@ Health Route
 Routes from autoRouter
 - `http://localhost:3000/api/v1/`
 - `http://localhost:3000/api/v1/hello/`
+- `http://localhost:3000/api/v1/error/`
 - `http://localhost:3000/api/v1/resource/?param=value`
 
 ## Advanced usage

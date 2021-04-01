@@ -19,6 +19,8 @@ import gracefulShutdown, { Options } from 'http-graceful-shutdown';
 import helmet from 'koa-helmet';
 import Router from '@koa/router';
 import serve = require('koa-static')
+import { HttpStatusCode } from './httpStatus'
+import { KoaErrors } from './error.interface'
 import cors from './cors';
 import { Logger, logLevel, logOptions } from './log';
 import parseArgs from './args';
@@ -90,7 +92,9 @@ class KoaMicro extends Application {
     this.listen(port)
   }
 
-  log = new Logger();
+  log = new Logger({
+    level: logLevel.none
+  });
 
   autoRoute = (routepath: string, mountpoint?: string, auth?: boolean) => {
     mountpoint = mountpoint || '';
@@ -107,6 +111,33 @@ class KoaMicro extends Application {
 
   development: boolean;
 
+  private catchErrorsFn = async (ctx: any, next: any) => {
+    try {
+      await next();
+    } catch (err) {
+      if (err === null) {
+        err = {};
+      }
+      const status = err.status || 500;
+      const code = err.code || -1;
+      const message = err.message || 'Error';
+      const description = err.description || '';
+
+      this.log.error(`Status: ${status}, Code: ${code}, Message: ${message}, Description: ${description}`);
+      ctx.status = status;
+      ctx.type = 'application/json';
+      ctx.body = JSON.stringify({
+        status,
+        code,
+        message,
+        description
+      });
+    }
+  }
+
+  catchErrors() {
+    this.use(this.catchErrorsFn);
+  }
   parseArgs(alias?: any) {
     this.args = parseArgs(alias);
     if (this.args.development || this.args.dev) {
@@ -132,5 +163,7 @@ export {
   logLevel,
   validators,
   Application,
-  KoaMicro
+  KoaMicro,
+  HttpStatusCode,
+  KoaErrors
 }
