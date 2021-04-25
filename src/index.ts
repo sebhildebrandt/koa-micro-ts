@@ -22,7 +22,7 @@ import serve = require('koa-static')
 import { HttpStatusCode } from './httpStatus'
 import { KoaErrors } from './error.interface'
 import cors from './cors';
-import { Logger, logLevel, logOptions } from './log';
+import { Logger, LogLevels, iLogOptions } from './log';
 import parseArgs from './args';
 import jwt from './jwt';
 import { autoRoute } from './autoRoute';
@@ -93,7 +93,7 @@ class KoaMicro extends Application {
   }
 
   log = new Logger({
-    level: logLevel.none
+    level: LogLevels.none
   });
 
   autoRoute = (routepath: string, mountpoint?: string, auth?: boolean) => {
@@ -102,8 +102,11 @@ class KoaMicro extends Application {
     autoRoute(this, routepath, mountpoint, auth);
   }
 
-  logger(options: logOptions) {
+  logger(options: iLogOptions) {
     this.log = new Logger(options);
+    if (this.log.logLevel() >= LogLevels.info) {
+      app.use(this.logMiddleware())
+    }
     return this.log;
   }
 
@@ -135,6 +138,38 @@ class KoaMicro extends Application {
     }
   }
 
+  private logMiddleware() {
+    function time(start: number) {
+      const delta = Date.now() - start;
+      return delta < 10000 ? delta + 'ms' : Math.round(delta / 1000) + 's'
+    }
+
+    function len(ctx: any) {
+      let result = '';
+      if (![204, 205, 304].includes(ctx.status) && ctx.length) {
+        result += ctx.length + ' Bytes';
+      }
+      return result;
+    }
+
+    return async (ctx: any, next: any) => {
+
+      const start = ctx[Symbol.for('request-received.startTime')]
+        ? ctx[Symbol.for('request-received.startTime')].getTime()
+        : Date.now();
+
+
+      try {
+        this.log.info(`  <-- ${ctx.method} ${ctx.originalUrl}`)
+        await next();
+        this.log.info(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`)
+      } catch (err) {
+        this.log.info(`  xxx ${ctx.method} ${ctx.originalUrl} ${err.status || 500} ${time(start)}`)
+        throw err;
+      }
+    }
+  }
+
   catchErrors() {
     this.use(this.catchErrorsFn);
   }
@@ -160,7 +195,7 @@ app.use(koaBody());
 
 export {
   app,
-  logLevel,
+  LogLevels,
   validators,
   Application,
   KoaMicro,

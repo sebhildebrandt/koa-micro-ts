@@ -25,6 +25,7 @@
 import path from 'path';
 import Router from '@koa/router';
 import jwt from './jwt';
+import { Logger, LogLevels, iLogOptions } from './log';
 import fs from 'fs';
 
 const routerSuffixJs = '.route.js';
@@ -65,6 +66,9 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
   // const root = path.dirname(require.main.filename);
   // const routepath = path.join(root, rpath);
 
+  if (app && app.log && app.log.level && app.log.level === LogLevels.all) {
+    app.log.trace('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n', false, false);
+  }
   // clog.trace('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n');
   // console.log('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n');
   readdirSyncRecursive(routepath, files);
@@ -186,13 +190,17 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
             } else {
               routes[method](url, obj[key]);
             }
-
-            // console.log('       ' + mountpoint + url + '   ---   ' + method + ' - Function: ' + key);
+            if (app && app.log && app.log.level && app.log.level === LogLevels.all) {
+              app.log.trace('       ' + mountpoint + url + '   ---   ' + method + ' - Function: ' + key, false, false);
+            }
           }
         }
       }
     }
   }
   app.use(routes.routes()).use(routes.allowedMethods());
-  // clog.trace('');
+  if (app && app.log && app.log.level && app.log.level === LogLevels.all) {
+    app.log.trace('', false, false);
+  }
+
 };

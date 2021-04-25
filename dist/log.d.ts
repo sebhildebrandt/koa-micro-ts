@@ -1,4 +1,4 @@
-declare const logLevel: {
+declare const LogLevels: {
     none: number;
     error: number;
     warn: number;
@@ -7,7 +7,7 @@ declare const logLevel: {
     note: number;
     all: number;
 };
-interface logOptions {
+interface iLogOptions {
     level?: number;
     logTimestamp?: boolean;
     logType?: boolean;
@@ -19,7 +19,8 @@ declare class Logger {
     private logTimestamp;
     private logType;
     private levels;
-    constructor(options?: logOptions);
+    private level;
+    constructor(options?: iLogOptions);
     log: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
     light: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
     note: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
@@ -28,6 +29,7 @@ declare class Logger {
     warn: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
     error: (msg?: string | undefined, forceTimestamp?: boolean | undefined, forceLogtype?: boolean | undefined) => void;
     clear: (num: number) => void;
+    logLevel: () => number;
     private formatMessage;
 }
-export { Logger, logLevel, logOptions };
+export { Logger, LogLevels, iLogOptions };

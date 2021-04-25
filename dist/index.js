@@ -31,7 +31,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HttpStatusCode = exports.KoaMicro = exports.Application = exports.validators = exports.logLevel = exports.app = void 0;
+exports.HttpStatusCode = exports.KoaMicro = exports.Application = exports.validators = exports.LogLevels = exports.app = void 0;
 const koa_body_1 = __importDefault(require("koa-body"));
 const http_graceful_shutdown_1 = __importDefault(require("http-graceful-shutdown"));
 const koa_helmet_1 = __importDefault(require("koa-helmet"));
@@ -41,7 +41,7 @@ const httpStatus_1 = require("./httpStatus");
 Object.defineProperty(exports, "HttpStatusCode", { enumerable: true, get: function () { return httpStatus_1.HttpStatusCode; } });
 const cors_1 = __importDefault(require("./cors"));
 const log_1 = require("./log");
-Object.defineProperty(exports, "logLevel", { enumerable: true, get: function () { return log_1.logLevel; } });
+Object.defineProperty(exports, "LogLevels", { enumerable: true, get: function () { return log_1.LogLevels; } });
 const args_1 = __importDefault(require("./args"));
 const jwt_1 = __importDefault(require("./jwt"));
 const autoRoute_1 = require("./autoRoute");
@@ -108,7 +108,7 @@ class KoaMicro extends koa_1.default {
             this.listen(port);
         };
         this.log = new log_1.Logger({
-            level: log_1.logLevel.none
+            level: log_1.LogLevels.none
         });
         this.autoRoute = (routepath, mountpoint, auth) => {
             mountpoint = mountpoint || '';
@@ -143,7 +143,37 @@ class KoaMicro extends koa_1.default {
     }
     logger(options) {
         this.log = new log_1.Logger(options);
+        if (this.log.logLevel() >= log_1.LogLevels.info) {
+            app.use(this.logMiddleware());
+        }
         return this.log;
+    }
+    logMiddleware() {
+        function time(start) {
+            const delta = Date.now() - start;
+            return delta < 10000 ? delta + 'ms' : Math.round(delta / 1000) + 's';
+        }
+        function len(ctx) {
+            let result = '';
+            if (![204, 205, 304].includes(ctx.status) && ctx.length) {
+                result += ctx.length + ' Bytes';
+            }
+            return result;
+        }
+        return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
+            const start = ctx[Symbol.for('request-received.startTime')]
+                ? ctx[Symbol.for('request-received.startTime')].getTime()
+                : Date.now();
+            try {
+                this.log.info(`  <-- ${ctx.method} ${ctx.originalUrl}`);
+                yield next();
+                this.log.info(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
+            }
+            catch (err) {
+                this.log.info(`  xxx ${ctx.method} ${ctx.originalUrl} ${err.status || 500} ${time(start)}`);
+                throw err;
+            }
+        });
     }
     catchErrors() {
         this.use(this.catchErrorsFn);

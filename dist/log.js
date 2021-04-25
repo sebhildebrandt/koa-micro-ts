@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logLevel = exports.Logger = void 0;
+exports.LogLevels = exports.Logger = void 0;
 const util_1 = __importDefault(require("util"));
 const readline_1 = __importDefault(require("readline"));
 const fs_1 = __importDefault(require("fs"));
@@ -54,7 +54,7 @@ const chalk = {
         return (FgRed + s + Reset);
     }
 };
-const logLevel = {
+const LogLevels = {
     none: 0,
     error: 1,
     warn: 2,
@@ -63,7 +63,7 @@ const logLevel = {
     note: 5,
     all: 6
 };
-exports.logLevel = logLevel;
+exports.LogLevels = LogLevels;
 function str(obj) {
     if (typeof (obj) === 'object') {
         return util_1.default.inspect(obj, false, null);
@@ -118,13 +118,14 @@ class Logger {
         this.logTimestamp = true;
         this.logType = true;
         this.levels = {
-            error: true,
-            warn: true,
-            trace: true,
-            info: true,
-            note: true,
-            all: true,
+            error: false,
+            warn: false,
+            trace: false,
+            info: false,
+            note: false,
+            all: false,
         };
+        this.level = LogLevels.all;
         this.log = (msg, forceTimestamp, forceLogtype) => {
             if (this.levels.all) {
                 forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
@@ -227,6 +228,9 @@ class Logger {
                 readline_1.default.clearLine(process.stdout, 0);
             }
         };
+        this.logLevel = () => {
+            return this.level;
+        };
         this.formatMessage = (loglevel, forceTimestamp, forceLogtype, msg) => {
             let level = '';
             let l = 0;
@@ -293,17 +297,27 @@ class Logger {
             }
             return ((header ? header + ': ' + msg : msg) + (this.logToFile ? '\n' : ''));
         };
-        const level = options ? options.level || logLevel.all : logLevel.all;
+        this.level = options && (options.level || options.level === 0) ? options.level : LogLevels.all;
         this.logTimestamp = options ? (options.logTimestamp !== undefined ? options.logTimestamp : true) : true;
         this.logType = options ? (options.logType !== undefined ? options.logType : true) : true;
         let index = 0;
-        if (Array.isArray(level)) {
-            for (const property in this.levels) {
-                if (this.levels.hasOwnProperty(property)) {
-                    this.levels[property] = level.indexOf(property) > -1;
-                    index++;
-                }
-            }
+        if (this.level >= LogLevels.error) {
+            this.levels.error = true;
+        }
+        if (this.level >= LogLevels.warn) {
+            this.levels.warn = true;
+        }
+        if (this.level >= LogLevels.trace) {
+            this.levels.trace = true;
+        }
+        if (this.level >= LogLevels.info) {
+            this.levels.info = true;
+        }
+        if (this.level >= LogLevels.note) {
+            this.levels.note = true;
+        }
+        if (this.level >= LogLevels.all) {
+            this.levels.all = true;
         }
         if (options && options.destination) {
             const file = path_1.default.parse(options.destination);

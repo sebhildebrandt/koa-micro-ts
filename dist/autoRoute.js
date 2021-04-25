@@ -7,6 +7,7 @@ exports.autoRoute = void 0;
 const path_1 = __importDefault(require("path"));
 const router_1 = __importDefault(require("@koa/router"));
 const jwt_1 = __importDefault(require("./jwt"));
+const log_1 = require("./log");
 const fs_1 = __importDefault(require("fs"));
 const routerSuffixJs = '.route.js';
 const routerSuffixTs = '.route.ts';
@@ -33,6 +34,9 @@ function autoRoute(app, routepath, mountpoint, auth) {
         prefix: mountpoint
     });
     const files = [];
+    if (app && app.log && app.log.level && app.log.level === log_1.LogLevels.all) {
+        app.log.trace('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n', false, false);
+    }
     readdirSyncRecursive(routepath, files);
     for (const file of files) {
         const root = routepath;
@@ -141,12 +145,18 @@ function autoRoute(app, routepath, mountpoint, auth) {
                         else {
                             routes[method](url, obj[key]);
                         }
+                        if (app && app.log && app.log.level && app.log.level === log_1.LogLevels.all) {
+                            app.log.trace('       ' + mountpoint + url + '   ---   ' + method + ' - Function: ' + key, false, false);
+                        }
                     }
                 }
             }
         }
     }
     app.use(routes.routes()).use(routes.allowedMethods());
+    if (app && app.log && app.log.level && app.log.level === log_1.LogLevels.all) {
+        app.log.trace('', false, false);
+    }
 }
 exports.autoRoute = autoRoute;
 ;

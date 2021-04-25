@@ -2,7 +2,7 @@
 import Router from '@koa/router';
 import { HttpStatusCode } from './httpStatus';
 import { KoaErrors } from './error.interface';
-import { Logger, logLevel, logOptions } from './log';
+import { Logger, LogLevels, iLogOptions } from './log';
 import * as validators from './validators';
 import Application from 'koa';
 declare class KoaMicro extends Application {
@@ -26,10 +26,11 @@ declare class KoaMicro extends Application {
     start: (port: number) => void;
     log: Logger;
     autoRoute: (routepath: string, mountpoint?: string | undefined, auth?: boolean | undefined) => void;
-    logger(options: logOptions): Logger;
+    logger(options: iLogOptions): Logger;
     args: any;
     development: boolean;
     private catchErrorsFn;
+    private logMiddleware;
     catchErrors(): void;
     parseArgs(alias?: any): void;
 }
@@ -38,4 +39,4 @@ declare namespace KoaMicro {
     }
 }
 declare const app: KoaMicro;
-export { app, logLevel, validators, Application, KoaMicro, HttpStatusCode, KoaErrors };
+export { app, LogLevels, validators, Application, KoaMicro, HttpStatusCode, KoaErrors };

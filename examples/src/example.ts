@@ -1,4 +1,4 @@
-import { app, Application, KoaMicro, logLevel } from '../../dist/index';
+import { app, Application, KoaMicro, LogLevels } from '../../dist/index';
 import * as path from 'path';
 
 // setting variables only for demo purposes.
@@ -32,15 +32,15 @@ router.get('/route2', (ctx: Application.Context, next: Application.Next) => {
   ctx.body = 'This is static route 2';
 });
 
+// initialize logger
+app.logger({
+  level: LogLevels.all  // highest level, log all
+});
+
 app.useRouter(router);
 
 // using autoRoute: use all routes in path /routes and mount it to /api/v1
 app.autoRoute(path.join(__dirname, '/routes'), '/api/v1');
-
-// initialize logger
-app.logger({
-  level: logLevel.all  // highest level, log all
-});
 
 // get command line arguments with alias (example) - see docs
 app.parseArgs({

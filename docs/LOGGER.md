@@ -5,12 +5,12 @@
 You can use it like so:
 
 ```
-import { app, logLevel } from 'koa-micro-ts';
+import { app, LogLevels } from 'koa-micro-ts';
 
 ...
 
 app.logger({
-  level: logLevel.all      // highest level, log all
+  level: LogLevels.all      // highest level, log all
 });
 
 app.log.error('This is a error message');
@@ -20,13 +20,13 @@ app.log.error('This is a error message');
 
 Initialize the logger with one of the following log levels:
 
-- `logLevel.none`: log nothing
-- `logLevel.error`: log errors only
-- `logLevel.warn`: add also warn messages
-- `logLevel.trace`: add trace messages
-- `logLevel.info`: add info messages
-- `logLevel.notes`: add notes
-- `logLevel.all`: log all messages
+- `LogLevels.none`: log nothing
+- `LogLevels.error`: log errors only
+- `LogLevels.warn`: add also warn messages
+- `LogLevels.trace`: add trace messages
+- `LogLevels.info`: add info messages
+- `LogLevels.notes`: add notes
+- `LogLevels.all`: log all messages
 
 ### Logging
 
@@ -48,9 +48,9 @@ By default, each log message contains time stamp and log type (color coded). You
 
 ```
 app.logger({
-  level: logLevel.all,     // highest level, log all
-  logTimestamp: true/false,
-  logtype: true/false
+  level: LogLevels.all,       // highest level, log all - this is the default
+  logTimestamp: true/false,   // true is the default
+  logtype: true/false         // true is the default
 });
 
 app.log.trace('This is a log message');
@@ -68,7 +68,7 @@ app.log.error('Error message', true, false);
 
 ```
 app.logger({
-  level: logLevel.all,      // highest level, log all
+  level: LogLevels.all,      // highest level, log all
   destination: './log.txt'
 });
 

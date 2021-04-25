@@ -89,7 +89,7 @@ const chalk = {
   }
 };
 
-const logLevel = {
+const LogLevels = {
   none: 0,
   error: 1,
   warn: 2,
@@ -99,7 +99,7 @@ const logLevel = {
   all: 6
 }
 
-interface logOptions {
+interface iLogOptions {
   level?: number,
   logTimestamp?: boolean;
   logType?: boolean;
@@ -167,28 +167,27 @@ class Logger {
   private logTimestamp = true;
   private logType = true;
   private levels: any = {
-    error: true,
-    warn: true,
-    trace: true,
-    info: true,
-    note: true,
-    all: true,
+    error: false,
+    warn: false,
+    trace: false,
+    info: false,
+    note: false,
+    all: false,
   };
+  private level = LogLevels.all;
 
-  constructor(options?: logOptions) {
-    const level = options ? options.level || logLevel.all : logLevel.all;
+  constructor(options?: iLogOptions) {
+    this.level = options && (options.level || options.level === 0) ? options.level : LogLevels.all;
     this.logTimestamp = options ? (options.logTimestamp !== undefined ? options.logTimestamp : true) : true;
     this.logType = options ? (options.logType !== undefined ? options.logType : true) : true;
 
     let index = 0;
-    if (Array.isArray(level)) {
-      for (const property in this.levels) {
-        if (this.levels.hasOwnProperty(property)) {
-          this.levels[property] = level.indexOf(property) > -1;
-          index++;
-        }
-      }
-    }
+    if (this.level >= LogLevels.error) { this.levels.error = true; }
+    if (this.level >= LogLevels.warn) { this.levels.warn = true; }
+    if (this.level >= LogLevels.trace) { this.levels.trace = true; }
+    if (this.level >= LogLevels.info) { this.levels.info = true; }
+    if (this.level >= LogLevels.note) { this.levels.note = true; }
+    if (this.level >= LogLevels.all) { this.levels.all = true; }
 
     if (options && options.destination) { // log to file
       const file = path.parse(options.destination);
@@ -299,6 +298,10 @@ class Logger {
     }
   }
 
+  logLevel = () => {
+    return this.level
+  }
+
   private formatMessage = (loglevel: number, forceTimestamp: boolean, forceLogtype: boolean, msg: string) => {
     let level = '';
     let l = 0;
@@ -338,6 +341,6 @@ class Logger {
 
 export {
   Logger,
-  logLevel,
-  logOptions
+  LogLevels,
+  iLogOptions
 }
