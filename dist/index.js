@@ -58,8 +58,8 @@ class KoaMicro extends koa_1.default {
         this.gracefulShutdown = (options = {}) => {
             http_graceful_shutdown_1.default(app, options);
         };
-        this.static = (path) => {
-            this.use(serve(path));
+        this.static = (filepath) => {
+            this.use(serve(filepath));
         };
         this.health = (path, option) => {
             path = path || '/health';

@@ -10,7 +10,7 @@ declare class KoaMicro extends Application {
     constructor();
     helmet: () => void;
     gracefulShutdown: (options?: {}) => void;
-    static: (path: string) => void;
+    static: (filepath: string) => void;
     health: (path?: string | undefined, option?: any) => void;
     newRouter: (prefix?: string | undefined) => Router<any, {}>;
     useRouter: (router: Router) => void;

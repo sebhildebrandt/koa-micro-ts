@@ -28,6 +28,7 @@ import jwt from './jwt';
 import { autoRoute } from './autoRoute';
 import * as validators from './validators';
 import Application from 'koa';
+import * as path from 'path';
 
 class KoaMicro extends Application {
 
@@ -45,8 +46,8 @@ class KoaMicro extends Application {
     gracefulShutdown(app, options);
   }
 
-  static = (path: string) => {
-    this.use(serve(path));
+  static = (filepath: string) => {
+    this.use(serve(filepath));
   }
 
   health = (path?: string, option?: any) => {

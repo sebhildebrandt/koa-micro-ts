@@ -2,7 +2,7 @@
 Microservice framework based on koa
 
 ```
-    _                               _                      _
+   _                               _                      _
   | | _____   __ _       _ __ ___ (_) ___ _ __ ___       | |_ ___
   | |/ / _ \ / _` |_____| '_ ` _ \| |/ __| '__/ _ \ _____| __/ __|
   |   < (_) | (_| |_____| | | | | | | (__| | | (_) |_____| |_\__ \
@@ -92,6 +92,7 @@ app.gracefulShutdown();
 app.start(3000);
 ```
 
+Have a look at the function reference [APP.md](docs/APP.md) for all options
 ### Auto-Routes
 
 This is one of the smart features of this package:
