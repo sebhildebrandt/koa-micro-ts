@@ -6,6 +6,7 @@ import { Logger, LogLevels, iLogOptions } from './log';
 import * as validators from './validators';
 import Application from 'koa';
 declare class KoaMicro extends Application {
+    private server;
     constructor();
     helmet: () => void;
     gracefulShutdown: (options?: {}) => void;
@@ -33,6 +34,7 @@ declare class KoaMicro extends Application {
     private logMiddleware;
     catchErrors(): void;
     parseArgs(alias?: any): void;
+    close(): void;
 }
 declare namespace KoaMicro {
     class KoaMicro {

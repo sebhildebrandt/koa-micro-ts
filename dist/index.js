@@ -105,7 +105,7 @@ class KoaMicro extends koa_1.default {
             return jwt_1.default;
         };
         this.start = (port) => {
-            this.listen(port);
+            this.server = this.listen(port);
         };
         this.log = new log_1.Logger({
             level: log_1.LogLevels.none
@@ -183,6 +183,9 @@ class KoaMicro extends koa_1.default {
         if (this.args.development || this.args.dev) {
             this.development = true;
         }
+    }
+    close() {
+        this.server.close();
     }
 }
 exports.KoaMicro = KoaMicro;

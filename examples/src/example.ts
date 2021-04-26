@@ -58,3 +58,7 @@ app.gracefulShutdown({
 app.start(3000);
 app.log.trace('Server started');
 app.log.trace('Mode: ' + (app.development ? 'Development' : 'Production'));
+
+setTimeout(() => {
+  app.close();
+}, 3000)

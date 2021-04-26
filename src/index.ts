@@ -31,6 +31,8 @@ import Application from 'koa';
 
 class KoaMicro extends Application {
 
+  private server: any;
+
   constructor() {
     super();
     this.development = (process.env && process.env.DEVELOPMENT) ? true : false;
@@ -89,7 +91,7 @@ class KoaMicro extends Application {
   }
 
   start = (port: number) => {
-    this.listen(port)
+    this.server = this.listen(port)
   }
 
   log = new Logger({
@@ -178,6 +180,9 @@ class KoaMicro extends Application {
     if (this.args.development || this.args.dev) {
       this.development = true;
     }
+  }
+  close() {
+    this.server.close();
   }
 }
 namespace KoaMicro {
