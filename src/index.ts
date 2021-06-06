@@ -30,6 +30,8 @@ import * as validators from './validators';
 import Application from 'koa';
 import * as path from 'path';
 
+
+interface HealthOptions { livePath?: string, readyPath?: string, isReady?: any, name?: string, version?: string };
 class KoaMicro extends Application {
 
   private server: any;
@@ -50,19 +52,44 @@ class KoaMicro extends Application {
     this.use(serve(filepath));
   }
 
-  health = (path?: string, option?: any) => {
-    path = path || '/health';
-    const router = new Router({
-      prefix: path
-    });
+  health = (options?: HealthOptions) => {
+    const router = new Router();
 
-    router.get('/', (ctx) => {
+    if (!options) { options = {}; }
+    if (!options.livePath) { options.livePath = '/live' }
+    if (!options.readyPath) { options.readyPath = '/ready' }
+    router.get(options.livePath, (ctx) => {
       const status: any = {};
       if (process.env.APP_NAME) { status.name = process.env.APP_NAME; }
-      if (option && option.name) { status.name = option.name; }
+      if (options && options.name) { status.name = options.name; }
       if (process.env.APP_VERSION) { status.version = process.env.APP_VERSION; }
-      if (option && option.version) { status.version = option.version; }
-      status.status = 'ok';
+      if (options && options.version) { status.version = options.version; }
+      status.check = 'liveness';
+      status.status = 'up';
+      ctx.body = status;
+    });
+
+    router.get(options.readyPath, async (ctx) => {
+      const status: any = {};
+      if (process.env.APP_NAME) { status.name = process.env.APP_NAME; }
+      if (options && options.name) { status.name = options.name; }
+      if (process.env.APP_VERSION) { status.version = process.env.APP_VERSION; }
+      if (options && options.version) { status.version = options.version; }
+      status.check = 'readyness';
+      status.status = 'not ready';
+      ctx.status = 400;
+      if (options && options.isReady) {
+        let res = false;
+        try {
+          res = await options.isReady();
+        } catch (e) {
+          res = false;
+        }
+        if (res) {
+          status.status = 'ready';
+          ctx.status = 200;
+        }
+      }
       ctx.body = status;
     });
 
@@ -165,9 +192,13 @@ class KoaMicro extends Application {
       try {
         this.log.info(`  <-- ${ctx.method} ${ctx.originalUrl}`)
         await next();
-        this.log.info(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`)
+        if (ctx.status < 400) {
+          this.log.info(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`)
+        } else {
+          this.log.error(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`)
+        }
       } catch (err) {
-        this.log.info(`  xxx ${ctx.method} ${ctx.originalUrl} ${err.status || 500} ${time(start)}`)
+        this.log.error(`  xxx ${ctx.method} ${ctx.originalUrl} ${err.status || 500} ${time(start)}`)
         throw err;
       }
     }

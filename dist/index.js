@@ -49,6 +49,7 @@ const validators = __importStar(require("./validators"));
 exports.validators = validators;
 const koa_1 = __importDefault(require("koa"));
 exports.Application = koa_1.default;
+;
 class KoaMicro extends koa_1.default {
     constructor() {
         super();
@@ -61,28 +62,67 @@ class KoaMicro extends koa_1.default {
         this.static = (filepath) => {
             this.use(serve(filepath));
         };
-        this.health = (path, option) => {
-            path = path || '/health';
-            const router = new router_1.default({
-                prefix: path
-            });
-            router.get('/', (ctx) => {
+        this.health = (options) => {
+            const router = new router_1.default();
+            if (!options) {
+                options = {};
+            }
+            if (!options.livePath) {
+                options.livePath = '/live';
+            }
+            if (!options.readyPath) {
+                options.readyPath = '/ready';
+            }
+            router.get(options.livePath, (ctx) => {
                 const status = {};
                 if (process.env.APP_NAME) {
                     status.name = process.env.APP_NAME;
                 }
-                if (option && option.name) {
-                    status.name = option.name;
+                if (options && options.name) {
+                    status.name = options.name;
                 }
                 if (process.env.APP_VERSION) {
                     status.version = process.env.APP_VERSION;
                 }
-                if (option && option.version) {
-                    status.version = option.version;
+                if (options && options.version) {
+                    status.version = options.version;
                 }
-                status.status = 'ok';
+                status.check = 'liveness';
+                status.status = 'up';
                 ctx.body = status;
             });
+            router.get(options.readyPath, (ctx) => __awaiter(this, void 0, void 0, function* () {
+                const status = {};
+                if (process.env.APP_NAME) {
+                    status.name = process.env.APP_NAME;
+                }
+                if (options && options.name) {
+                    status.name = options.name;
+                }
+                if (process.env.APP_VERSION) {
+                    status.version = process.env.APP_VERSION;
+                }
+                if (options && options.version) {
+                    status.version = options.version;
+                }
+                status.check = 'readyness';
+                status.status = 'not ready';
+                ctx.status = 400;
+                if (options && options.isReady) {
+                    let res = false;
+                    try {
+                        res = yield options.isReady();
+                    }
+                    catch (e) {
+                        res = false;
+                    }
+                    if (res) {
+                        status.status = 'ready';
+                        ctx.status = 200;
+                    }
+                }
+                ctx.body = status;
+            }));
             this
                 .use(router.routes())
                 .use(router.allowedMethods());
@@ -167,10 +207,15 @@ class KoaMicro extends koa_1.default {
             try {
                 this.log.info(`  <-- ${ctx.method} ${ctx.originalUrl}`);
                 yield next();
-                this.log.info(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
+                if (ctx.status < 400) {
+                    this.log.info(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
+                }
+                else {
+                    this.log.error(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
+                }
             }
             catch (err) {
-                this.log.info(`  xxx ${ctx.method} ${ctx.originalUrl} ${err.status || 500} ${time(start)}`);
+                this.log.error(`  xxx ${ctx.method} ${ctx.originalUrl} ${err.status || 500} ${time(start)}`);
                 throw err;
             }
         });

@@ -6,8 +6,35 @@ import * as path from 'path';
 process.env.APP_NAME = 'example-service';
 process.env.VERSION = '1.0.0';
 
+// initialize logger
+app.logger({
+  level: LogLevels.all  // highest level, log all
+});
+
+// ------ Health API ------
+let isReady = false;
+
+setTimeout(() => {
+  isReady = true;
+}, 5000);
+
+function readyPromise(): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    if (isReady) {
+      resolve(true);
+    } else {
+      reject(false)
+    }
+  })
+};
+
 // enable helpth endpoint (defaults to /health)
-app.health();
+app.health({
+  livePath: '/liveness',
+  readyPath: '/readyness',
+  isReady: readyPromise,
+});
+// --------------- END HEALTH
 
 // enable helmet (optional)
 app.helmet();
@@ -30,11 +57,6 @@ router.get('/route', (ctx: Application.Context, next: Application.Next) => {
 
 router.get('/route2', (ctx: Application.Context, next: Application.Next) => {
   ctx.body = 'This is static route 2';
-});
-
-// initialize logger
-app.logger({
-  level: LogLevels.all  // highest level, log all
 });
 
 app.useRouter(router);

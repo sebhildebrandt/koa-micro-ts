@@ -142,8 +142,9 @@ Standard Routes
 - `http://localhost:3000/route`
 - `http://localhost:3000/route2`
 
-Health Route
-- `http://localhost:3000/health`
+Health Routes
+- `http://localhost:3000/liveness`
+- `http://localhost:3000/readyness`
 
 Routes from autoRouter
 - `http://localhost:3000/api/v1/`

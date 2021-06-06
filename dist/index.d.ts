@@ -5,13 +5,20 @@ import { KoaErrors } from './error.interface';
 import { Logger, LogLevels, iLogOptions } from './log';
 import * as validators from './validators';
 import Application from 'koa';
+interface HealthOptions {
+    livePath?: string;
+    readyPath?: string;
+    isReady?: any;
+    name?: string;
+    version?: string;
+}
 declare class KoaMicro extends Application {
     private server;
     constructor();
     helmet: () => void;
     gracefulShutdown: (options?: {}) => void;
     static: (filepath: string) => void;
-    health: (path?: string | undefined, option?: any) => void;
+    health: (options?: HealthOptions | undefined) => void;
     newRouter: (prefix?: string | undefined) => Router<any, {}>;
     useRouter: (router: Router) => void;
     cors: (options?: any) => void;
