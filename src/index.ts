@@ -40,6 +40,9 @@ class KoaMicro extends Application {
     super();
     this.development = (process.env && process.env.DEVELOPMENT) ? true : false;
   }
+
+  ready = false;
+
   helmet = () => {
     this.use(helmet());
   }
@@ -89,6 +92,9 @@ class KoaMicro extends Application {
           status.status = 'ready';
           ctx.status = 200;
         }
+      } else if (this.ready) {
+        status.status = 'ready';
+        ctx.status = 200;
       }
       ctx.body = status;
     });

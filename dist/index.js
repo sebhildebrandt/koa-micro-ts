@@ -53,6 +53,7 @@ exports.Application = koa_1.default;
 class KoaMicro extends koa_1.default {
     constructor() {
         super();
+        this.ready = false;
         this.helmet = () => {
             this.use(koa_helmet_1.default());
         };
@@ -120,6 +121,10 @@ class KoaMicro extends koa_1.default {
                         status.status = 'ready';
                         ctx.status = 200;
                     }
+                }
+                else if (this.ready) {
+                    status.status = 'ready';
+                    ctx.status = 200;
                 }
                 ctx.body = status;
             }));

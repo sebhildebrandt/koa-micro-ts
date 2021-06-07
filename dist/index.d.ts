@@ -15,6 +15,7 @@ interface HealthOptions {
 declare class KoaMicro extends Application {
     private server;
     constructor();
+    ready: boolean;
     helmet: () => void;
     gracefulShutdown: (options?: {}) => void;
     static: (filepath: string) => void;

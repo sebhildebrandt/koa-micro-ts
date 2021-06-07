@@ -11,7 +11,9 @@ app.logger({
   level: LogLevels.all  // highest level, log all
 });
 
-// ------ Health API ------
+// ------ Health API -------
+// options example with own readyness function
+
 let isReady = false;
 
 setTimeout(() => {
@@ -34,6 +36,20 @@ app.health({
   readyPath: '/readyness',
   isReady: readyPromise,
 });
+
+// readyness alternative:
+// ----------------------
+// you could also just set app.ready to true as soon as your appo is ready:
+//
+// setTimeout(() => {
+//   app.ready = true;
+// }, 5000);
+
+// app.health({
+//   livePath: '/liveness',
+//   readyPath: '/readyness'
+// });
+
 // --------------- END HEALTH
 
 // enable helmet (optional)
