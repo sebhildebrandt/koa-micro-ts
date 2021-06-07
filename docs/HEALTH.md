@@ -14,13 +14,15 @@ This Endpoint will return the following JSON result object:
 {
   name: 'APP_NAME',
   version: 'APP_VERSION',
-  check: 'liveness'            // or 'readyness' when calling the readyness health endpoint
-  status: 'up'                 // 'up' for liveness or 'ready' for readyness health endpoint
+  check: 'liveness',           // or 'readyness' when calling the readyness health endpoint
+  status: 'up',                // 'up' for liveness or 'ready' for readyness health endpoint
+  resultcode: 200
 }
 ```
 
 `APP_NAME` and `APP_VERSION` can be set as environment variables with the according name or you can pass it to the options object (see Options):
 
+If the app is NOT yet `ready`, then the readayness endpoint will return a `503` status (and sents the above JSON object with `resultcode: 503`). See more
 
 This will create two endpoints: `/live` and `/ready` (for liveness and readyness checks)
 ## Options
@@ -33,26 +35,26 @@ If you want to specify different mountpoints, just pass it as an option paramete
 
 ```
 app.health({
-  livePath: '/liveness',
-  readyPath: '/readyness'
+  livePath: '/api/health/live',
+  readyPath: '/api/health/ready'
 })
 
 ```
 
-### Other Options
+### Readyness Endpoint
 
 To be able to determine, if your app is ready, you have two different options:
 
 1. you can set the internal `app.ready` variable to true:
 
 ```
-app.health()M
+...
+app.health();      // initialize health endpoints
 
 await ... initialization ...
 
-// after finishing initialization:
-
-app.ready = true;
+app.ready = true;  // after finishing initialization
+...
 ```
 
 2. or you can pass your own function promise to the options which should then return `true` or `false`:

@@ -90,6 +90,7 @@ class KoaMicro extends koa_1.default {
                 }
                 status.check = 'liveness';
                 status.status = 'up';
+                status.resultcode = 200;
                 ctx.body = status;
             });
             router.get(options.readyPath, (ctx) => __awaiter(this, void 0, void 0, function* () {
@@ -108,7 +109,7 @@ class KoaMicro extends koa_1.default {
                 }
                 status.check = 'readyness';
                 status.status = 'not ready';
-                ctx.status = 400;
+                ctx.status = 503;
                 if (options && options.isReady) {
                     let res = false;
                     try {
@@ -126,6 +127,7 @@ class KoaMicro extends koa_1.default {
                     status.status = 'ready';
                     ctx.status = 200;
                 }
+                status.resultcode = ctx.status;
                 ctx.body = status;
             }));
             this

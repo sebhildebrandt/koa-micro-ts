@@ -69,6 +69,7 @@ class KoaMicro extends Application {
       if (options && options.version) { status.version = options.version; }
       status.check = 'liveness';
       status.status = 'up';
+      status.resultcode = 200;
       ctx.body = status;
     });
 
@@ -80,7 +81,7 @@ class KoaMicro extends Application {
       if (options && options.version) { status.version = options.version; }
       status.check = 'readyness';
       status.status = 'not ready';
-      ctx.status = 400;
+      ctx.status = 503; // service unavailable
       if (options && options.isReady) {
         let res = false;
         try {
@@ -96,6 +97,7 @@ class KoaMicro extends Application {
         status.status = 'ready';
         ctx.status = 200;
       }
+      status.resultcode = ctx.status;
       ctx.body = status;
     });
 
