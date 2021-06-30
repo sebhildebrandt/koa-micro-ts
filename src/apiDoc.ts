@@ -3,12 +3,8 @@ import fs from 'fs';
 
 let html = '';
 function mergeDeep(target: any, source: any): any {
-  console.log(target);
-  console.log(source);
-  console.log('-------------------------');
   for (let key in source) {
     if (target.hasOwnProperty(key)) {
-      console.log(key)
       target[key] = [...target[key], ...source[key]];
     } else {
       target[key] = source[key];

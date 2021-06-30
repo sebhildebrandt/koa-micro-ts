@@ -8,12 +8,8 @@ const os_1 = require("os");
 const fs_1 = __importDefault(require("fs"));
 let html = '';
 function mergeDeep(target, source) {
-    console.log(target);
-    console.log(source);
-    console.log('-------------------------');
     for (let key in source) {
         if (target.hasOwnProperty(key)) {
-            console.log(key);
             target[key] = [...target[key], ...source[key]];
         }
         else {
