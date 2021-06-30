@@ -47,7 +47,7 @@ function autoRoute(app, routepath, mountpoint, auth) {
             const fileName = path_1.default.join(root, relfile);
             if (app.apiDoc) {
                 const doc = apiDoc_1.parseFileApiDoc(fileName, auth) || {};
-                docObj = Object.assign(Object.assign({}, docObj), doc);
+                docObj = apiDoc_1.mergeDeep(docObj, doc);
             }
             const obj = require(fileName);
             let method;

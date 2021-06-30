@@ -26,7 +26,7 @@ import path from 'path';
 import Router from '@koa/router';
 import jwt from './jwt';
 import { Logger, LogLevels, iLogOptions } from './log';
-import { parseFileApiDoc } from './apiDoc';
+import { parseFileApiDoc, mergeDeep } from './apiDoc';
 import fs from 'fs';
 
 
@@ -87,7 +87,7 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
 
       if (app.apiDoc) {
         const doc = parseFileApiDoc(fileName, auth) || {};
-        docObj = { ...docObj, ...doc }
+        docObj = mergeDeep(docObj, doc);
       }
 
       const obj = require(fileName);
