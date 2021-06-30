@@ -1,3 +1,4 @@
+declare function mergeDeep(target: any, ...sources: any): any;
 declare function parseFileApiDoc(fileName: string, secure: boolean): any;
 declare function healthDocObj(healthPath: string, livePath: string): {
     Health: {
@@ -13,4 +14,4 @@ declare function healthDocObj(healthPath: string, livePath: string): {
     }[];
 };
 declare function createHtml(apiDocObj: any): string;
-export { parseFileApiDoc, healthDocObj, createHtml };
+export { parseFileApiDoc, healthDocObj, mergeDeep, createHtml };

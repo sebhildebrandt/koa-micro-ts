@@ -138,7 +138,7 @@ class KoaMicro extends koa_1.default {
                 .use(router.allowedMethods());
             if (this.apiDoc) {
                 const healthDoc = apiDoc_1.healthDocObj(options.readyPath, options.livePath);
-                this.apiDocObj = Object.assign(Object.assign({}, this.apiDocObj), healthDoc);
+                this.apiDocObj = apiDoc_1.mergeDeep(this.apiDocObj, healthDoc);
             }
         };
         this.newRouter = (prefix) => {

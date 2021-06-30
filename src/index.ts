@@ -28,7 +28,7 @@ import jwt from './jwt';
 import { autoRoute } from './autoRoute';
 import * as validators from './validators';
 import Application from 'koa';
-import { healthDocObj, createHtml } from './apiDoc';
+import { healthDocObj, createHtml, mergeDeep } from './apiDoc';
 import * as path from 'path';
 
 
@@ -111,7 +111,8 @@ class KoaMicro extends Application {
       .use(router.allowedMethods());
     if (this.apiDoc) {
       const healthDoc = healthDocObj(options.readyPath, options.livePath)
-      this.apiDocObj = { ...this.apiDocObj, ...healthDoc }
+      // this.apiDocObj = { ...this.apiDocObj, ...healthDoc }
+      this.apiDocObj = mergeDeep(this.apiDocObj, healthDoc);
     }
   }
 

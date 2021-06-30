@@ -4,6 +4,62 @@ import fs from 'fs';
 let html = '';
 const apiDoc: any = {};
 
+function isObject(item: any) {
+  return (item && typeof item === 'object' && !Array.isArray(item));
+}
+
+function mergeDeep(target: any, ...sources: any): any {
+  if (!sources.length) return target;
+  const source = sources.shift();
+
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) Object.assign(target, { [key]: {} });
+        mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(target, { [key]: source[key] });
+      }
+    }
+  }
+
+  return mergeDeep(target, ...sources);
+}
+
+function orderObj(unordered: any) {
+  return Object.keys(unordered).sort().reduce(
+    (obj: any, key: string) => {
+      obj[key] = unordered[key];
+      return obj;
+    },
+    {}
+  );
+}
+
+function compareApi(a: any, b: any) {
+  if (a.path < b.path) {
+    return -1;
+  }
+  if (a.path > b.path) {
+    return 1;
+  }
+  if (a.method < b.method) {
+    return -1;
+  }
+  if (a.method > b.method) {
+    return 1;
+  }
+  return 0;
+}
+
+
+function orderApiObj(apiObj: any) {
+  for (let key in apiObj) {
+    apiObj[key] = apiObj[key].sort(compareApi)
+  }
+  return apiObj;
+}
+
 function parseParamValue(value: string, secure: boolean): any {
   let param: any = {};
   let parts = value.split(/(\s+)/).filter(function (e) { return e.trim().length > 0; });
@@ -67,9 +123,8 @@ function parseKeyValue(keyValues: string[], secure: boolean): any {
         } else if (key === 'apiBody') {
           if (!res.apiBody || !res.apiBody.length) {
             res.apiBody = [];
-            res.apiBody.push(parseParamValue(value, secure));
-          } else {
           }
+          res.apiBody.push(parseParamValue(value, secure));
         } else if (key === 'apiSuccess') {
           if (!res.apiSuccess || !res.apiSuccess.length) {
             res.apiSuccess = [];
@@ -85,7 +140,6 @@ function parseKeyValue(keyValues: string[], secure: boolean): any {
 }
 
 function parseFileApiDoc(fileName: string, secure: boolean) {
-  console.log(fileName);
   const fileString = fs.readFileSync(fileName).toString();
 
   const parts = fileString.split('/**' + EOL);
@@ -98,7 +152,6 @@ function parseFileApiDoc(fileName: string, secure: boolean) {
     const apiGroup = parsedKeyValues.apiGroup || '-';
     const api = parsedKeyValues.api || '';
     const apiObj: any = {};
-    console.log(api);
     if (api) {
       const apiParts = api.trim().split(' ');
       // method
@@ -137,14 +190,11 @@ function parseFileApiDoc(fileName: string, secure: boolean) {
       // apiErrorExample
       apiObj.errorExample = parsedKeyValues.apiErrorExample ? parsedKeyValues.apiErrorExample : '';
 
-      console.log(JSON.stringify(apiDoc, null, 2));
       if (!(apiGroup in apiDoc)) {
         apiDoc[apiGroup] = [];
-        console.log('NO KEY #####################: ' + apiGroup)
       }
       // console.log(apiObj);
       apiDoc[apiGroup].push(apiObj);
-      console.log(JSON.stringify(apiDoc, null, 2));
     }
   })
 
@@ -209,6 +259,7 @@ function replaceMacro(text: string, vars: any) {
 
 function createHtml(apiDocObj: any) {
   let html = '';
+  apiDocObj = orderApiObj(apiDocObj);
 
   const htmlBody = `
 <!DOCTYPE html>
@@ -220,8 +271,14 @@ function createHtml(apiDocObj: any) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
+    html {
+      box-sizing: border-box;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
     body {
-      font-family: Calibri, "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: Helvetica, Calibri, "Myriad Pro", Myriad, "Liberation Sans", "Nimbus Sans L", "Helvetica Neue", Tahoma, Geneva, Arial, sans-serif;
       font-weight: 300;
     }
 
@@ -293,7 +350,7 @@ function createHtml(apiDocObj: any) {
 
     .method {
       margin: 2px 4px;
-      padding: 9px 14px 0px 14px;
+      padding: 7px 16px 0px 16px;
       width: 90px;
       text-align: center;
       font-weight: bold;
@@ -671,7 +728,7 @@ function createHtml(apiDocObj: any) {
   }
 
   html = replaceMacro(htmlBody, { GROUPS: groups });
-  console.log(JSON.stringify(apiDocObj, null, 2));
+  // console.log(JSON.stringify(apiDocObj, null, 2));
   // html = htmlBody;
 
   return html;
@@ -680,5 +737,6 @@ function createHtml(apiDocObj: any) {
 export {
   parseFileApiDoc,
   healthDocObj,
+  mergeDeep,
   createHtml
 }
