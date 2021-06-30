@@ -26,7 +26,9 @@ import path from 'path';
 import Router from '@koa/router';
 import jwt from './jwt';
 import { Logger, LogLevels, iLogOptions } from './log';
+import { parseFileApiDoc } from './apiDoc';
 import fs from 'fs';
+
 
 const routerSuffixJs = '.route.js';
 const routerSuffixTs = '.route.ts';
@@ -63,6 +65,7 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
     prefix: mountpoint
   });
   const files: any = [];
+  let docObj: any = app.apiDocObj;
   // const root = path.dirname(require.main.filename);
   // const routepath = path.join(root, rpath);
 
@@ -80,7 +83,14 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
 
       const relfile = file.substring(root.length, 1000);
 
-      const obj = require(path.join(root, relfile));
+      const fileName = path.join(root, relfile);
+
+      if (app.apiDoc) {
+        const doc = parseFileApiDoc(fileName, auth) || {};
+        docObj = { ...docObj, ...doc }
+      }
+
+      const obj = require(fileName);
       let method: string;
       let url: string;
       let admin: boolean;
@@ -202,5 +212,7 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
   if (app && app.log && app.log.level && app.log.level === LogLevels.all) {
     app.log.trace('', false, false);
   }
-
+  if (app.apiDoc) {
+    app.apiDocObj = docObj;
+  }
 };

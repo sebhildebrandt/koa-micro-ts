@@ -49,6 +49,7 @@ const validators = __importStar(require("./validators"));
 exports.validators = validators;
 const koa_1 = __importDefault(require("koa"));
 exports.Application = koa_1.default;
+const apiDoc_1 = require("./apiDoc");
 ;
 class KoaMicro extends koa_1.default {
     constructor() {
@@ -63,6 +64,8 @@ class KoaMicro extends koa_1.default {
         this.static = (filepath) => {
             this.use(serve(filepath));
         };
+        this.apiDoc = '';
+        this.apiDocObj = {};
         this.health = (options) => {
             const router = new router_1.default();
             if (!options) {
@@ -133,6 +136,10 @@ class KoaMicro extends koa_1.default {
             this
                 .use(router.routes())
                 .use(router.allowedMethods());
+            if (this.apiDoc) {
+                const healthDoc = apiDoc_1.healthDocObj(options.readyPath, options.livePath);
+                this.apiDocObj = Object.assign(Object.assign({}, this.apiDocObj), healthDoc);
+            }
         };
         this.newRouter = (prefix) => {
             return new router_1.default({
@@ -152,6 +159,16 @@ class KoaMicro extends koa_1.default {
             return jwt_1.default;
         };
         this.start = (port) => {
+            if (this.apiDoc) {
+                const router = new router_1.default();
+                router.get(this.apiDoc, (ctx) => __awaiter(this, void 0, void 0, function* () {
+                    ctx.status = 200;
+                    ctx.body = apiDoc_1.createHtml(this.apiDocObj);
+                }));
+                this
+                    .use(router.routes())
+                    .use(router.allowedMethods());
+            }
             this.server = this.listen(port);
         };
         this.log = new log_1.Logger({

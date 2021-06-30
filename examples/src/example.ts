@@ -77,6 +77,9 @@ router.get('/route2', (ctx: Application.Context, next: Application.Next) => {
 
 app.useRouter(router);
 
+// turn on API DOC creation
+app.apiDoc = '/api/doc';
+
 // using autoRoute: use all routes in path /routes and mount it to /api/v1
 app.autoRoute(path.join(__dirname, '/routes'), '/api/v1');
 

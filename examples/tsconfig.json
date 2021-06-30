@@ -7,7 +7,7 @@
     "strict": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "removeComments": true,
+    "removeComments": false,
     "baseUrl": ".",
     "paths": {
       "*": [

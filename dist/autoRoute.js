@@ -8,6 +8,7 @@ const path_1 = __importDefault(require("path"));
 const router_1 = __importDefault(require("@koa/router"));
 const jwt_1 = __importDefault(require("./jwt"));
 const log_1 = require("./log");
+const apiDoc_1 = require("./apiDoc");
 const fs_1 = __importDefault(require("fs"));
 const routerSuffixJs = '.route.js';
 const routerSuffixTs = '.route.ts';
@@ -34,6 +35,7 @@ function autoRoute(app, routepath, mountpoint, auth) {
         prefix: mountpoint
     });
     const files = [];
+    let docObj = app.apiDocObj;
     if (app && app.log && app.log.level && app.log.level === log_1.LogLevels.all) {
         app.log.trace('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n', false, false);
     }
@@ -42,7 +44,12 @@ function autoRoute(app, routepath, mountpoint, auth) {
         const root = routepath;
         if (file.endsWith(routerSuffixJs) || file.endsWith(routerSuffixTs)) {
             const relfile = file.substring(root.length, 1000);
-            const obj = require(path_1.default.join(root, relfile));
+            const fileName = path_1.default.join(root, relfile);
+            if (app.apiDoc) {
+                const doc = apiDoc_1.parseFileApiDoc(fileName, auth) || {};
+                docObj = Object.assign(Object.assign({}, docObj), doc);
+            }
+            const obj = require(fileName);
             let method;
             let url;
             let admin;
@@ -156,6 +163,9 @@ function autoRoute(app, routepath, mountpoint, auth) {
     app.use(routes.routes()).use(routes.allowedMethods());
     if (app && app.log && app.log.level && app.log.level === log_1.LogLevels.all) {
         app.log.trace('', false, false);
+    }
+    if (app.apiDoc) {
+        app.apiDocObj = docObj;
     }
 }
 exports.autoRoute = autoRoute;

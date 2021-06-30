@@ -28,6 +28,7 @@ import jwt from './jwt';
 import { autoRoute } from './autoRoute';
 import * as validators from './validators';
 import Application from 'koa';
+import { healthDocObj, createHtml } from './apiDoc';
 import * as path from 'path';
 
 
@@ -54,6 +55,10 @@ class KoaMicro extends Application {
   static = (filepath: string) => {
     this.use(serve(filepath));
   }
+
+  apiDoc = '';
+
+  apiDocObj: any = {}
 
   health = (options?: HealthOptions) => {
     const router = new Router();
@@ -104,6 +109,10 @@ class KoaMicro extends Application {
     this
       .use(router.routes())
       .use(router.allowedMethods());
+    if (this.apiDoc) {
+      const healthDoc = healthDocObj(options.readyPath, options.livePath)
+      this.apiDocObj = { ...this.apiDocObj, ...healthDoc }
+    }
   }
 
   newRouter = (prefix?: string) => {
@@ -127,6 +136,20 @@ class KoaMicro extends Application {
   }
 
   start = (port: number) => {
+    // if APIDox is enabled, add route
+    if (this.apiDoc) {
+      const router = new Router();
+      router.get(this.apiDoc, async (ctx) => {
+        ctx.status = 200;
+        // ctx.body = JSON.stringify(this.apiDocObj, null, 2);
+        ctx.body = createHtml(this.apiDocObj);
+      })
+      this
+        .use(router.routes())
+        .use(router.allowedMethods());
+    }
+
+    // start server
     this.server = this.listen(port)
   }
 

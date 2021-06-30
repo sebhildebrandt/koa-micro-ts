@@ -19,6 +19,8 @@ declare class KoaMicro extends Application {
     helmet: () => void;
     gracefulShutdown: (options?: {}) => void;
     static: (filepath: string) => void;
+    apiDoc: string;
+    apiDocObj: any;
     health: (options?: HealthOptions | undefined) => void;
     newRouter: (prefix?: string | undefined) => Router<any, {}>;
     useRouter: (router: Router) => void;
