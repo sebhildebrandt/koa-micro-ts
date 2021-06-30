@@ -2,28 +2,19 @@ import { EOL } from 'os';
 import fs from 'fs';
 
 let html = '';
-const apiDoc: any = {};
-
-function isObject(item: any) {
-  return (item && typeof item === 'object' && !Array.isArray(item));
-}
-
-function mergeDeep(target: any, ...sources: any): any {
-  if (!sources.length) return target;
-  const source = sources.shift();
-
-  if (isObject(target) && isObject(source)) {
-    for (const key in source) {
-      if (isObject(source[key])) {
-        if (!target[key]) Object.assign(target, { [key]: {} });
-        mergeDeep(target[key], source[key]);
-      } else {
-        Object.assign(target, { [key]: source[key] });
-      }
+function mergeDeep(target: any, source: any): any {
+  console.log(target);
+  console.log(source);
+  console.log('-------------------------');
+  for (let key in source) {
+    if (target.hasOwnProperty(key)) {
+      console.log(key)
+      target[key] = [...target[key], ...source[key]];
+    } else {
+      target[key] = source[key];
     }
   }
-
-  return mergeDeep(target, ...sources);
+  return target;
 }
 
 function orderObj(unordered: any) {
@@ -140,6 +131,8 @@ function parseKeyValue(keyValues: string[], secure: boolean): any {
 }
 
 function parseFileApiDoc(fileName: string, secure: boolean) {
+  const apiDoc: any = {};
+
   const fileString = fs.readFileSync(fileName).toString();
 
   const parts = fileString.split('/**' + EOL);

@@ -7,27 +7,20 @@ exports.createHtml = exports.mergeDeep = exports.healthDocObj = exports.parseFil
 const os_1 = require("os");
 const fs_1 = __importDefault(require("fs"));
 let html = '';
-const apiDoc = {};
-function isObject(item) {
-    return (item && typeof item === 'object' && !Array.isArray(item));
-}
-function mergeDeep(target, ...sources) {
-    if (!sources.length)
-        return target;
-    const source = sources.shift();
-    if (isObject(target) && isObject(source)) {
-        for (const key in source) {
-            if (isObject(source[key])) {
-                if (!target[key])
-                    Object.assign(target, { [key]: {} });
-                mergeDeep(target[key], source[key]);
-            }
-            else {
-                Object.assign(target, { [key]: source[key] });
-            }
+function mergeDeep(target, source) {
+    console.log(target);
+    console.log(source);
+    console.log('-------------------------');
+    for (let key in source) {
+        if (target.hasOwnProperty(key)) {
+            console.log(key);
+            target[key] = [...target[key], ...source[key]];
+        }
+        else {
+            target[key] = source[key];
         }
     }
-    return mergeDeep(target, ...sources);
+    return target;
 }
 exports.mergeDeep = mergeDeep;
 function orderObj(unordered) {
@@ -138,6 +131,7 @@ function parseKeyValue(keyValues, secure) {
     return res;
 }
 function parseFileApiDoc(fileName, secure) {
+    const apiDoc = {};
     const fileString = fs_1.default.readFileSync(fileName).toString();
     const parts = fileString.split('/**' + os_1.EOL);
     parts.forEach((part) => {

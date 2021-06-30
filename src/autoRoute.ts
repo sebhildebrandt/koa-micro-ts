@@ -87,6 +87,8 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
 
       if (app.apiDoc) {
         const doc = parseFileApiDoc(fileName, auth) || {};
+        console.log('#########################')
+        console.log(fileName)
         docObj = mergeDeep(docObj, doc);
       }
 

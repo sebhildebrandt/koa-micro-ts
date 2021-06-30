@@ -1,4 +1,4 @@
-declare function mergeDeep(target: any, ...sources: any): any;
+declare function mergeDeep(target: any, source: any): any;
 declare function parseFileApiDoc(fileName: string, secure: boolean): any;
 declare function healthDocObj(healthPath: string, livePath: string): {
     Health: {
