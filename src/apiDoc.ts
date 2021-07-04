@@ -167,6 +167,9 @@ function parseFileApiDoc(fileName: string, secure: boolean) {
       // apiBody
       apiObj.bodyParams = parsedKeyValues.apiBody ? parsedKeyValues.apiBody : [];
 
+      // apiParamsExample
+      apiObj.paramsExample = parsedKeyValues.apiParamsExample ? parsedKeyValues.apiParamsExample : [];
+
       // apiSuccess
       apiObj.success = parsedKeyValues.apiSuccess ? parsedKeyValues.apiSuccess : [];
 
@@ -448,7 +451,8 @@ function createHtml(apiDocObj: any) {
       text-align: left;
     }
 
-    .params {
+    .params,
+    .paramsExample {
       background-color: rgb(240, 248, 255);
       padding: 0.3rem 0.5rem;
       border-bottom: 8px solid #fff;
@@ -564,6 +568,7 @@ function createHtml(apiDocObj: any) {
         </label>
         <div class="tab-content">
           {{PARAMS}}
+          {{PARAMSEXAMPLE}}
           {{SUCCESS}}
           {{SUCCESSEXAMPLE}}
           {{ERROR}}
@@ -581,6 +586,19 @@ function createHtml(apiDocObj: any) {
                 <td class="param-desc">
                   <pre>
 {{SUCCESSEXAMPLE}}</pre>
+                </td>
+              </tr>
+            </table>
+          </div>
+`;
+
+  const htmlParamsExample = `          <div class="paramsExample">
+            <table width="100%">
+              <tr>
+                <td class="param-name">Example</td>
+                <td class="param-desc">
+                  <pre>
+{{PARAMSEXAMPLE}}</pre>
                 </td>
               </tr>
             </table>
@@ -659,7 +677,7 @@ function createHtml(apiDocObj: any) {
               DESCRIPTION: description
             })
           });
-          params = replaceMacro(htmlParams, { PARAMTYPE: 'Query Parameters', PARAMS: queryParams });
+          params = replaceMacro(htmlParams, { PARAMTYPE: endpoint.method.toLowerCase() === 'get' ? 'Query Parameters' : 'Body Parameters', PARAMS: queryParams });
         }
 
         // bodyparams
@@ -701,6 +719,7 @@ function createHtml(apiDocObj: any) {
           DESCRIPTION: endpoint.description ? endpoint.description : '',
           LOCK: endpoint.secure ? htmlLock : '',
           PARAMS: params,
+          PARAMSEXAMPLE: endpoint.paramsExample ? replaceMacro(htmlParamsExample, { PARAMSEXAMPLE: endpoint.paramsExample }) : '',
           SUCCESS: success,
           SUCCESSEXAMPLE: endpoint.successExample ? replaceMacro(htmlSuccessExample, { SUCCESSEXAMPLE: endpoint.successExample }) : '',
           ERROR: endpoint.error ? replaceMacro(htmlError, { ERROR: endpoint.error }) : '',

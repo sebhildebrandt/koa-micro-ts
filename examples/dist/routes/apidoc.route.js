@@ -60,5 +60,11 @@
  * @apiBody {String} [address[street]] Optional street and number.
  * @apiBody {String} [address[zip]]    Optional zip code.
  * @apiBody {String} [address[city]]   Optional city.
+ *
+ * @apiParamsExample Params Example:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "UserNotFound"
+ *     }
  */
 //# sourceMappingURL=apidoc.route.js.map
