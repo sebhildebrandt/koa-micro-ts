@@ -24,10 +24,12 @@ function orderObj(unordered: any) {
 }
 
 function compareApi(a: any, b: any) {
-  if (a.path < b.path) {
+  const aPath = a.path.replace(/{/g, '-');
+  const bPath = b.path.replace(/{/g, '-');
+  if (aPath < bPath) {
     return -1;
   }
-  if (a.path > b.path) {
+  if (aPath > bPath) {
     return 1;
   }
   if (a.method < b.method) {
@@ -42,7 +44,7 @@ function compareApi(a: any, b: any) {
 
 function orderApiObj(apiObj: any) {
   for (let key in apiObj) {
-    apiObj[key] = apiObj[key].sort(compareApi)
+    apiObj[key] = apiObj[key].sort(compareApi);
   }
   return apiObj;
 }
@@ -50,7 +52,7 @@ function orderApiObj(apiObj: any) {
 function parseParamValue(value: string, secure: boolean): any {
   let param: any = {};
   let parts = value.split(/(\s+)/).filter(function (e) { return e.trim().length > 0; });
-  let group = ''
+  let group = '';
   if (parts[0].indexOf('(') > -1 && parts[0].indexOf(')') > parts[0].indexOf('(')) { // group
     group = parts[0].replace(/.*\(|\).*/g, '');
     parts.shift();
@@ -86,7 +88,7 @@ function parseParamValue(value: string, secure: boolean): any {
       mandatory,
       default: paramDefault,
       description
-    }
+    };
   }
 
   return param;
@@ -99,8 +101,8 @@ function parseKeyValue(keyValues: string[], secure: boolean): any {
       let key: string;
       key = parts.length > 1 ? parts.shift() || '' : '';
       let value = parts.join(' ').replace(/\n \*\n/g, '\n').replace(/\n \*/g, '\n');
-      if (value.endsWith('\n *')) { value = value.substring(0, value.length - 4) }
-      if (value.endsWith('\n')) { value = value.substring(0, value.length - 1) }
+      if (value.endsWith('\n *')) { value = value.substring(0, value.length - 4); }
+      if (value.endsWith('\n')) { value = value.substring(0, value.length - 1); }
       if (key && value) {
         if (key === 'apiParam') {
           if (!res.apiParams || !res.apiParams.length) {
@@ -122,7 +124,7 @@ function parseKeyValue(keyValues: string[], secure: boolean): any {
         }
       }
     }
-  })
+  });
   return res;
 }
 
@@ -135,7 +137,7 @@ function parseFileApiDoc(fileName: string, secure: boolean) {
 
   parts.forEach((part: any) => {
     const keyValues = part.split(EOL + ' */' + EOL)[0].split(EOL + ' * @');
-    if (keyValues && keyValues[0] && keyValues[0].startsWith(' * @')) { keyValues[0] = keyValues[0].replace(' * @', '') };
+    if (keyValues && keyValues[0] && keyValues[0].startsWith(' * @')) { keyValues[0] = keyValues[0].replace(' * @', ''); };
     const parsedKeyValues = parseKeyValue(keyValues, secure);
 
     const apiGroup = parsedKeyValues.apiGroup || '-';
@@ -188,9 +190,9 @@ function parseFileApiDoc(fileName: string, secure: boolean) {
       // console.log(apiObj);
       apiDoc[apiGroup].push(apiObj);
     }
-  })
+  });
 
-  return apiDoc
+  return apiDoc;
 }
 
 function healthDocObj(healthPath: string, livePath: string) {
@@ -235,7 +237,7 @@ function healthDocObj(healthPath: string, livePath: string) {
           '     }'
       }
     ]
-  }
+  };
 }
 
 function replaceMacro(text: string, vars: any) {
@@ -675,7 +677,7 @@ function createHtml(apiDocObj: any) {
               NAME: queryParam.name ? queryParam.name : '',
               TYPE: queryParam.type ? queryParam.type : '',
               DESCRIPTION: description
-            })
+            });
           });
           params = replaceMacro(htmlParams, { PARAMTYPE: endpoint.method.toLowerCase() === 'get' ? 'Query Parameters' : 'Body Parameters', PARAMS: queryParams });
         }
@@ -691,7 +693,7 @@ function createHtml(apiDocObj: any) {
               NAME: bodyParam.name ? bodyParam.name : '',
               TYPE: bodyParam.type ? bodyParam.type : '',
               DESCRIPTION: description
-            })
+            });
           });
           params = replaceMacro(htmlParams, { PARAMTYPE: 'Body Parameters', PARAMS: bodyParams });
         }
@@ -705,7 +707,7 @@ function createHtml(apiDocObj: any) {
               NAME: successParam.name ? successParam.name : '',
               TYPE: successParam.type ? successParam.type : '',
               DESCRIPTION: successParam.description ? successParam.description : '',
-            })
+            });
           });
           success = replaceMacro(htmlSuccess, { SUCCESSPARAMS: successParams });
         }
@@ -724,7 +726,7 @@ function createHtml(apiDocObj: any) {
           SUCCESSEXAMPLE: endpoint.successExample ? replaceMacro(htmlSuccessExample, { SUCCESSEXAMPLE: endpoint.successExample }) : '',
           ERROR: endpoint.error ? replaceMacro(htmlError, { ERROR: endpoint.error }) : '',
           ERROREXAMPLE: endpoint.errorExample ? replaceMacro(htmlErrorExample, { ERROREXAMPLE: endpoint.errorExample }) : ''
-        }
+        };
         tabs = tabs + replaceMacro(htmlTab, macroVars);
 
         id++;
@@ -747,4 +749,4 @@ export {
   healthDocObj,
   mergeDeep,
   createHtml
-}
+};
