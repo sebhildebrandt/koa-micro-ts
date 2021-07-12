@@ -195,6 +195,7 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
               throw new Error('unrecognized route: ' + relfile + '.' + key);
           }
           if (method) {
+            url = url.replace(/\\/g, "/");;
             if (auth) {
               routes[method](url, jwt.middleware(), obj[key]);
             } else {

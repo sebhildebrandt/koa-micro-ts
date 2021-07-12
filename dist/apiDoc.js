@@ -26,10 +26,12 @@ function orderObj(unordered) {
     }, {});
 }
 function compareApi(a, b) {
-    if (a.path < b.path) {
+    const aPath = a.path.replace(/{/g, '-');
+    const bPath = b.path.replace(/{/g, '-');
+    if (aPath < bPath) {
         return -1;
     }
-    if (a.path > b.path) {
+    if (aPath > bPath) {
         return 1;
     }
     if (a.method < b.method) {

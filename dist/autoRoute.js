@@ -146,6 +146,8 @@ function autoRoute(app, routepath, mountpoint, auth) {
                             throw new Error('unrecognized route: ' + relfile + '.' + key);
                     }
                     if (method) {
+                        url = url.replace(/\\/g, "/");
+                        ;
                         if (auth) {
                             routes[method](url, jwt_1.default.middleware(), obj[key]);
                         }
