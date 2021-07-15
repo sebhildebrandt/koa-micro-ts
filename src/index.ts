@@ -18,9 +18,9 @@ import koaBody from 'koa-body';
 import gracefulShutdown, { Options } from 'http-graceful-shutdown';
 import helmet from 'koa-helmet';
 import Router from '@koa/router';
-import serve = require('koa-static')
-import { HttpStatusCode } from './httpStatus'
-import { KoaErrors } from './error.interface'
+import serve = require('koa-static');
+import { HttpStatusCode } from './httpStatus';
+import { KoaErrors } from './error.interface';
 import cors from './cors';
 import { Logger, LogLevels, iLogOptions } from './log';
 import parseArgs from './args';
@@ -32,7 +32,7 @@ import { healthDocObj, createHtml, mergeDeep } from './apiDoc';
 import * as path from 'path';
 
 
-interface HealthOptions { livePath?: string, readyPath?: string, isReady?: any, name?: string, version?: string };
+interface HealthOptions { livePath?: string, readyPath?: string, isReady?: any, name?: string, version?: string; };
 class KoaMicro extends Application {
 
   private server: any;
@@ -46,26 +46,26 @@ class KoaMicro extends Application {
 
   helmet = () => {
     this.use(helmet());
-  }
+  };
 
   gracefulShutdown = (options = {}) => {
     gracefulShutdown(app, options);
-  }
+  };
 
   static = (filepath: string) => {
     this.use(serve(filepath));
-  }
+  };
 
   apiDoc = '';
 
-  apiDocObj: any = {}
+  apiDocObj: any = {};
 
   health = (options?: HealthOptions) => {
     const router = new Router();
 
     if (!options) { options = {}; }
-    if (!options.livePath) { options.livePath = '/live' }
-    if (!options.readyPath) { options.readyPath = '/ready' }
+    if (!options.livePath) { options.livePath = '/live'; }
+    if (!options.readyPath) { options.readyPath = '/ready'; }
     router.get(options.livePath, (ctx) => {
       const status: any = {};
       if (process.env.APP_NAME) { status.name = process.env.APP_NAME; }
@@ -110,31 +110,31 @@ class KoaMicro extends Application {
       .use(router.routes())
       .use(router.allowedMethods());
     if (this.apiDoc) {
-      const healthDoc = healthDocObj(options.readyPath, options.livePath)
+      const healthDoc = healthDocObj(options.readyPath, options.livePath);
       // this.apiDocObj = { ...this.apiDocObj, ...healthDoc }
       this.apiDocObj = mergeDeep(this.apiDocObj, healthDoc);
     }
-  }
+  };
 
   newRouter = (prefix?: string) => {
     return new Router({
       prefix
     });
-  }
+  };
   useRouter = (router: Router) => {
     this
       .use(router.routes())
       .use(router.allowedMethods());
-  }
+  };
 
   cors = (options: any = {}) => {
     this.use(cors(options));
-  }
+  };
 
   jwt = (options: any = {}) => {
     jwt.init(options);
     return jwt;
-  }
+  };
 
   start = (port: number) => {
     // if APIDox is enabled, add route
@@ -144,15 +144,15 @@ class KoaMicro extends Application {
         ctx.status = 200;
         // ctx.body = JSON.stringify(this.apiDocObj, null, 2);
         ctx.body = createHtml(this.apiDocObj);
-      })
+      });
       this
         .use(router.routes())
         .use(router.allowedMethods());
     }
 
     // start server
-    this.server = this.listen(port)
-  }
+    this.server = this.listen(port);
+  };
 
   log = new Logger({
     level: LogLevels.none
@@ -162,12 +162,12 @@ class KoaMicro extends Application {
     mountpoint = mountpoint || '';
     auth = auth || false;
     autoRoute(this, routepath, mountpoint, auth);
-  }
+  };
 
   logger(options: iLogOptions) {
     this.log = new Logger(options);
     if (this.log.logLevel() >= LogLevels.info) {
-      app.use(this.logMiddleware())
+      app.use(this.logMiddleware());
     }
     return this.log;
   }
@@ -198,12 +198,12 @@ class KoaMicro extends Application {
         description
       });
     }
-  }
+  };
 
   private logMiddleware() {
     function time(start: number) {
       const delta = Date.now() - start;
-      return delta < 10000 ? delta + 'ms' : Math.round(delta / 1000) + 's'
+      return delta < 10000 ? delta + 'ms' : Math.round(delta / 1000) + 's';
     }
 
     function len(ctx: any) {
@@ -222,18 +222,18 @@ class KoaMicro extends Application {
 
 
       try {
-        this.log.info(`  <-- ${ctx.method} ${ctx.originalUrl}`)
+        this.log.info(`  <-- ${ctx.method} ${ctx.originalUrl}`);
         await next();
         if (ctx.status < 400) {
-          this.log.info(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`)
+          this.log.info(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
         } else {
-          this.log.error(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`)
+          this.log.error(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
         }
       } catch (err) {
-        this.log.error(`  xxx ${ctx.method} ${ctx.originalUrl} ${err.status || 500} ${time(start)}`)
+        this.log.error(`  xxx ${ctx.method} ${ctx.originalUrl} ${err.status || 500} ${time(start)}`);
         throw err;
       }
-    }
+    };
   }
 
   catchErrors() {
@@ -260,7 +260,7 @@ namespace KoaMicro {
 // }
 const app = new KoaMicro();
 
-app.use(koaBody());
+app.use(koaBody({ multipart: true }));
 
 export {
   app,
@@ -270,4 +270,4 @@ export {
   KoaMicro,
   HttpStatusCode,
   KoaErrors
-}
+};

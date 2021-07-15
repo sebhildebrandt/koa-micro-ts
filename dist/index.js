@@ -266,5 +266,5 @@ exports.KoaMicro = KoaMicro;
 exports.KoaMicro = KoaMicro;
 const app = new KoaMicro();
 exports.app = app;
-app.use(koa_body_1.default());
+app.use(koa_body_1.default({ multipart: true }));
 //# sourceMappingURL=index.js.map
