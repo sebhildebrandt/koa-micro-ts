@@ -71,7 +71,7 @@ process.env.APP_NAME = 'micro-service';
 process.env.VERSION = 'micro-version';
 
 // enable body parser (with desired options)
-app.bodyParser({ nultipart: true })
+app.bodyParser({ multipart: true })
 
 // enable helpth endpoint (defaults to /health)
 app.health();

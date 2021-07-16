@@ -1,6 +1,6 @@
 # API Doc
 
-`koa-micro-ts` comes with an integrated (optional) API doc feature. For all annoteted routes catched by `autoroute` (as well as `readyness` and `liveness` ) an API documentation wil be generated as soon as you enable it BEFORE any `app.autoroute`. You also provide the enpoint URL where the documentation should be reachable. Here a small example:
+`koa-micro-ts` comes with an integrated (optional) API doc feature. For all annoteted routes catched by `autoRoute` (as well as `readyness` and `liveness` health endpoints) an API documentation will be generated as soon as you enable it BEFORE any `app.autoRoute()`. Here you provide the enpoint URL where the documentation should be reachable. Here a small example:
 
 ## Set up API DOC
 ```
@@ -26,7 +26,7 @@ app.health({
 app.autoRoute(path.join(__dirname, 'controllers/api/v1'), '/api/v1');
 ```
 
-## Compiler Options
+## Configure Compiler Options
 
 As APIdoc relies on comments, be sure to preserve comments while transpiling your code from TS to JS. In your `tsconfig` you should disable `removeComments`
 
@@ -42,7 +42,7 @@ As APIdoc relies on comments, be sure to preserve comments while transpiling you
 
 ## API Doc Reference
 
-You can refer to the offiial API DOC reference ()[] to see how you need to provide your documentaten.
+You can refer to the offiial [API DOC reference](https://apidocjs.com) to see how you need to provide your documentaten.
 
 Here one small example:
 

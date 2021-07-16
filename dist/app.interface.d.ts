@@ -18,7 +18,3 @@ export interface BodyParserOptions {
     includeUnparsed?: boolean;
     formidable?: any;
 }
-export interface StartOptions {
-    port: number;
-    bodyParserOptions?: BodyParserOptions;
-}

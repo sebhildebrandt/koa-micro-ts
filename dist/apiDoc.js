@@ -178,7 +178,7 @@ function healthDocObj(healthPath, livePath) {
             {
                 method: 'get',
                 path: livePath,
-                description: 'liveness endpoint (server live)',
+                description: 'Liveness endpoint (server live)',
                 params: [],
                 bodyParams: [],
                 success: [],
@@ -195,7 +195,7 @@ function healthDocObj(healthPath, livePath) {
             {
                 method: 'get',
                 path: healthPath,
-                description: 'readiness endpoint (all ready)',
+                description: 'Readiness endpoint (all ready)',
                 params: [],
                 bodyParams: [],
                 success: [],

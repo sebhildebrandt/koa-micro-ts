@@ -158,7 +158,7 @@ class KoaMicro extends koa_1.default {
             jwt_1.default.init(options);
             return jwt_1.default;
         };
-        this.start = (options) => {
+        this.start = (port) => {
             if (this.apiDoc) {
                 const router = new router_1.default();
                 router.get(this.apiDoc, (ctx) => __awaiter(this, void 0, void 0, function* () {
@@ -169,8 +169,7 @@ class KoaMicro extends koa_1.default {
                     .use(router.routes())
                     .use(router.allowedMethods());
             }
-            app.use(koa_body_1.default(options.bodyParserOptions));
-            this.server = this.listen(options.port || 3000);
+            this.server = this.listen(port || 3000);
         };
         this.log = new log_1.Logger({
             level: log_1.LogLevels.none
@@ -253,6 +252,9 @@ class KoaMicro extends koa_1.default {
         if (this.args.development || this.args.dev) {
             this.development = true;
         }
+    }
+    bodyParser(bodyParserOptions) {
+        app.use(koa_body_1.default(bodyParserOptions));
     }
     close() {
         this.server.close();

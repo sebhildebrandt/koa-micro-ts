@@ -1,9 +1,9 @@
 # Body parser Options
 
-Before starting your `koa-micro-ts` microservice (and setting up your routes), you can provide several body parsing options, e.g.
+Before setting up your routes and starting your `koa-micro-ts` microservice, you can (and in case you need body parsing - need to) enable `app.bodyParser()`. Here you can provide several body parsing options, e.g.
 
 ```
-app.bodyparser({
+app.bodyParser({
   multipart: true,
   ...
 })
