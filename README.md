@@ -24,7 +24,7 @@ Microservice framework based on koa
 
 This package provides a minimalistic, simple to use, [koa][koa-url] based micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT-wrapper, AUTO ROUTES, LOGGER, VALIDATORS. Included middleware/libs:
 
-- body parser
+- body parser (now configurable since version 3) - detailed docs for all startup options [STARTUP.md](docs/STARTUP.md)
 - basic router
 - auto router - smart auto-generation of routes - detailed docs [AUTOROUTES.md](docs/AUTOROUTES.md)
 - CORS - detailed docs [CORS.md](docs/CORS.md)
@@ -37,8 +37,19 @@ This package provides a minimalistic, simple to use, [koa][koa-url] based micro 
 - parsing command line arguments - detailed docs [ARGS.md](docs/ARGS.md)
 - dev/production mode detection - see below in this README.md
 - catch errors - detailed docs [CATCHERRORS.md](docs/CATCHERRORS.md)
+- integrated API doc - detailed docs [APIDOC.md](docs/APIDOC.md)
 
 Most of these modules can be enabled with just **one line of code**. Configuration is super simple and lets you create your micro service within minutes.
+
+## Version 3 - Breaking Change
+
+`app.start()` now has a coinfiguration object to make it more easier to extend config options later without having breaking changes. To start your microservice you now provide the port within the config object
+
+```
+app.start({ port: 3000 })
+```
+
+Detailed documentation on new startup options (e.g. for body parsing) can be found here [STARTUP.md](docs/STARTUP.md)
 
 ## Installation
 
@@ -89,7 +100,7 @@ app.useRouter(router);
 // enable gracefull shutdown (optional)
 app.gracefulShutdown();
 
-app.start(3000);
+app.start({port: 3000});
 ```
 
 Have a look at the function reference [APP.md](docs/APP.md) for all options

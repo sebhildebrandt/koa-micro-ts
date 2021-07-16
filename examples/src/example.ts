@@ -25,9 +25,9 @@ function readyPromise(): Promise<boolean> {
     if (isReady) {
       resolve(true);
     } else {
-      reject(false)
+      reject(false);
     }
-  })
+  });
 };
 
 // turn on API DOC creation
@@ -96,6 +96,6 @@ app.gracefulShutdown({
   }
 });
 
-app.start(3000);
+app.start({ port: 3000 });
 app.log.trace('Server started');
 app.log.trace('Mode: ' + (app.development ? 'Development' : 'Production'));

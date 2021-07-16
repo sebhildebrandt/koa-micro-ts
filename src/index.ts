@@ -20,7 +20,7 @@ import helmet from 'koa-helmet';
 import Router from '@koa/router';
 import serve = require('koa-static');
 import { HttpStatusCode } from './httpStatus';
-import { KoaErrors } from './error.interface';
+import { KoaErrors, BodyParserOptions, StartOptions } from './app.interface';
 import cors from './cors';
 import { Logger, LogLevels, iLogOptions } from './log';
 import parseArgs from './args';
@@ -136,7 +136,7 @@ class KoaMicro extends Application {
     return jwt;
   };
 
-  start = (port: number) => {
+  start = (options: StartOptions) => {
     // if APIDox is enabled, add route
     if (this.apiDoc) {
       const router = new Router();
@@ -150,8 +150,11 @@ class KoaMicro extends Application {
         .use(router.allowedMethods());
     }
 
+    // set body parser options
+    app.use(koaBody(options.bodyParserOptions));
+
     // start server
-    this.server = this.listen(port);
+    this.server = this.listen(options.port || 3000);
   };
 
   log = new Logger({
@@ -259,8 +262,6 @@ namespace KoaMicro {
 //   app = new KoaMicro();
 // }
 const app = new KoaMicro();
-
-app.use(koaBody({ multipart: true }));
 
 export {
   app,
