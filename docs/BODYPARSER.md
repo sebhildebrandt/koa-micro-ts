@@ -1,21 +1,17 @@
-# Startup Options
+# Body parser Options
 
-When starting your `koa-micro-ts` microservice, you can provide several startup options, e.g.
+Before starting your `koa-micro-ts` microservice (and setting up your routes), you can provide several body parsing options, e.g.
 
 ```
-app.start({
-  port: 3000,
-  bodyParserOptions: {
-    ...
-  }
+app.bodyparser({
+  multipart: true,
+  ...
 })
 ```
 
-The `port` option is mandatory (but will fall back to 3000). Body parser options are optional. See all possible options and their defaults in the next chapter:
+## Options
 
-## Body Parser Options
-
-During startup of your microservice, you can provide options for the integrated body parser. As `koa-body` is used in this package, the options are the same.
+As `koa-body` is used in this package, the options are the same.
 
 - `patchNode` {**Boolean**} Patch request body to Node's ctx.req, default `false`
 - `patchKoa` {**Boolean**} Patch request body to Koa's ctx.request, default `true`

@@ -15,6 +15,7 @@ Here you can see the simple __functions interface__:
 
 | function | Comment | example |
 |---------|---------|---------|
+| bodyParser(options) | enable body parser <br>Detailed docs [BODYPARSER.md](BODYPARSER.md) | app.bodyParser();|
 | health(options) | Add a health endpoints. Standard path<br>is `/live` and `/ready` but you can add your own endpoint<br> path when using the optional parameters<br>Detailed docs [HEALTH.md](HEALTH.md) | app.health();<br> app.health({<br>&nbsp;&nbsp;livePath: '/alive'<br>&nbsp;&nbsp;readyPath: '/ready'<br>}); |
 | helmet() | Enables helmet middleware | app.helmet(); |
 | static(filepath) | If you have also static files which should<br>be served by your micro-service, just use<br>this function with the filepath of<br>the static files as a parameter | app.static(<br>&nbsp;&nbsp;path.join(__dirname, '/public')<br>); |

@@ -24,7 +24,7 @@ Microservice framework based on koa
 
 This package provides a minimalistic, simple to use, [koa][koa-url] based micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT-wrapper, AUTO ROUTES, LOGGER, VALIDATORS. Included middleware/libs:
 
-- body parser (now configurable since version 3) - detailed docs for all startup options [STARTUP.md](docs/STARTUP.md)
+- body parser (now configurable since version 3) - detailed docs for all bodyparser options [BODYPARSER.md](docs/BODYPARSER.md)
 - basic router
 - auto router - smart auto-generation of routes - detailed docs [AUTOROUTES.md](docs/AUTOROUTES.md)
 - CORS - detailed docs [CORS.md](docs/CORS.md)
@@ -43,13 +43,13 @@ Most of these modules can be enabled with just **one line of code**. Configurati
 
 ## Version 3 - Breaking Change
 
-`app.start()` now has a coinfiguration object to make it more easier to extend config options later without having breaking changes. To start your microservice you now provide the port within the config object
+`app.bodyParser()` needs to be called now. Please call this before adding any routes. This has a configuration object, detailed documentation on body parser options can be found here [BODYPARSER.md](docs/BODYPARSER.md)
 
 ```
-app.start({ port: 3000 })
+app.bodyParser({ multipart: true })
 ```
 
-Detailed documentation on new startup options (e.g. for body parsing) can be found here [STARTUP.md](docs/STARTUP.md)
+
 
 ## Installation
 
@@ -69,6 +69,9 @@ import * as path from 'path';
 // You can set this as environment variables
 process.env.APP_NAME = 'micro-service';
 process.env.VERSION = 'micro-version';
+
+// enable body parser (with desired options)
+app.bodyParser({ nultipart: true })
 
 // enable helpth endpoint (defaults to /health)
 app.health();
@@ -100,7 +103,7 @@ app.useRouter(router);
 // enable gracefull shutdown (optional)
 app.gracefulShutdown();
 
-app.start({port: 3000});
+app.start(3000);
 ```
 
 Have a look at the function reference [APP.md](docs/APP.md) for all options

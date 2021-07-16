@@ -11,6 +11,8 @@ app.logger({
   level: LogLevels.all  // highest level, log all
 });
 
+app.bodyParser({ multipart: true });
+
 // ------ Health API -------
 // options example with own readyness function
 
@@ -96,6 +98,6 @@ app.gracefulShutdown({
   }
 });
 
-app.start({ port: 3000 });
+app.start(3000);
 app.log.trace('Server started');
 app.log.trace('Mode: ' + (app.development ? 'Development' : 'Production'));
