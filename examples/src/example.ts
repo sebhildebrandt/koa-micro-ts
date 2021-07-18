@@ -64,10 +64,7 @@ app.helmet();
 app.cors();
 
 // catch uncatched errors - must be 'used' before adding routes
-app.catchErrors();
-
-// set up static server (optional)
-app.static(path.join(__dirname, '/public'));
+// app.catchErrors();
 
 // using router
 const router: any = app.newRouter();
@@ -84,6 +81,12 @@ app.useRouter(router);
 
 // using autoRoute: use all routes in path /routes and mount it to /api/v1
 app.autoRoute(path.join(__dirname, '/routes'), '/api/v1');
+
+
+// set up static server (optional)
+app.static(path.join(__dirname, '/public'));
+app.apiHistoryFallback();
+
 
 // get command line arguments with alias (example) - see docs
 app.parseArgs({

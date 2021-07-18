@@ -20,7 +20,7 @@ import helmet from 'koa-helmet';
 import Router from '@koa/router';
 import serve = require('koa-static');
 import { HttpStatusCode } from './httpStatus';
-import { KoaErrors, BodyParserOptions } from './app.interface';
+import { KoaErrors, BodyParserOptions, FallbackOptions } from './app.interface';
 import cors from './cors';
 import { Logger, LogLevels, iLogOptions } from './log';
 import parseArgs from './args';
@@ -30,16 +30,19 @@ import * as validators from './validators';
 import Application from 'koa';
 import { healthDocObj, createHtml, mergeDeep } from './apiDoc';
 import * as path from 'path';
+import * as fs from 'fs';
 
 
 interface HealthOptions { livePath?: string, readyPath?: string, isReady?: any, name?: string, version?: string; };
 class KoaMicro extends Application {
 
   private server: any;
+  private staticPath: string;
 
   constructor() {
     super();
     this.development = (process.env && process.env.DEVELOPMENT) ? true : false;
+    this.staticPath = '';
   }
 
   ready = false;
@@ -53,6 +56,7 @@ class KoaMicro extends Application {
   };
 
   static = (filepath: string) => {
+    this.staticPath = filepath;
     this.use(serve(filepath));
   };
 
@@ -234,6 +238,46 @@ class KoaMicro extends Application {
         throw err;
       }
     };
+  }
+
+  private apiHistoryFallbackMiddleware(options?: FallbackOptions) {
+    const staticPath = this.staticPath;
+    return function (ctx: any, next: any) {
+      if (ctx.method !== 'GET') { return next(); }
+      if (!ctx.headers || typeof ctx.headers.accept !== 'string') { return next(); }
+      const parsedUrl = ctx.url;
+      if (ctx.headers.accept.indexOf('application/json') >= 0) { return next(); }
+      if (ctx.headers.accept.indexOf('text/html') === -1 || ctx.headers.accept.indexOf('*/*') === -1) { return next(); }
+      if (parsedUrl.indexOf('.') !== -1) { return next(); }
+
+      let ignore: any;
+      if (options && options.ignore && typeof options.ignore === 'string') {
+        ignore = [options.ignore];
+      } else {
+        ignore = options ? options.ignore : null;
+      }
+      if (ignore && ignore.length) {
+        let found = false;
+        ignore.forEach((item: string) => {
+          if (parsedUrl.indexOf(item) !== -1) {
+            console.log(item, parsedUrl);
+            found = true;
+          }
+        })
+        if (found) { return next(); }
+      }
+      const redirectUrl = options && options.index ? options.index : '/index.html';
+      ctx.url = redirectUrl;
+
+      // serve this file
+      const src = fs.createReadStream(path.join(staticPath, redirectUrl));
+      ctx.response.set("Content-Type", "text/html; charset=utf-8");
+      ctx.body = src;
+    }
+  }
+
+  apiHistoryFallback(options?: FallbackOptions) {
+    app.use(this.apiHistoryFallbackMiddleware(options))
   }
 
   catchErrors() {

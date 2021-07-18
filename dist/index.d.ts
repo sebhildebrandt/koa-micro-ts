@@ -1,7 +1,7 @@
 /// <reference types="koa__router" />
 import Router from '@koa/router';
 import { HttpStatusCode } from './httpStatus';
-import { KoaErrors, BodyParserOptions } from './app.interface';
+import { KoaErrors, BodyParserOptions, FallbackOptions } from './app.interface';
 import { Logger, LogLevels, iLogOptions } from './log';
 import * as validators from './validators';
 import Application from 'koa';
@@ -14,6 +14,7 @@ interface HealthOptions {
 }
 declare class KoaMicro extends Application {
     private server;
+    private staticPath;
     constructor();
     ready: boolean;
     helmet: () => void;
@@ -42,6 +43,8 @@ declare class KoaMicro extends Application {
     development: boolean;
     private catchErrorsFn;
     private logMiddleware;
+    private apiHistoryFallbackMiddleware;
+    apiHistoryFallback(options?: FallbackOptions): void;
     catchErrors(): void;
     parseArgs(alias?: any): void;
     bodyParser(bodyParserOptions: BodyParserOptions): void;

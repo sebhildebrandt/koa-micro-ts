@@ -18,3 +18,7 @@ export interface BodyParserOptions {
     includeUnparsed?: boolean;
     formidable?: any;
 }
+export interface FallbackOptions {
+    index?: string;
+    ignore?: string | string[];
+}

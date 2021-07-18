@@ -50,6 +50,8 @@ exports.validators = validators;
 const koa_1 = __importDefault(require("koa"));
 exports.Application = koa_1.default;
 const apiDoc_1 = require("./apiDoc");
+const path = __importStar(require("path"));
+const fs = __importStar(require("fs"));
 ;
 class KoaMicro extends koa_1.default {
     constructor() {
@@ -62,6 +64,7 @@ class KoaMicro extends koa_1.default {
             http_graceful_shutdown_1.default(app, options);
         };
         this.static = (filepath) => {
+            this.staticPath = filepath;
             this.use(serve(filepath));
         };
         this.apiDoc = '';
@@ -204,6 +207,7 @@ class KoaMicro extends koa_1.default {
             }
         });
         this.development = (process.env && process.env.DEVELOPMENT) ? true : false;
+        this.staticPath = '';
     }
     logger(options) {
         this.log = new log_1.Logger(options);
@@ -243,6 +247,54 @@ class KoaMicro extends koa_1.default {
                 throw err;
             }
         });
+    }
+    apiHistoryFallbackMiddleware(options) {
+        const staticPath = this.staticPath;
+        return function (ctx, next) {
+            if (ctx.method !== 'GET') {
+                return next();
+            }
+            if (!ctx.headers || typeof ctx.headers.accept !== 'string') {
+                return next();
+            }
+            const parsedUrl = ctx.url;
+            if (ctx.headers.accept.indexOf('application/json') >= 0) {
+                return next();
+            }
+            if (ctx.headers.accept.indexOf('text/html') === -1 || ctx.headers.accept.indexOf('*/*') === -1) {
+                return next();
+            }
+            if (parsedUrl.indexOf('.') !== -1) {
+                return next();
+            }
+            let ignore;
+            if (options && options.ignore && typeof options.ignore === 'string') {
+                ignore = [options.ignore];
+            }
+            else {
+                ignore = options ? options.ignore : null;
+            }
+            if (ignore && ignore.length) {
+                let found = false;
+                ignore.forEach((item) => {
+                    if (parsedUrl.indexOf(item) !== -1) {
+                        console.log(item, parsedUrl);
+                        found = true;
+                    }
+                });
+                if (found) {
+                    return next();
+                }
+            }
+            const redirectUrl = options && options.index ? options.index : '/index.html';
+            ctx.url = redirectUrl;
+            const src = fs.createReadStream(path.join(staticPath, redirectUrl));
+            ctx.response.set("Content-Type", "text/html; charset=utf-8");
+            ctx.body = src;
+        };
+    }
+    apiHistoryFallback(options) {
+        app.use(this.apiHistoryFallbackMiddleware(options));
     }
     catchErrors() {
         this.use(this.catchErrorsFn);
