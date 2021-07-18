@@ -22,7 +22,7 @@ Microservice framework based on koa
 
 ## Quick Start
 
-This package provides a minimalistic, simple to use, [koa][koa-url] based micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT-wrapper, AUTO ROUTES, LOGGER, VALIDATORS. Included middleware/libs:
+This package provides a minimalistic, simple to use, [koa][koa-url] based micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT-wrapper, auto routes, logger, validators, APIdoc, API-History Fallback. Included middleware/libs:
 
 - body parser (now configurable since version 3) - detailed docs for all bodyparser options [BODYPARSER.md](docs/BODYPARSER.md)
 - basic router
@@ -30,6 +30,7 @@ This package provides a minimalistic, simple to use, [koa][koa-url] based micro 
 - CORS - detailed docs [CORS.md](docs/CORS.md)
 - JWT - detailed docs [JWT.md](docs/JWT.md)
 - static files serving
+- API history fallback functionality [APIFALLBACK.md](docs/APIFALLBACK.md)
 - validators - detailed docs [VALIDATORS.md](docs/VALIDATORS.md)
 - health API endpoint - detailed docs [HEALTH.md](docs/HEALTH.md)
 - graceful shutdown - detailed docs [SHUTDOWN.md](docs/SHUTDOWN.md)
@@ -48,8 +49,6 @@ Most of these modules can be enabled with just **one line of code**. Configurati
 ```
 app.bodyParser({ multipart: true })
 ```
-
-
 
 ## Installation
 

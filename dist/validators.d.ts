@@ -14,5 +14,10 @@ declare const validator: {
     isDecimal(str: string): false | RegExpMatchArray | null;
     isDate(str: string): boolean;
     isTime(str: string): boolean;
+    isUUID(str: string, version: string | number): RegExpMatchArray | null;
+    isArray(str: string): boolean;
+    strip(str: string): string;
+    stripTags(str: string): string;
+    stripScripts(str: string): string;
 };
 export default validator;

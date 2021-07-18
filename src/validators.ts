@@ -83,7 +83,31 @@ const validator = {
       return (hours >= 0 && hours <= 23 && mins >= 0 && mins <= 59)
     }
     return false;
-  }
+  },
+  isUUID(str: string, version: string | number) {
+    let pattern;
+    if (version === 3 || version === 'v3') {
+      pattern = /^[0-9A-F]{8}-[0-9A-F]{4}-3[0-9A-F]{3}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
+    } else if (version === 4 || version === 'v4') {
+      pattern = /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+    } else {
+      pattern = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
+    }
+    return str.match(pattern);
+  },
+  isArray(str: string) {
+    return typeof str === 'object' && Object.prototype.toString.call(str) === '[object Array]';
+  },
+  strip(str: string) {
+    return str ? str.replace(/^\s+/, '').replace(/\s+$/, '') : '';
+  },
+  stripTags(str: string) {
+    return str ? str.replace(/<\w+(\s+("[^"]*"|'[^']*'|[^>])+)?(\/)?>|<\/\w+>/gi, '') : '';
+  },
+  stripScripts(str: string) {
+    const ScriptFragment = '<script[^>]*>([\\S\\s]*?)<\/script\\s*>';
+    return str ? str.replace(new RegExp(ScriptFragment, 'img'), '') : '';
+  },
 }
 
 export default validator
