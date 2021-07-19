@@ -243,7 +243,7 @@ class KoaMicro extends Application {
   private apiHistoryFallbackMiddleware(options?: FallbackOptions) {
     const staticPath = this.staticPath;
     return function (ctx: any, next: any) {
-      if (ctx.method !== 'GET') { return next(); }
+      if (ctx.method !== 'GET' && ctx.method !== 'HEAD') { return next(); }
       if (!ctx.headers || typeof ctx.headers.accept !== 'string') { return next(); }
       const parsedUrl = ctx.url;
       if (ctx.headers.accept.indexOf('application/json') >= 0) { return next(); }
@@ -263,7 +263,7 @@ class KoaMicro extends Application {
             console.log(item, parsedUrl);
             found = true;
           }
-        })
+        });
         if (found) { return next(); }
       }
       const redirectUrl = options && options.index ? options.index : '/index.html';
@@ -273,11 +273,11 @@ class KoaMicro extends Application {
       const src = fs.createReadStream(path.join(staticPath, redirectUrl));
       ctx.response.set("Content-Type", "text/html; charset=utf-8");
       ctx.body = src;
-    }
+    };
   }
 
   apiHistoryFallback(options?: FallbackOptions) {
-    app.use(this.apiHistoryFallbackMiddleware(options))
+    app.use(this.apiHistoryFallbackMiddleware(options));
   }
 
   catchErrors() {
