@@ -260,7 +260,6 @@ class KoaMicro extends Application {
         let found = false;
         ignore.forEach((item: string) => {
           if (parsedUrl.indexOf(item) !== -1) {
-            console.log(item, parsedUrl);
             found = true;
           }
         });

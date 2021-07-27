@@ -32,10 +32,7 @@ function serve(root, opts) {
             }
             let done = false;
             if ((ctx.method === 'HEAD' || ctx.method === 'GET') && (!mountPoint || ctx.path.startsWith(mountPoint + '/') || ctx.path === mountPoint)) {
-                console.log(servePath);
-                console.log(mountPoint);
                 servePath = servePath.substring(mountPoint.length) || '/';
-                console.log(servePath);
                 try {
                     done = !!(yield send(ctx, servePath, opts));
                 }

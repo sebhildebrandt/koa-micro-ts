@@ -88,4 +88,4 @@ export = (options: any = {}) => {
       await next();
     }
   };
-}
+};

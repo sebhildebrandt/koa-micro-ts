@@ -97,7 +97,7 @@ const LogLevels = {
   info: 4,
   note: 5,
   all: 6
-}
+};
 
 interface iLogOptions {
   level?: number,
@@ -201,92 +201,92 @@ class Logger {
     if (this.levels.all) {
       forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
       forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
-      const logMsg = this.formatMessage(7, forceTimestamp, forceLogtype, msg || '')
+      const logMsg = this.formatMessage(7, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.fileStream.write(logMsg);
       } else {
         console.log(logMsg);
       }
     }
-  }
+  };
 
   light = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // grey
     if (this.levels.all) {
       forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
       forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
-      const logMsg = this.formatMessage(6, forceTimestamp, forceLogtype, msg || '')
+      const logMsg = this.formatMessage(6, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.fileStream.write(logMsg);
       } else {
         console.log(logMsg);
       }
     }
-  }
+  };
 
   note = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // blue
     if (this.levels.note) {
       forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
       forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
-      const logMsg = this.formatMessage(5, forceTimestamp, forceLogtype, msg || '')
+      const logMsg = this.formatMessage(5, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.fileStream.write(logMsg);
       } else {
         console.log(logMsg);
       }
     }
-  }
+  };
 
   info = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // green
     if (this.levels.info) {
       forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
       forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
-      const logMsg = this.formatMessage(4, forceTimestamp, forceLogtype, msg || '')
+      const logMsg = this.formatMessage(4, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.fileStream.write(logMsg);
       } else {
         console.log(logMsg);
       }
     }
-  }
+  };
 
   trace = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // cyan
     if (this.levels.trace) {
       forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
       forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
-      const logMsg = this.formatMessage(3, forceTimestamp, forceLogtype, msg || '')
+      const logMsg = this.formatMessage(3, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.fileStream.write(logMsg);
       } else {
         console.log(logMsg);
       }
     }
-  }
+  };
 
   warn = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // yellow
     if (this.levels.warn) {
       forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
       forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
-      const logMsg = this.formatMessage(2, forceTimestamp, forceLogtype, msg || '')
+      const logMsg = this.formatMessage(2, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.fileStream.write(logMsg);
       } else {
         console.log(logMsg);
       }
     }
-  }
+  };
 
   error = (msg?: string, forceTimestamp?: boolean, forceLogtype?: boolean) => { // red
     if (this.levels.error) {
       forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
       forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
-      const logMsg = this.formatMessage(1, forceTimestamp, forceLogtype, msg || '')
+      const logMsg = this.formatMessage(1, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.fileStream.write(logMsg);
       } else {
         console.log(logMsg);
       }
     }
-  }
+  };
 
   clear = (num: number) => {			// clears given lines of numbers in console
     if (!num) { num = 1; }
@@ -296,11 +296,11 @@ class Logger {
       readline.moveCursor(process.stdout, 0, -1);
       readline.clearLine(process.stdout, 0);
     }
-  }
+  };
 
   logLevel = () => {
-    return this.level
-  }
+    return this.level;
+  };
 
   private formatMessage = (loglevel: number, forceTimestamp: boolean, forceLogtype: boolean, msg: string) => {
     let level = '';
@@ -325,17 +325,17 @@ class Logger {
     const header = (timestamp ? timestamp + '  ' : '') + (level ? '[' + level + ']         '.substr(0, 7 - l) : '');
 
     if (!level && !this.logToFile) {
-      if (loglevel === 1) { msg = chalk.red(msg) }
-      if (loglevel === 2) { msg = chalk.yellow(msg) }
-      if (loglevel === 3) { msg = chalk.cyan(msg) }
-      if (loglevel === 4) { msg = chalk.green(msg) }
-      if (loglevel === 5) { msg = chalk.blue(msg) }
-      if (loglevel === 6) { msg = chalk.grey(msg) }
-      if (loglevel === 7) { msg = chalk.white(msg) }
+      if (loglevel === 1) { msg = chalk.red(msg); }
+      if (loglevel === 2) { msg = chalk.yellow(msg); }
+      if (loglevel === 3) { msg = chalk.cyan(msg); }
+      if (loglevel === 4) { msg = chalk.green(msg); }
+      if (loglevel === 5) { msg = chalk.blue(msg); }
+      if (loglevel === 6) { msg = chalk.grey(msg); }
+      if (loglevel === 7) { msg = chalk.white(msg); }
     }
 
     return ((header ? header + ': ' + msg : msg) + (this.logToFile ? '\n' : ''));
-  }
+  };
 
 }
 
@@ -343,4 +343,4 @@ export {
   Logger,
   LogLevels,
   iLogOptions
-}
+};

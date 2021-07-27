@@ -80,7 +80,7 @@ const validator = {
     if (parts.length === 2 && str.length >= 3 && str.length <= 5) {
       const hours = parseInt(parts[0], 10);
       const mins = parseInt(parts[1], 10);
-      return (hours >= 0 && hours <= 23 && mins >= 0 && mins <= 59)
+      return (hours >= 0 && hours <= 23 && mins >= 0 && mins <= 59);
     }
     return false;
   },
@@ -108,6 +108,6 @@ const validator = {
     const ScriptFragment = '<script[^>]*>([\\S\\s]*?)<\/script\\s*>';
     return str ? str.replace(new RegExp(ScriptFragment, 'img'), '') : '';
   },
-}
+};
 
-export default validator
+export default validator;

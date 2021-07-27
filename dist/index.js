@@ -278,7 +278,6 @@ class KoaMicro extends koa_1.default {
                 let found = false;
                 ignore.forEach((item) => {
                     if (parsedUrl.indexOf(item) !== -1) {
-                        console.log(item, parsedUrl);
                         found = true;
                     }
                 });

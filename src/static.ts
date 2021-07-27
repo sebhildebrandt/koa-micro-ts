@@ -30,15 +30,12 @@ function serve(root: string, opts?: StaticServeOptions) {
       if (mountPoint[0] !== '/') { mountPoint = '/' + mountPoint; }
       if (mountPoint.slice(-1) === '/') { mountPoint = mountPoint.slice(0, -1); }
     }
-    let done = false
+    let done = false;
 
     if ((ctx.method === 'HEAD' || ctx.method === 'GET') && (!mountPoint || ctx.path.startsWith(mountPoint + '/') || ctx.path === mountPoint)) {
-      console.log(servePath)
-      console.log(mountPoint)
       servePath = servePath.substring(mountPoint.length) || '/';
-      console.log(servePath)
       try {
-        done = !!(await send(ctx, servePath, opts))
+        done = !!(await send(ctx, servePath, opts));
       } catch (err) {
         if (err.status !== 404) {
           throw err;
@@ -49,9 +46,9 @@ function serve(root: string, opts?: StaticServeOptions) {
     if (!done) {
       await next();
     }
-  }
+  };
 }
 
 export {
   serve
-}
+};
