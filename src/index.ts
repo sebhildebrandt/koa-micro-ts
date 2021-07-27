@@ -11,16 +11,16 @@
 //         TypeScript Microservice Framework - based on koa
 //
 // --------------------------------------------------------------------
-// application.js - version 1.0
+// index.js - version 3.x
 // --------------------------------------------------------------------
 
 import koaBody from 'koa-body';
 import gracefulShutdown, { Options } from 'http-graceful-shutdown';
 import helmet from 'koa-helmet';
 import Router from '@koa/router';
-import serve = require('koa-static');
+import { serve } from './static';
 import { HttpStatusCode } from './httpStatus';
-import { KoaErrors, BodyParserOptions, FallbackOptions } from './app.interface';
+import { KoaErrors, BodyParserOptions, FallbackOptions, StaticServeOptions } from './app.interface';
 import cors from './cors';
 import { Logger, LogLevels, iLogOptions } from './log';
 import parseArgs from './args';
@@ -55,9 +55,9 @@ class KoaMicro extends Application {
     gracefulShutdown(app, options);
   };
 
-  static = (filepath: string) => {
-    this.staticPath = filepath;
-    this.use(serve(filepath));
+  static = (filePath: string, opts?: StaticServeOptions) => {
+    this.staticPath = filePath;
+    this.use(serve(filePath, opts));
   };
 
   apiDoc = '';

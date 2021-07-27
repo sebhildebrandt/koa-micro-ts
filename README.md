@@ -29,7 +29,7 @@ This package provides a minimalistic, simple to use, [koa][koa-url] based micro 
 - auto router - smart auto-generation of routes - detailed docs [AUTOROUTES.md](docs/AUTOROUTES.md)
 - CORS - detailed docs [CORS.md](docs/CORS.md)
 - JWT - detailed docs [JWT.md](docs/JWT.md)
-- static files serving
+- static files serving - detailed docs [STATIC.md](docs/STATIC.md)
 - API history fallback functionality [APIFALLBACK.md](docs/APIFALLBACK.md)
 - validators - detailed docs [VALIDATORS.md](docs/VALIDATORS.md)
 - health API endpoint - detailed docs [HEALTH.md](docs/HEALTH.md)
@@ -170,7 +170,6 @@ Routes from autoRouter
 As `koa-micro-ts` uses some external packages, you can also refer to the documentation of the used packages to see their options:
 
 - [koa-router][koa-router-url]
-- [koa-static][koa-static-url]
 - [http-graceful-shutdown][gracefulShutdown-url]
 - [koa-helmet][koa-helmet-url]
 
@@ -204,7 +203,6 @@ As `koa-micro-ts` uses some external packages, you can also refer to the documen
 [license-img]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [koa-url]: https://github.com/koajs/koa
 
-[koa-static-url]: https://github.com/koajs/static
 [gracefulShutdown-url]: https://github.com/sebhildebrandt/http-graceful-shutdown
 [koa-router-url]: https://github.com/koajs/router
 [koa-helmet-url]: https://github.com/venables/koa-helmet

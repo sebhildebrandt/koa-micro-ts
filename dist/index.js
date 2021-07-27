@@ -36,7 +36,7 @@ const koa_body_1 = __importDefault(require("koa-body"));
 const http_graceful_shutdown_1 = __importDefault(require("http-graceful-shutdown"));
 const koa_helmet_1 = __importDefault(require("koa-helmet"));
 const router_1 = __importDefault(require("@koa/router"));
-const serve = require("koa-static");
+const static_1 = require("./static");
 const httpStatus_1 = require("./httpStatus");
 Object.defineProperty(exports, "HttpStatusCode", { enumerable: true, get: function () { return httpStatus_1.HttpStatusCode; } });
 const cors_1 = __importDefault(require("./cors"));
@@ -63,9 +63,9 @@ class KoaMicro extends koa_1.default {
         this.gracefulShutdown = (options = {}) => {
             http_graceful_shutdown_1.default(app, options);
         };
-        this.static = (filepath) => {
-            this.staticPath = filepath;
-            this.use(serve(filepath));
+        this.static = (filePath, opts) => {
+            this.staticPath = filePath;
+            this.use(static_1.serve(filePath, opts));
         };
         this.apiDoc = '';
         this.apiDocObj = {};
@@ -251,7 +251,7 @@ class KoaMicro extends koa_1.default {
     apiHistoryFallbackMiddleware(options) {
         const staticPath = this.staticPath;
         return function (ctx, next) {
-            if (ctx.method !== 'GET') {
+            if (ctx.method !== 'GET' && ctx.method !== 'HEAD') {
                 return next();
             }
             if (!ctx.headers || typeof ctx.headers.accept !== 'string') {

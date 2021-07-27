@@ -1,7 +1,7 @@
 /// <reference types="koa__router" />
 import Router from '@koa/router';
 import { HttpStatusCode } from './httpStatus';
-import { KoaErrors, BodyParserOptions, FallbackOptions } from './app.interface';
+import { KoaErrors, BodyParserOptions, FallbackOptions, StaticServeOptions } from './app.interface';
 import { Logger, LogLevels, iLogOptions } from './log';
 import * as validators from './validators';
 import Application from 'koa';
@@ -19,7 +19,7 @@ declare class KoaMicro extends Application {
     ready: boolean;
     helmet: () => void;
     gracefulShutdown: (options?: {}) => void;
-    static: (filepath: string) => void;
+    static: (filePath: string, opts?: StaticServeOptions | undefined) => void;
     apiDoc: string;
     apiDocObj: any;
     health: (options?: HealthOptions | undefined) => void;

@@ -87,7 +87,6 @@ app.autoRoute(path.join(__dirname, '/routes'), '/api/v1');
 app.static(path.join(__dirname, '/public'));
 app.apiHistoryFallback();
 
-
 // get command line arguments with alias (example) - see docs
 app.parseArgs({
   v: 'verbose'             // alias - alternative arg
