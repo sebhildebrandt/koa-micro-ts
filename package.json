@@ -34,8 +34,10 @@
     "cors",
     "graceful-shutdown",
     "static-server",
+    "api-doc",
     "auto-router",
-    "koa-micro-ts"
+    "koa-micro-ts",
+    "backend"
   ],
   "dependencies": {
     "@koa/router": "^10.1.0",

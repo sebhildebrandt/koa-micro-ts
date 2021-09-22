@@ -183,7 +183,7 @@ class KoaMicro extends Application {
   private catchErrorsFn = async (ctx: any, next: any) => {
     try {
       await next();
-    } catch (err) {
+    } catch (err: any) {
       if (err === null) {
         err = {};
       }
@@ -233,7 +233,7 @@ class KoaMicro extends Application {
         } else {
           this.log.error(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
         }
-      } catch (err) {
+      } catch (err: any) {
         this.log.error(`  xxx ${ctx.method} ${ctx.originalUrl} ${err.status || 500} ${time(start)}`);
         throw err;
       }
