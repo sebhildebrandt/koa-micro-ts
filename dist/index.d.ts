@@ -23,7 +23,7 @@ declare class KoaMicro extends Application {
     apiDoc: string;
     apiDocObj: any;
     health: (options?: HealthOptions | undefined) => void;
-    newRouter: (prefix?: string | undefined) => Router<any, {}>;
+    newRouter: (prefix?: string | undefined) => Router<Application.DefaultState, Application.DefaultContext>;
     useRouter: (router: Router) => void;
     cors: (options?: any) => void;
     jwt: (options?: any) => {

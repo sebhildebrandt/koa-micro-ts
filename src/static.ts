@@ -36,7 +36,7 @@ function serve(root: string, opts?: StaticServeOptions) {
       servePath = servePath.substring(mountPoint.length) || '/';
       try {
         done = !!(await send(ctx, servePath, opts));
-      } catch (err) {
+      } catch (err: any) {
         if (err.status !== 404) {
           throw err;
         }

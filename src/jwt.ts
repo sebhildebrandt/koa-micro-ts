@@ -113,7 +113,7 @@ function middleware() {
 
     try {
       user = await JWT.verify(token, secret, opts);
-    } catch (e) {
+    } catch (e: any) {
       msg = 'Invalid token' + (opts.debug ? ' - ' + e.message + '\n' : '\n');
     }
 
@@ -169,7 +169,7 @@ async function check(ctx: any) {
       try {
         user = await JWT.verify(token, secret, opts);
         ctx.jwt.user = user;
-      } catch (e) {
+      } catch (e: any) {
         msg = 'Invalid token' + (opts.debug ? ' - ' + e.message + '\n' : '\n');
         throw msg;
       }
@@ -188,7 +188,7 @@ function catchErrors(message?: any) {
   return async (ctx: any, next: any) => {
     try {
       await next(); // Attempt to go through the JWT Validator
-    } catch (e) {
+    } catch (e: any) {
       if (e.status === 401) {
         // Prepare response to user.
         let errorMmessage = '401 Forbidden - Not authorized';

@@ -38,6 +38,9 @@ const chalk = {
     grey(s) {
         return (FgWhite + s + Reset);
     },
+    dark(s) {
+        return (Dim + FgWhite + s + Reset);
+    },
     blue(s) {
         return (Bright + FgBlue + s + Reset);
     },
@@ -271,7 +274,8 @@ class Logger {
                 const time = [('0' + now.getHours()).substr(-2), ('0' + now.getMinutes()).substr(-2), ('0' + now.getSeconds()).substr(-2)];
                 timestamp = date.join("-") + " " + time.join(":");
             }
-            const header = (timestamp ? timestamp + '  ' : '') + (level ? '[' + level + ']         '.substr(0, 7 - l) : '');
+            const divider = this.logToFile ? '| ' : chalk.dark('| ');
+            const header = (timestamp ? timestamp + ' ' + divider : '') + (level ? level + '         '.substr(0, 7 - l) + divider : '');
             if (!level && !this.logToFile) {
                 if (loglevel === 1) {
                     msg = chalk.red(msg);
@@ -295,7 +299,7 @@ class Logger {
                     msg = chalk.white(msg);
                 }
             }
-            return ((header ? header + ': ' + msg : msg) + (this.logToFile ? '\n' : ''));
+            return ((header ? header + msg : msg) + (this.logToFile ? '\n' : ''));
         };
         this.level = options && (options.level || options.level === 0) ? options.level : LogLevels.all;
         this.logTimestamp = options ? (options.logTimestamp !== undefined ? options.logTimestamp : true) : true;

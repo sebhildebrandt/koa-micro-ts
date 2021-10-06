@@ -72,6 +72,9 @@ const chalk = {
   grey(s: string) {
     return (FgWhite + s + Reset);
   },
+  dark(s: string) {
+    return (Dim + FgWhite + s + Reset);
+  },
   blue(s: string) {
     return (Bright + FgBlue + s + Reset);
   },
@@ -136,7 +139,7 @@ function mkdirSync(p: string, opts?: any, made?: any) {
   try {
     xfs.mkdirSync(p, mode);
     made = made || p;
-  } catch (err0) {
+  } catch (err0: any) {
     switch (err0.code) {
       case 'ENOENT':
         made = mkdirSync(path.dirname(p), opts, made);
@@ -322,7 +325,8 @@ class Logger {
       // Return the formatted string
       timestamp = date.join("-") + " " + time.join(":");
     }
-    const header = (timestamp ? timestamp + '  ' : '') + (level ? '[' + level + ']         '.substr(0, 7 - l) : '');
+    const divider = this.logToFile ? '| ' : chalk.dark('| ');
+    const header = (timestamp ? timestamp + ' ' + divider : '') + (level ? level + '         '.substr(0, 7 - l) + divider : '');
 
     if (!level && !this.logToFile) {
       if (loglevel === 1) { msg = chalk.red(msg); }
@@ -334,7 +338,7 @@ class Logger {
       if (loglevel === 7) { msg = chalk.white(msg); }
     }
 
-    return ((header ? header + ': ' + msg : msg) + (this.logToFile ? '\n' : ''));
+    return ((header ? header + msg : msg) + (this.logToFile ? '\n' : ''));
   };
 
 }

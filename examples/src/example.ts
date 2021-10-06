@@ -101,5 +101,8 @@ app.gracefulShutdown({
 });
 
 app.start(3000);
-app.log.trace('Server started');
-app.log.trace('Mode: ' + (app.development ? 'Development' : 'Production'));
+app.log.info('Server started');
+app.log.note('---------------------------------');
+app.log.note('Port: 3000');
+app.log.note('Mode: ' + (app.development ? 'Development' : 'Production'));
+app.log.note('---------------------------------');
