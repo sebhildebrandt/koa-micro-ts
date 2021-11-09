@@ -1,13 +1,10 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createHtml = exports.mergeDeep = exports.healthDocObj = exports.parseFileApiDoc = void 0;
 const os_1 = require("os");
-const fs_1 = __importDefault(require("fs"));
+const fs_1 = require("fs");
 let html = '';
-function mergeDeep(target, source) {
+const mergeDeep = (target, source) => {
     for (let key in source) {
         if (target.hasOwnProperty(key)) {
             target[key] = [...target[key], ...source[key]];
@@ -17,15 +14,15 @@ function mergeDeep(target, source) {
         }
     }
     return target;
-}
+};
 exports.mergeDeep = mergeDeep;
-function orderObj(unordered) {
+const orderObj = (unordered) => {
     return Object.keys(unordered).sort().reduce((obj, key) => {
         obj[key] = unordered[key];
         return obj;
     }, {});
-}
-function compareApi(a, b) {
+};
+const compareApi = (a, b) => {
     const aPath = a.path.replace(/{/g, '-');
     const bPath = b.path.replace(/{/g, '-');
     if (aPath < bPath) {
@@ -41,16 +38,16 @@ function compareApi(a, b) {
         return 1;
     }
     return 0;
-}
-function orderApiObj(apiObj) {
+};
+const orderApiObj = (apiObj) => {
     for (let key in apiObj) {
         apiObj[key] = apiObj[key].sort(compareApi);
     }
     return apiObj;
-}
-function parseParamValue(value, secure) {
+};
+const parseParamValue = (value, secure) => {
     let param = {};
-    let parts = value.split(/(\s+)/).filter(function (e) { return e.trim().length > 0; });
+    let parts = value.split(/(\s+)/).filter((e) => { return e.trim().length > 0; });
     let group = '';
     if (parts[0].indexOf('(') > -1 && parts[0].indexOf(')') > parts[0].indexOf('(')) {
         group = parts[0].replace(/.*\(|\).*/g, '');
@@ -86,8 +83,8 @@ function parseParamValue(value, secure) {
         };
     }
     return param;
-}
-function parseKeyValue(keyValues, secure) {
+};
+const parseKeyValue = (keyValues, secure) => {
     const res = {};
     keyValues.forEach(keyValue => {
         const parts = keyValue.split(' ');
@@ -127,10 +124,10 @@ function parseKeyValue(keyValues, secure) {
         }
     });
     return res;
-}
-function parseFileApiDoc(fileName, secure) {
+};
+const parseFileApiDoc = (fileName, secure) => {
     const apiDoc = {};
-    const fileString = fs_1.default.readFileSync(fileName).toString();
+    const fileString = (0, fs_1.readFileSync)(fileName).toString();
     const parts = fileString.split('/**' + os_1.EOL);
     parts.forEach((part) => {
         const keyValues = part.split(os_1.EOL + ' */' + os_1.EOL)[0].split(os_1.EOL + ' * @');
@@ -170,9 +167,9 @@ function parseFileApiDoc(fileName, secure) {
         }
     });
     return apiDoc;
-}
+};
 exports.parseFileApiDoc = parseFileApiDoc;
-function healthDocObj(healthPath, livePath) {
+const healthDocObj = (healthPath, livePath) => {
     return {
         Health: [
             {
@@ -215,9 +212,9 @@ function healthDocObj(healthPath, livePath) {
             }
         ]
     };
-}
+};
 exports.healthDocObj = healthDocObj;
-function replaceMacro(text, vars) {
+const replaceMacro = (text, vars) => {
     let result = text;
     for (let varName in vars) {
         if (vars.hasOwnProperty(varName)) {
@@ -225,8 +222,8 @@ function replaceMacro(text, vars) {
         }
     }
     return (result);
-}
-function createHtml(apiDocObj) {
+};
+const createHtml = (apiDocObj) => {
     let html = '';
     apiDocObj = orderApiObj(apiDocObj);
     const htmlBody = `
@@ -698,6 +695,6 @@ function createHtml(apiDocObj) {
     }
     html = replaceMacro(htmlBody, { GROUPS: groups });
     return html;
-}
+};
 exports.createHtml = createHtml;
 //# sourceMappingURL=apiDoc.js.map

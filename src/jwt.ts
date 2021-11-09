@@ -25,8 +25,8 @@
 // ==================================================================================
 
 import _jwt from 'jsonwebtoken';
-import path from 'path';
-import fs from 'fs';
+import { join } from 'path';
+import { readFileSync } from 'fs';
 
 let publicKey: any;
 let privateKey: any;
@@ -50,21 +50,21 @@ const JWT: any = {
   }
 };
 
-function init(options: any) {
+const init = (options: any) => {
   config.algorithm = options.algorithm || config.algorithm;
   config.expires = options.expires || config.expires;
   config.privateKey = options.privateKey || config.privateKey;
   config.publicKey = options.publicKey || config.publicKey;
 
   if (!publicKey) {
-    publicKey = fs.readFileSync(config.publicKey);
+    publicKey = readFileSync(config.publicKey);
   }
   if (!privateKey) {
-    privateKey = fs.readFileSync(config.privateKey);
+    privateKey = readFileSync(config.privateKey);
   }
-}
+};
 
-function middleware() {
+const middleware = () => {
   //  module.exports = function (opts) {
 
   const opts: any = {
@@ -72,7 +72,7 @@ function middleware() {
     algorithm: config.algorithm
   };
 
-  const middleWare = async function jwt(ctx: any, next: any) {
+  const middleWare = async (ctx: any, next: any) => {
     let token;
     let msg;
     let user;
@@ -129,14 +129,14 @@ function middleware() {
   // middleWare.unless = unless;
 
   return middleWare;
-}
+};
 
-function sign(claims: any, expiresIn: any) {
+const sign = (claims: any, expiresIn: any) => {
   expiresIn = expiresIn || config.expires || 3600;
   return _jwt.sign(claims, privateKey, { algorithm: config.algorithm, expiresIn });
-}
+};
 
-async function check(ctx: any) {
+const check = async (ctx: any) => {
   const opts: any = {
     // debug: 1,
     secret: publicKey,
@@ -178,12 +178,12 @@ async function check(ctx: any) {
     }
   }
   return ctx.jwt;
-}
+};
 
 const verify = _jwt.verify;
 const decode = _jwt.decode;
 
-function catchErrors(message?: any) {
+const catchErrors = (message?: any) => {
 
   return async (ctx: any, next: any) => {
     try {
@@ -205,7 +205,7 @@ function catchErrors(message?: any) {
       }
     }
   };
-}
+};
 
 export default {
   middleware,

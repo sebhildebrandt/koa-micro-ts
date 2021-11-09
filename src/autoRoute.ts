@@ -1,5 +1,3 @@
-'use strict';
-
 // ==================================================================================
 // autoRoute.ts
 // ----------------------------------------------------------------------------------
@@ -22,34 +20,34 @@
  * ==================================================
  */
 
-import path from 'path';
+import { join } from 'path';
 import Router from '@koa/router';
 import jwt from './jwt';
-import { Logger, LogLevels, iLogOptions } from './log';
+import { LogLevels } from './log';
 import { parseFileApiDoc, mergeDeep } from './apiDoc';
-import fs from 'fs';
+import { statSync, readdirSync } from 'fs';
 
 
 const routerSuffixJs = '.route.js';
 const routerSuffixTs = '.route.ts';
 
-function readdirSyncRecursive(filePath: string, allFiles: string[]) {
+const readdirSyncRecursive = (filePath: string, allFiles: string[]) => {
   try {
-    const stats = fs.statSync(filePath);
+    const stats = statSync(filePath);
 
     if (stats.isFile()) {
       // base case
       allFiles.push(filePath);
     } else if (stats.isDirectory()) {
       // induction step
-      fs.readdirSync(filePath).forEach((fileName) => {
+      readdirSync(filePath).forEach((fileName) => {
         if ('.' !== fileName.substring(0, 1)) {
-          readdirSyncRecursive(path.join(filePath, fileName), allFiles);
+          readdirSyncRecursive(join(filePath, fileName), allFiles);
         }
       });
     }
   } catch (e) { }
-}
+};
 
 /**
  * ==================================================
@@ -57,7 +55,7 @@ function readdirSyncRecursive(filePath: string, allFiles: string[]) {
  * ==================================================
  */
 
-export function autoRoute(app: any, routepath: string, mountpoint: string, auth?: boolean): void {
+export const autoRoute = (app: any, routepath: string, mountpoint: string, auth?: boolean): void => {
   mountpoint = mountpoint || '';
   auth = auth || false;
 
@@ -67,7 +65,7 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
   const files: any = [];
   let docObj: any = app.apiDocObj;
   // const root = path.dirname(require.main.filename);
-  // const routepath = path.join(root, rpath);
+  // const routepath = join(root, rpath);
 
   if (app && app.log && app.log.level && app.log.level === LogLevels.all) {
     app.log.trace('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n', false, false);
@@ -83,7 +81,7 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
 
       const relfile = file.substring(root.length, 1000);
 
-      const fileName = path.join(root, relfile);
+      const fileName = join(root, relfile);
 
       if (app.apiDoc) {
         const doc = parseFileApiDoc(fileName, auth) || {};
@@ -124,72 +122,72 @@ export function autoRoute(app: any, routepath: string, mountpoint: string, auth?
               break;
             case 'get':
               method = 'get';
-              url = path.join(url, '/get');
+              url = join(url, '/get');
               break;
             case 'detail':
               method = 'get';
-              url = path.join(url, '/:id');
+              url = join(url, '/:id');
               break;
             case 'detail_detail':
               method = 'get';
-              url = path.join(url, '/:id/:id2');
+              url = join(url, '/:id/:id2');
               break;
             case 'detail_detail_detail':
               method = 'get';
-              url = path.join(url, '/:id/:id2/:id3');
+              url = join(url, '/:id/:id2/:id3');
               break;
             case 'index':
               method = 'get';
               break;
             case 'star':
               method = 'get';
-              url = path.join(url, '/*');
+              url = join(url, '/*');
               break;
             case 'set':
               method = 'get';
-              url = path.join(url, '/set');
+              url = join(url, '/set');
               break;
             case 'post':
               method = 'post';
               break;
             case 'post_detail':
               method = 'post';
-              url = path.join(url, '/:id');
+              url = join(url, '/:id');
               break;
             case 'post_detail_detail':
               method = 'post';
-              url = path.join(url, '/:id/:id2');
+              url = join(url, '/:id/:id2');
               break;
             case 'post_detail_detail_detail':
               method = 'post';
-              url = path.join(url, '/:id/:id2/:id3');
+              url = join(url, '/:id/:id2/:id3');
               break;
             case 'put':
               method = 'put';
               break;
             case 'put_detail':
               method = 'put';
-              url = path.join(url, '/:id');
+              url = join(url, '/:id');
               break;
             case 'put_detail_detail':
               method = 'put';
-              url = path.join(url, '/:id/:id2');
+              url = join(url, '/:id/:id2');
               break;
             case 'put_detail_detail_detail':
               method = 'put';
-              url = path.join(url, '/:id/:id2/:id3');
+              url = join(url, '/:id/:id2/:id3');
               break;
             case 'delete_detail':
               method = 'delete';
-              url = path.join(url, '/:id');
+              url = join(url, '/:id');
               break;
             case 'delete_detail_detail':
               method = 'delete';
-              url = path.join(url, '/:id/:id2');
+              url = join(url, '/:id/:id2');
               break;
             case 'delete_detail_detail_detail':
               method = 'delete';
-              url = path.join(url, '/:id/:id2/:id3');
+              url = join(url, '/:id/:id2/:id3');
               break;
             default:
               throw new Error('unrecognized route: ' + relfile + '.' + key);

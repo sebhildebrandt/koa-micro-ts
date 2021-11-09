@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const fs_1 = __importDefault(require("fs"));
+const fs_1 = require("fs");
 let publicKey;
 let privateKey;
 const config = {
@@ -33,96 +33,35 @@ const JWT = {
         });
     }
 };
-function init(options) {
+const init = (options) => {
     config.algorithm = options.algorithm || config.algorithm;
     config.expires = options.expires || config.expires;
     config.privateKey = options.privateKey || config.privateKey;
     config.publicKey = options.publicKey || config.publicKey;
     if (!publicKey) {
-        publicKey = fs_1.default.readFileSync(config.publicKey);
+        publicKey = (0, fs_1.readFileSync)(config.publicKey);
     }
     if (!privateKey) {
-        privateKey = fs_1.default.readFileSync(config.privateKey);
+        privateKey = (0, fs_1.readFileSync)(config.privateKey);
     }
-}
-function middleware() {
+};
+const middleware = () => {
     const opts = {
         secret: publicKey,
         algorithm: config.algorithm
     };
-    const middleWare = function jwt(ctx, next) {
-        return __awaiter(this, void 0, void 0, function* () {
-            let token;
-            let msg;
-            let user;
-            let parts;
-            let scheme;
-            let credentials;
-            let secret;
-            if (opts.cookie && ctx.cookies.get(opts.cookie)) {
-                token = ctx.cookies.get(opts.cookie);
-            }
-            else if (ctx.header.authorization) {
-                parts = ctx.header.authorization.split(' ');
-                if (parts.length === 2) {
-                    scheme = parts[0];
-                    credentials = parts[1];
-                    if (/^Bearer$/i.test(scheme)) {
-                        token = credentials;
-                    }
-                }
-                else {
-                    if (!opts.passthrough) {
-                        ctx.throw(401, 'Bad Authorization header format. Format is "Authorization: Bearer <token>"\n');
-                    }
-                }
-            }
-            else {
-                if (!opts.passthrough) {
-                    ctx.throw(401, 'No Authorization header found\n');
-                }
-            }
-            secret = (ctx.state && ctx.state.secret) ? ctx.state.secret : publicKey;
-            if (!secret) {
-                ctx.throw(401, 'Invalid secret\n');
-            }
-            ctx.jwt = JWT.decode(token);
-            try {
-                user = yield JWT.verify(token, secret, opts);
-            }
-            catch (e) {
-                msg = 'Invalid token' + (opts.debug ? ' - ' + e.message + '\n' : '\n');
-            }
-            if (user || opts.passthrough) {
-                ctx.state = ctx.state || {};
-                ctx.state[opts.key] = user;
-                yield next();
-            }
-            else {
-                ctx.throw(401, msg);
-            }
-        });
-    };
-    return middleWare;
-}
-function sign(claims, expiresIn) {
-    expiresIn = expiresIn || config.expires || 3600;
-    return jsonwebtoken_1.default.sign(claims, privateKey, { algorithm: config.algorithm, expiresIn });
-}
-function check(ctx) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const opts = {
-            secret: publicKey,
-            algorithm: config.algorithm
-        };
+    const middleWare = (ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
         let token;
         let msg;
+        let user;
         let parts;
         let scheme;
         let credentials;
         let secret;
-        let user = {};
-        if (ctx.header.authorization) {
+        if (opts.cookie && ctx.cookies.get(opts.cookie)) {
+            token = ctx.cookies.get(opts.cookie);
+        }
+        else if (ctx.header.authorization) {
             parts = ctx.header.authorization.split(' ');
             if (parts.length === 2) {
                 scheme = parts[0];
@@ -131,31 +70,88 @@ function check(ctx) {
                     token = credentials;
                 }
             }
+            else {
+                if (!opts.passthrough) {
+                    ctx.throw(401, 'Bad Authorization header format. Format is "Authorization: Bearer <token>"\n');
+                }
+            }
+        }
+        else {
+            if (!opts.passthrough) {
+                ctx.throw(401, 'No Authorization header found\n');
+            }
         }
         secret = (ctx.state && ctx.state.secret) ? ctx.state.secret : publicKey;
-        if (secret && token) {
-            try {
-                ctx.jwt = JWT.decode(token);
-                try {
-                    user = yield JWT.verify(token, secret, opts);
-                    ctx.jwt.user = user;
-                }
-                catch (e) {
-                    msg = 'Invalid token' + (opts.debug ? ' - ' + e.message + '\n' : '\n');
-                    throw msg;
-                }
-            }
-            catch (e) {
-                ctx.jwt = {};
+        if (!secret) {
+            ctx.throw(401, 'Invalid secret\n');
+        }
+        ctx.jwt = JWT.decode(token);
+        try {
+            user = yield JWT.verify(token, secret, opts);
+        }
+        catch (e) {
+            msg = 'Invalid token' + (opts.debug ? ' - ' + e.message + '\n' : '\n');
+        }
+        if (user || opts.passthrough) {
+            ctx.state = ctx.state || {};
+            ctx.state[opts.key] = user;
+            yield next();
+        }
+        else {
+            ctx.throw(401, msg);
+        }
+    });
+    return middleWare;
+};
+const sign = (claims, expiresIn) => {
+    expiresIn = expiresIn || config.expires || 3600;
+    return jsonwebtoken_1.default.sign(claims, privateKey, { algorithm: config.algorithm, expiresIn });
+};
+const check = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    const opts = {
+        secret: publicKey,
+        algorithm: config.algorithm
+    };
+    let token;
+    let msg;
+    let parts;
+    let scheme;
+    let credentials;
+    let secret;
+    let user = {};
+    if (ctx.header.authorization) {
+        parts = ctx.header.authorization.split(' ');
+        if (parts.length === 2) {
+            scheme = parts[0];
+            credentials = parts[1];
+            if (/^Bearer$/i.test(scheme)) {
+                token = credentials;
             }
         }
-        return ctx.jwt;
-    });
-}
+    }
+    secret = (ctx.state && ctx.state.secret) ? ctx.state.secret : publicKey;
+    if (secret && token) {
+        try {
+            ctx.jwt = JWT.decode(token);
+            try {
+                user = yield JWT.verify(token, secret, opts);
+                ctx.jwt.user = user;
+            }
+            catch (e) {
+                msg = 'Invalid token' + (opts.debug ? ' - ' + e.message + '\n' : '\n');
+                throw msg;
+            }
+        }
+        catch (e) {
+            ctx.jwt = {};
+        }
+    }
+    return ctx.jwt;
+});
 const verify = jsonwebtoken_1.default.verify;
 const decode = jsonwebtoken_1.default.decode;
-function catchErrors(message) {
-    return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
+const catchErrors = (message) => {
+    return (ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             yield next();
         }
@@ -174,7 +170,7 @@ function catchErrors(message) {
             }
         }
     });
-}
+};
 exports.default = {
     middleware,
     init,

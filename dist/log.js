@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LogLevels = exports.Logger = void 0;
 const util_1 = __importDefault(require("util"));
 const readline_1 = __importDefault(require("readline"));
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
+const fs_1 = require("fs");
+const path_1 = require("path");
 const Reset = '\x1b[0m';
 const Bright = '\x1b[1m';
 const Dim = '\x1b[2m';
@@ -74,46 +74,6 @@ function str(obj) {
     else {
         return obj;
     }
-}
-function mkdirSync(p, opts, made) {
-    const _0777 = parseInt('0777', 8);
-    if (!opts || typeof opts !== 'object') {
-        opts = { mode: opts };
-    }
-    let mode = opts.mode;
-    const xfs = opts.fs || fs_1.default;
-    if (mode === undefined) {
-        mode = _0777 & (~process.umask());
-    }
-    if (!made) {
-        made = null;
-    }
-    p = path_1.default.resolve(p);
-    try {
-        xfs.mkdirSync(p, mode);
-        made = made || p;
-    }
-    catch (err0) {
-        switch (err0.code) {
-            case 'ENOENT':
-                made = mkdirSync(path_1.default.dirname(p), opts, made);
-                mkdirSync(p, opts, made);
-                break;
-            default:
-                let stat;
-                try {
-                    stat = xfs.statSync(p);
-                }
-                catch (err1) {
-                    throw err0;
-                }
-                if (!stat.isDirectory()) {
-                    throw err0;
-                }
-                break;
-        }
-    }
-    return made;
 }
 class Logger {
     constructor(options) {
@@ -324,10 +284,10 @@ class Logger {
             this.levels.all = true;
         }
         if (options && options.destination) {
-            const file = path_1.default.parse(options.destination);
+            const file = (0, path_1.parse)(options.destination);
             this.logToFile = true;
-            mkdirSync(file.dir);
-            this.fileStream = fs_1.default.createWriteStream(options.destination, { flags: 'a' });
+            (0, fs_1.mkdirSync)(file.dir, { recursive: true });
+            this.fileStream = (0, fs_1.createWriteStream)(options.destination, { flags: 'a' });
         }
     }
 }

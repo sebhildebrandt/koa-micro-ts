@@ -36,8 +36,8 @@
 
 import util from 'util';
 import readline from 'readline';
-import fs, { WriteStream } from 'fs';
-import path from 'path';
+import { mkdirSync, createWriteStream } from 'fs';
+import { parse } from 'path';
 
 const Reset = '\x1b[0m';
 const Bright = '\x1b[1m';
@@ -117,52 +117,6 @@ function str(obj: any) {
   }
 }
 
-function mkdirSync(p: string, opts?: any, made?: any) {
-  const _0777 = parseInt('0777', 8);
-  if (!opts || typeof opts !== 'object') {
-    opts = { mode: opts };
-  }
-
-  let mode = opts.mode;
-  const xfs = opts.fs || fs;
-
-  if (mode === undefined) {
-    // tslint:disable-next-line:no-bitwise
-    mode = _0777 & (~process.umask());
-  }
-  if (!made) {
-    made = null;
-  }
-
-  p = path.resolve(p);
-
-  try {
-    xfs.mkdirSync(p, mode);
-    made = made || p;
-  } catch (err0: any) {
-    switch (err0.code) {
-      case 'ENOENT':
-        made = mkdirSync(path.dirname(p), opts, made);
-        mkdirSync(p, opts, made);
-        break;
-
-      default:
-        let stat;
-        try {
-          stat = xfs.statSync(p);
-        } catch (err1) {
-          throw err0;
-        }
-        if (!stat.isDirectory()) {
-          throw err0;
-        }
-        break;
-    }
-  }
-  return made;
-}
-
-
 class Logger {
 
   private logToFile = false;
@@ -193,10 +147,10 @@ class Logger {
     if (this.level >= LogLevels.all) { this.levels.all = true; }
 
     if (options && options.destination) { // log to file
-      const file = path.parse(options.destination);
+      const file = parse(options.destination);
       this.logToFile = true;
-      mkdirSync(file.dir);
-      this.fileStream = fs.createWriteStream(options.destination, { flags: 'a' });
+      mkdirSync(file.dir, { recursive: true });
+      this.fileStream = createWriteStream(options.destination, { flags: 'a' });
     }
   }
 

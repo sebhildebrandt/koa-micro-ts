@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 module.exports = (alias) => {
     function isNumeric(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);

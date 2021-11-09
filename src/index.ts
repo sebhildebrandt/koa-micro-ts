@@ -1,5 +1,3 @@
-'use strict';
-
 // --------------------------------------------------------------------
 //        ____  _                  __         _
 //       / __ \| | _____   __ _   / / __ ___ (_) ___ _ __ ___
@@ -29,8 +27,8 @@ import { autoRoute } from './autoRoute';
 import * as validators from './validators';
 import Application from 'koa';
 import { healthDocObj, createHtml, mergeDeep } from './apiDoc';
-import * as path from 'path';
-import * as fs from 'fs';
+import { join } from 'path';
+import { createReadStream } from 'fs';
 
 
 interface HealthOptions { livePath?: string, readyPath?: string, isReady?: any, name?: string, version?: string; };
@@ -269,7 +267,7 @@ class KoaMicro extends Application {
       ctx.url = redirectUrl;
 
       // serve this file
-      const src = fs.createReadStream(path.join(staticPath, redirectUrl));
+      const src = createReadStream(join(staticPath, redirectUrl));
       ctx.response.set("Content-Type", "text/html; charset=utf-8");
       ctx.body = src;
     };

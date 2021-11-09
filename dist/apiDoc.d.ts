@@ -1,6 +1,6 @@
-declare function mergeDeep(target: any, source: any): any;
-declare function parseFileApiDoc(fileName: string, secure: boolean): any;
-declare function healthDocObj(healthPath: string, livePath: string): {
+declare const mergeDeep: (target: any, source: any) => any;
+declare const parseFileApiDoc: (fileName: string, secure: boolean) => any;
+declare const healthDocObj: (healthPath: string, livePath: string) => {
     Health: {
         method: string;
         path: string;
@@ -13,5 +13,5 @@ declare function healthDocObj(healthPath: string, livePath: string): {
         errorExample: string;
     }[];
 };
-declare function createHtml(apiDocObj: any): string;
+declare const createHtml: (apiDocObj: any) => string;
 export { parseFileApiDoc, healthDocObj, mergeDeep, createHtml };

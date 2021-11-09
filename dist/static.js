@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -16,7 +16,7 @@ function serve(root, opts) {
     opts = opts || {};
     if (opts.index !== false)
         opts.index = opts.index || 'index.html';
-    opts.root = path_1.resolve(root);
+    opts.root = (0, path_1.resolve)(root);
     return function serve(ctx, next) {
         return __awaiter(this, void 0, void 0, function* () {
             let servePath = ctx.path;

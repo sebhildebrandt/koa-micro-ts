@@ -1,8 +1,8 @@
 import { EOL } from 'os';
-import fs from 'fs';
+import { readFileSync } from 'fs';
 
 let html = '';
-function mergeDeep(target: any, source: any): any {
+const mergeDeep = (target: any, source: any): any => {
   for (let key in source) {
     if (target.hasOwnProperty(key)) {
       target[key] = [...target[key], ...source[key]];
@@ -11,9 +11,9 @@ function mergeDeep(target: any, source: any): any {
     }
   }
   return target;
-}
+};
 
-function orderObj(unordered: any) {
+const orderObj = (unordered: any) => {
   return Object.keys(unordered).sort().reduce(
     (obj: any, key: string) => {
       obj[key] = unordered[key];
@@ -21,9 +21,9 @@ function orderObj(unordered: any) {
     },
     {}
   );
-}
+};
 
-function compareApi(a: any, b: any) {
+const compareApi = (a: any, b: any) => {
   const aPath = a.path.replace(/{/g, '-');
   const bPath = b.path.replace(/{/g, '-');
   if (aPath < bPath) {
@@ -39,19 +39,19 @@ function compareApi(a: any, b: any) {
     return 1;
   }
   return 0;
-}
+};
 
 
-function orderApiObj(apiObj: any) {
+const orderApiObj = (apiObj: any) => {
   for (let key in apiObj) {
     apiObj[key] = apiObj[key].sort(compareApi);
   }
   return apiObj;
-}
+};
 
-function parseParamValue(value: string, secure: boolean): any {
+const parseParamValue = (value: string, secure: boolean): any => {
   let param: any = {};
-  let parts = value.split(/(\s+)/).filter(function (e) { return e.trim().length > 0; });
+  let parts = value.split(/(\s+)/).filter((e) => { return e.trim().length > 0; });
   let group = '';
   if (parts[0].indexOf('(') > -1 && parts[0].indexOf(')') > parts[0].indexOf('(')) { // group
     group = parts[0].replace(/.*\(|\).*/g, '');
@@ -92,8 +92,8 @@ function parseParamValue(value: string, secure: boolean): any {
   }
 
   return param;
-}
-function parseKeyValue(keyValues: string[], secure: boolean): any {
+};
+const parseKeyValue = (keyValues: string[], secure: boolean): any => {
   const res: any = {};
   keyValues.forEach(keyValue => {
     const parts = keyValue.split(' ');
@@ -126,12 +126,12 @@ function parseKeyValue(keyValues: string[], secure: boolean): any {
     }
   });
   return res;
-}
+};
 
-function parseFileApiDoc(fileName: string, secure: boolean) {
+const parseFileApiDoc = (fileName: string, secure: boolean) => {
   const apiDoc: any = {};
 
-  const fileString = fs.readFileSync(fileName).toString();
+  const fileString = readFileSync(fileName).toString();
 
   const parts = fileString.split('/**' + EOL);
 
@@ -193,9 +193,9 @@ function parseFileApiDoc(fileName: string, secure: boolean) {
   });
 
   return apiDoc;
-}
+};
 
-function healthDocObj(healthPath: string, livePath: string) {
+const healthDocObj = (healthPath: string, livePath: string) => {
   return {
     Health: [
       {
@@ -238,9 +238,9 @@ function healthDocObj(healthPath: string, livePath: string) {
       }
     ]
   };
-}
+};
 
-function replaceMacro(text: string, vars: any) {
+const replaceMacro = (text: string, vars: any) => {
   let result = text;
   for (let varName in vars) {
     if (vars.hasOwnProperty(varName)) {
@@ -249,9 +249,9 @@ function replaceMacro(text: string, vars: any) {
     }
   }
   return (result);
-}
+};
 
-function createHtml(apiDocObj: any) {
+const createHtml = (apiDocObj: any) => {
   let html = '';
   apiDocObj = orderApiObj(apiDocObj);
 
@@ -742,7 +742,7 @@ function createHtml(apiDocObj: any) {
   // html = htmlBody;
 
   return html;
-}
+};
 
 export {
   parseFileApiDoc,

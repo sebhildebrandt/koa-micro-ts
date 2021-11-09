@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -50,22 +50,22 @@ exports.validators = validators;
 const koa_1 = __importDefault(require("koa"));
 exports.Application = koa_1.default;
 const apiDoc_1 = require("./apiDoc");
-const path = __importStar(require("path"));
-const fs = __importStar(require("fs"));
+const path_1 = require("path");
+const fs_1 = require("fs");
 ;
 class KoaMicro extends koa_1.default {
     constructor() {
         super();
         this.ready = false;
         this.helmet = () => {
-            this.use(koa_helmet_1.default());
+            this.use((0, koa_helmet_1.default)());
         };
         this.gracefulShutdown = (options = {}) => {
-            http_graceful_shutdown_1.default(app, options);
+            (0, http_graceful_shutdown_1.default)(app, options);
         };
         this.static = (filePath, opts) => {
             this.staticPath = filePath;
-            this.use(static_1.serve(filePath, opts));
+            this.use((0, static_1.serve)(filePath, opts));
         };
         this.apiDoc = '';
         this.apiDocObj = {};
@@ -140,8 +140,8 @@ class KoaMicro extends koa_1.default {
                 .use(router.routes())
                 .use(router.allowedMethods());
             if (this.apiDoc) {
-                const healthDoc = apiDoc_1.healthDocObj(options.readyPath, options.livePath);
-                this.apiDocObj = apiDoc_1.mergeDeep(this.apiDocObj, healthDoc);
+                const healthDoc = (0, apiDoc_1.healthDocObj)(options.readyPath, options.livePath);
+                this.apiDocObj = (0, apiDoc_1.mergeDeep)(this.apiDocObj, healthDoc);
             }
         };
         this.newRouter = (prefix) => {
@@ -155,7 +155,7 @@ class KoaMicro extends koa_1.default {
                 .use(router.allowedMethods());
         };
         this.cors = (options = {}) => {
-            this.use(cors_1.default(options));
+            this.use((0, cors_1.default)(options));
         };
         this.jwt = (options = {}) => {
             jwt_1.default.init(options);
@@ -166,7 +166,7 @@ class KoaMicro extends koa_1.default {
                 const router = new router_1.default();
                 router.get(this.apiDoc, (ctx) => __awaiter(this, void 0, void 0, function* () {
                     ctx.status = 200;
-                    ctx.body = apiDoc_1.createHtml(this.apiDocObj);
+                    ctx.body = (0, apiDoc_1.createHtml)(this.apiDocObj);
                 }));
                 this
                     .use(router.routes())
@@ -180,7 +180,7 @@ class KoaMicro extends koa_1.default {
         this.autoRoute = (routepath, mountpoint, auth) => {
             mountpoint = mountpoint || '';
             auth = auth || false;
-            autoRoute_1.autoRoute(this, routepath, mountpoint, auth);
+            (0, autoRoute_1.autoRoute)(this, routepath, mountpoint, auth);
         };
         this.args = {};
         this.catchErrorsFn = (ctx, next) => __awaiter(this, void 0, void 0, function* () {
@@ -287,7 +287,7 @@ class KoaMicro extends koa_1.default {
             }
             const redirectUrl = options && options.index ? options.index : '/index.html';
             ctx.url = redirectUrl;
-            const src = fs.createReadStream(path.join(staticPath, redirectUrl));
+            const src = (0, fs_1.createReadStream)((0, path_1.join)(staticPath, redirectUrl));
             ctx.response.set("Content-Type", "text/html; charset=utf-8");
             ctx.body = src;
         };
@@ -299,13 +299,13 @@ class KoaMicro extends koa_1.default {
         this.use(this.catchErrorsFn);
     }
     parseArgs(alias) {
-        this.args = args_1.default(alias);
+        this.args = (0, args_1.default)(alias);
         if (this.args.development || this.args.dev) {
             this.development = true;
         }
     }
     bodyParser(bodyParserOptions) {
-        app.use(koa_body_1.default(bodyParserOptions));
+        app.use((0, koa_body_1.default)(bodyParserOptions));
     }
     close() {
         this.server.close();
