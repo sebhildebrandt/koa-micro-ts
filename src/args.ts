@@ -33,7 +33,7 @@ export = (alias?: any) => {
       current = index + 1;
       if (val.substring(0, 2) === '--' && val.length > 2) {
         const param = val.substring(2, 100);
-        if (args[index + 1] && args[index + 1].substring(0, 1) !== '-' && args[index + 1].indexOf('=') === -1) {
+        if (args[index + 1] && args[index + 1].substring(0, 1) !== '-' && args[index + 1].trim() !== '=') {
           result[param] = isNumeric(args[index + 1]) ? parseFloat(args[index + 1]) : args[index + 1];
           current++;
         } else {
