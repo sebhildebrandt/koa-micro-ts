@@ -16,7 +16,6 @@ Microservice framework based on koa
   [![NPM Downloads][downloads-image]][downloads-url]
   [![Git Issues][issues-img]][issues-url]
   [![Closed Issues][closed-issues-img]][closed-issues-url]
-  [![deps status][daviddm-img]][daviddm-url]
   [![Caretaker][caretaker-image]][caretaker-url]
   [![MIT license][license-img]][license-url]
 
