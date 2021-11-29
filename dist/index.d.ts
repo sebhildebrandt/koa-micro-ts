@@ -3,7 +3,7 @@ import Router from '@koa/router';
 import { HttpStatusCode } from './httpStatus';
 import { KoaErrors, BodyParserOptions, FallbackOptions, StaticServeOptions } from './app.interface';
 import { Logger, LogLevels, iLogOptions } from './log';
-import * as validators from './validators';
+import validators from './validators';
 import Application from 'koa';
 interface HealthOptions {
     livePath?: string;

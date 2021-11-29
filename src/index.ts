@@ -24,7 +24,7 @@ import { Logger, LogLevels, iLogOptions } from './log';
 import parseArgs from './args';
 import jwt from './jwt';
 import { autoRoute } from './autoRoute';
-import * as validators from './validators';
+import validators from './validators';
 import Application from 'koa';
 import { healthDocObj, createHtml, mergeDeep } from './apiDoc';
 import { join } from 'path';
