@@ -68,7 +68,7 @@ export const autoRoute = (app: any, routepath: string, mountpoint: string, auth?
   // const routepath = join(root, rpath);
 
   if (app && app.log && app.log.level && app.log.level === LogLevels.all) {
-    app.log.trace('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n', false, false);
+    app.log.note('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n', false, false);
   }
   // clog.trace('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n');
   // console.log('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n');
@@ -200,7 +200,7 @@ export const autoRoute = (app: any, routepath: string, mountpoint: string, auth?
               routes[method](url, obj[key]);
             }
             if (app && app.log && app.log.level && app.log.level === LogLevels.all) {
-              app.log.trace('       ' + mountpoint + url + '   ---   ' + method + ' - Function: ' + key, false, false);
+              app.log.note('       ' + mountpoint + url + '   ---   ' + method + ' - Function: ' + key, false, false);
             }
           }
         }
@@ -209,7 +209,7 @@ export const autoRoute = (app: any, routepath: string, mountpoint: string, auth?
   }
   app.use(routes.routes()).use(routes.allowedMethods());
   if (app && app.log && app.log.level && app.log.level === LogLevels.all) {
-    app.log.trace('', false, false);
+    app.log.note('', false, false);
   }
   if (app.apiDoc) {
     app.apiDocObj = docObj;

@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------------
 // Description:   adding CORS headers
 //                for Node.js
-// Copyright:     (c) 2021
+// Copyright:     (c) 2022
 // Author:        Sebastian Hildebrandt
 // ----------------------------------------------------------------------------------
 // Contributors:  -

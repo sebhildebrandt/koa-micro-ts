@@ -224,10 +224,10 @@ class KoaMicro extends Application {
 
 
       try {
-        this.log.info(`  <-- ${ctx.method} ${ctx.originalUrl}`);
+        this.log.http(`  <-- ${ctx.method} ${ctx.originalUrl}`);
         await next();
         if (ctx.status < 400) {
-          this.log.info(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
+          this.log.http(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
         } else {
           this.log.error(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
         }

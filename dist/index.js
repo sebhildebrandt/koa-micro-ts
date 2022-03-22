@@ -214,10 +214,10 @@ class KoaMicro extends koa_1.default {
                 ? ctx[Symbol.for('request-received.startTime')].getTime()
                 : Date.now();
             try {
-                this.log.info(`  <-- ${ctx.method} ${ctx.originalUrl}`);
+                this.log.http(`  <-- ${ctx.method} ${ctx.originalUrl}`);
                 yield next();
                 if (ctx.status < 400) {
-                    this.log.info(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
+                    this.log.http(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
                 }
                 else {
                     this.log.error(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);

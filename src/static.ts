@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------------
 // Description:   static file serve wrapper (for koa)
 //                for Node.js
-// Copyright:     (c) 2021
+// Copyright:     (c) 2022
 // Author:        Sebastian Hildebrandt
 // ----------------------------------------------------------------------------------
 // Contributors:  -

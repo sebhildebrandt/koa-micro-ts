@@ -176,7 +176,7 @@ As `koa-micro-ts` uses some external packages, you can also refer to the documen
 
 >The [`MIT`][license-url] License (MIT)
 >
->Copyright &copy; 2021 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
+>Copyright &copy; 2022 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
 >
 >Permission is hereby granted, free of charge, to any person obtaining a copy
 >of this software and associated documentation files (the "Software"), to deal

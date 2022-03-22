@@ -8,7 +8,12 @@ process.env.VERSION = '1.0.0';
 
 // initialize logger
 app.logger({
-  level: LogLevels.all  // highest level, log all
+  level: LogLevels.all,  // highest level, log all
+  // logFileName: 'server',
+  // logPath: './examples/dist/',
+  // logFileMaxSize: 1000,
+  // logFileMaxHistory: 5,
+  // logFileZipHistory: true
 });
 
 app.bodyParser({ multipart: true });

@@ -37,7 +37,7 @@ const autoRoute = (app, routepath, mountpoint, auth) => {
     const files = [];
     let docObj = app.apiDocObj;
     if (app && app.log && app.log.level && app.log.level === log_1.LogLevels.all) {
-        app.log.trace('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n', false, false);
+        app.log.note('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n', false, false);
     }
     readdirSyncRecursive(routepath, files);
     for (const file of files) {
@@ -155,7 +155,7 @@ const autoRoute = (app, routepath, mountpoint, auth) => {
                             routes[method](url, obj[key]);
                         }
                         if (app && app.log && app.log.level && app.log.level === log_1.LogLevels.all) {
-                            app.log.trace('       ' + mountpoint + url + '   ---   ' + method + ' - Function: ' + key, false, false);
+                            app.log.note('       ' + mountpoint + url + '   ---   ' + method + ' - Function: ' + key, false, false);
                         }
                     }
                 }
@@ -164,7 +164,7 @@ const autoRoute = (app, routepath, mountpoint, auth) => {
     }
     app.use(routes.routes()).use(routes.allowedMethods());
     if (app && app.log && app.log.level && app.log.level === log_1.LogLevels.all) {
-        app.log.trace('', false, false);
+        app.log.note('', false, false);
     }
     if (app.apiDoc) {
         app.apiDocObj = docObj;

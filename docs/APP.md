@@ -23,7 +23,7 @@ Here you can see the simple __functions interface__:
 | cors(options) | Enables CORS middleware<br>Detailed docs [CORS.md](CORS.md) | app.cors(); |
 | jwt(options) | Enables JWT middleware<br>Detailed docs [JWT.md](JWT.md) | app.jwt(); |
 | gracefulShutdown(options) | Enables gracefulShutdown<br>Detailed docs [SHUTDOWN.md](SHUTDOWN.md) | app.gracefulShutdown(); |
-| logger(options) | Enables logger middleware<br>Detailed docs [LOGGER.md](LOGGER.md) | app.logger();<br>app.logger({<br>&nbsp;&nbsp;level: LogLevels.warn,<br>&nbsp;&nbsp;destination: './server.log'<br>});|
+| logger(options) | Enables logger middleware<br>Detailed docs [LOGGER.md](LOGGER.md) | app.logger();<br>app.logger({<br>&nbsp;&nbsp;level: LogLevels.warn,<br>&nbsp;&nbsp;logFileName: './server.log'<br>});|
 | catchErrors() | Catch uncatched errors middleware | app.catchErrors(); |
 | autoRoute(options) | Create routes for all controllers in<br>given path.<br>Detailed docs [AUTOROUTES.md](AUTOROUTES.md) | app.autoRoute(<br>&nbsp;&nbsp;'./controllers',<br>&nbsp;&nbsp;'/api/v1'<br>); |
 | start(port) | Starts the server with the given port | app.start(3000); |

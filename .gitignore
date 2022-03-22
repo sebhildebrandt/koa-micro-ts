@@ -17,6 +17,7 @@ Desktop.ini
 # Logs
 logs
 *.log
+*.log.gz
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -69,4 +70,4 @@ package-lock.json
 
 # dist files
 examples/dist/api
-examples/dist/example*
+examples/dist/
