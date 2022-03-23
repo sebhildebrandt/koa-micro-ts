@@ -133,7 +133,7 @@ class Logger {
         this.logFileName = '';
         this.logFileNameFull = '';
         this.logPath = '';
-        this.logFileMaxSize = 1024 * 1024;
+        this.logFileMaxSize = 0;
         this.logFileMaxHistory = 12;
         this.logFileZipHistory = false;
         this.logFileExtHistory = '';
@@ -193,7 +193,7 @@ class Logger {
             }
         };
         this.http = (msg, forceTimestamp, forceLogtype) => {
-            if (this.levels.info) {
+            if (this.levels.http) {
                 forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
                 forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
                 const logMsg = this.formatMessage(5, forceTimestamp, forceLogtype, msg || '');

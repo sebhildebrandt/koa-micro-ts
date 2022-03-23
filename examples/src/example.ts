@@ -11,9 +11,9 @@ app.logger({
   level: LogLevels.all,  // highest level, log all
   // logFileName: 'server',
   // logPath: './examples/dist/',
-  // logFileMaxSize: 1000,
+  // logFileMaxSize: 2000,
   // logFileMaxHistory: 5,
-  // logFileZipHistory: true
+  // logFileZipHistory: true,
 });
 
 app.bodyParser({ multipart: true });

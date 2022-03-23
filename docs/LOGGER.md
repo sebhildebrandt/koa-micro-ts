@@ -82,4 +82,22 @@ app.logger({
 app.log.trace('This is a log message');
 ```
 
-If you add a `logFileName` option, all logs are streamed to this file.
+If you add a `logFileName` option, all logs are streamed to this file. Otherwise all logs will go to STDOUT.
+
+### Log file rotation
+
+```
+app.logger({
+  level: LogLevels.all,      // highest level, log all
+  logFileName: './log.txt',
+  logFileMaxSize: 10m,
+  logFileMaxHistory: 12,
+  logFileZipHistory: true
+});
+
+app.log.trace('This is a log message');
+```
+
+By specifying a `logFileMaxSize` option, you can enable log file rotation. Define the max size in bytes OR with suffix k, m, g for kB, MB, GB.
+
+The `logFileMaxHistory`option specifies the maximum numer of files for the log rotation. Setting `logFileZipHistory` to true will enable file compression for the log file history.
