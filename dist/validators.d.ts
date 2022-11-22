@@ -28,10 +28,10 @@ declare const validator: {
     notContains(str: string, elem: string): boolean;
     regex(str: string, pattern: any, modifiers: string): RegExpMatchArray | null;
     notRegex(str: string, pattern: any, modifiers: string): boolean;
-    len(str: string, min: number, max?: number | undefined): boolean;
+    len(str: string, min: number, max?: number): boolean;
     isUUID(str: string, version: string | number): RegExpMatchArray | null;
     isDate(str: string): boolean;
-    isAfter(str: string, date?: string | Date | undefined): boolean;
+    isAfter(str: string, date?: Date | string): boolean;
     isBefore(str: string, date: Date | string): boolean;
     min(str: string, val: number): boolean;
     max(str: string, val: number): boolean;

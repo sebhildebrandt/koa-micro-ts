@@ -19,11 +19,11 @@ declare class KoaMicro extends Application {
     ready: boolean;
     helmet: () => void;
     gracefulShutdown: (options?: {}) => void;
-    static: (filePath: string, opts?: StaticServeOptions | undefined) => void;
+    static: (filePath: string, opts?: StaticServeOptions) => void;
     apiDoc: string;
     apiDocObj: any;
-    health: (options?: HealthOptions | undefined) => void;
-    newRouter: (prefix?: string | undefined) => Router<Application.DefaultState, Application.DefaultContext>;
+    health: (options?: HealthOptions) => void;
+    newRouter: (prefix?: string) => Router<Application.DefaultState, Application.DefaultContext>;
     useRouter: (router: Router) => void;
     cors: (options?: any) => void;
     jwt: (options?: any) => {
@@ -37,7 +37,7 @@ declare class KoaMicro extends Application {
     };
     start: (port: number) => void;
     log: Logger;
-    autoRoute: (routepath: string, mountpoint?: string | undefined, auth?: boolean | undefined) => void;
+    autoRoute: (routepath: string, mountpoint?: string, auth?: boolean) => void;
     logger(options: iLogOptions): Logger;
     args: any;
     development: boolean;
