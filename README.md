@@ -25,7 +25,7 @@ This package provides a minimalistic, simple to use, [koa][koa-url] based micro 
 
 - body parser (now configurable since version 3) - detailed docs for all bodyparser options [BODYPARSER.md](docs/BODYPARSER.md)
 - basic router
-- auto router - smart auto-generation of routes - detailed docs [AUTOROUTES.md](docs/AUTOROUTES.md)
+- auto router - smart directory based auto-generation of routes - detailed docs [AUTOROUTES.md](docs/AUTOROUTES.md)
 - CORS - detailed docs [CORS.md](docs/CORS.md)
 - JWT - detailed docs [JWT.md](docs/JWT.md)
 - static files serving - detailed docs [STATIC.md](docs/STATIC.md)

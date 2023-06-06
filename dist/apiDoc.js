@@ -87,10 +87,11 @@ const parseParamValue = (value, secure) => {
 const parseKeyValue = (keyValues, secure) => {
     const res = {};
     keyValues.forEach(keyValue => {
+        var _a;
         const parts = keyValue.split(' ');
         if (parts.length > 1) {
             let key;
-            key = parts.length > 1 ? parts.shift() || '' : '';
+            key = parts.length > 1 ? (_a = parts.shift()) !== null && _a !== void 0 ? _a : '' : '';
             let value = parts.join(' ').replace(/\n \*\n/g, '\n').replace(/\n \*/g, '\n');
             if (value.endsWith('\n *')) {
                 value = value.substring(0, value.length - 4);
@@ -130,8 +131,9 @@ const parseFileApiDoc = (fileName, secure) => {
     const fileString = (0, fs_1.readFileSync)(fileName).toString();
     const parts = fileString.split('/**' + os_1.EOL);
     parts.forEach((part) => {
+        var _a, _b;
         const keyValues = part.split(os_1.EOL + ' */' + os_1.EOL)[0].split(os_1.EOL + ' * @');
-        if (keyValues && keyValues[0] && keyValues[0].startsWith(' * @')) {
+        if ((_a = keyValues[0]) === null || _a === void 0 ? void 0 : _a.startsWith(' * @')) {
             keyValues[0] = keyValues[0].replace(' * @', '');
         }
         ;
@@ -141,7 +143,7 @@ const parseFileApiDoc = (fileName, secure) => {
         const apiObj = {};
         if (api) {
             const apiParts = api.trim().split(' ');
-            const methodPart = apiParts && apiParts[0] && apiParts[0].indexOf('}') > -1 ? 0 : (apiParts && apiParts[1] && apiParts[1].indexOf('}') > -1 ? 1 : -1);
+            const methodPart = apiParts[0] && apiParts[0].indexOf('}') > -1 ? 0 : (((_b = apiParts[1]) === null || _b === void 0 ? void 0 : _b.indexOf('}')) > -1 ? 1 : -1);
             const method = methodPart > -1 ? apiParts[methodPart].replace('{', '').replace('}', '').trim() : '';
             apiObj.method = method;
             apiObj.path = apiParts[methodPart + 1] ? apiParts[methodPart + 1] : '';
@@ -624,8 +626,9 @@ const createHtml = (apiDocObj) => {
             const groupObj = apiDocObj[varName];
             let tabs = '';
             groupObj.forEach((endpoint) => {
+                var _a, _b, _c;
                 let params = '';
-                if (endpoint.params && endpoint.params.length) {
+                if ((_a = endpoint.params) === null || _a === void 0 ? void 0 : _a.length) {
                     let queryParams = '';
                     endpoint.params.forEach((queryParam) => {
                         let description = queryParam.description ? queryParam.description : '';
@@ -643,7 +646,7 @@ const createHtml = (apiDocObj) => {
                     });
                     params = replaceMacro(htmlParams, { PARAMTYPE: endpoint.method.toLowerCase() === 'get' ? 'Query Parameters' : 'Body Parameters', PARAMS: queryParams });
                 }
-                if (endpoint.bodyParams && endpoint.bodyParams.length) {
+                if ((_b = endpoint.bodyParams) === null || _b === void 0 ? void 0 : _b.length) {
                     let bodyParams = '';
                     endpoint.bodyParams.forEach((bodyParam) => {
                         let description = bodyParam.description ? bodyParam.description : '';
@@ -662,7 +665,7 @@ const createHtml = (apiDocObj) => {
                     params = replaceMacro(htmlParams, { PARAMTYPE: 'Body Parameters', PARAMS: bodyParams });
                 }
                 let success = '';
-                if (endpoint.success && endpoint.success.length) {
+                if ((_c = endpoint.success) === null || _c === void 0 ? void 0 : _c.length) {
                     let successParams = '';
                     endpoint.success.forEach((successParam) => {
                         successParams = successParams + replaceMacro(htmlParamLines, {

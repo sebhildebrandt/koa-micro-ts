@@ -29,8 +29,8 @@ const readdirSyncRecursive = (filePath, allFiles) => {
     catch (e) { }
 };
 const autoRoute = (app, routepath, mountpoint, auth) => {
-    mountpoint = mountpoint || '';
-    auth = auth || false;
+    mountpoint = mountpoint !== null && mountpoint !== void 0 ? mountpoint : '';
+    auth = auth !== null && auth !== void 0 ? auth : false;
     const routes = new router_1.default({
         prefix: mountpoint
     });
@@ -52,13 +52,8 @@ const autoRoute = (app, routepath, mountpoint, auth) => {
             const obj = require(fileName);
             let method;
             let url;
-            let admin;
-            let all;
             for (const key in obj) {
                 if (obj.hasOwnProperty(key)) {
-                    admin = false;
-                    all = false;
-                    method = '';
                     url = relfile;
                     if (url.endsWith(routerSuffixJs)) {
                         url = url.substring(url.length - routerSuffixJs.length, 0);

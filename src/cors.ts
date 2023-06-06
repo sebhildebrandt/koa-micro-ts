@@ -59,12 +59,7 @@ export = (options: any = {}) => {
       ctx.set('Access-Control-Max-Age', String(options.maxAge));
     }
     if (options.credentials === true) {
-      // if (origin === '*') {
-      //   // `credentials` can't be true when the `origin` is set to `*`
-      //   ctx.remove('Access-Control-Allow-Credentials');
-      // } else {
       ctx.set('Access-Control-Allow-Credentials', 'true');
-      // }
     }
     // Access-Control-Allow-Headers
     if (options.allowHeaders) {
@@ -78,9 +73,6 @@ export = (options: any = {}) => {
     }
 
     if (ctx.method === 'OPTIONS') {
-      // if (!ctx.get('Access-Control-Request-Method')) {
-      //   return await next();
-      // }
       ctx.status = 204; // No Content
     } else {
       await next();

@@ -39,7 +39,7 @@ class KoaMicro extends Application {
 
   constructor() {
     super();
-    this.development = (process.env && process.env.DEVELOPMENT) ? true : false;
+    this.development = (process.env?.DEVELOPMENT) ? true : false;
     this.staticPath = '';
   }
 
@@ -71,9 +71,9 @@ class KoaMicro extends Application {
     router.get(options.livePath, (ctx) => {
       const status: any = {};
       if (process.env.APP_NAME) { status.name = process.env.APP_NAME; }
-      if (options && options.name) { status.name = options.name; }
+      if (options?.name) { status.name = options.name; }
       if (process.env.APP_VERSION) { status.version = process.env.APP_VERSION; }
-      if (options && options.version) { status.version = options.version; }
+      if (options?.version) { status.version = options.version; }
       status.check = 'liveness';
       status.status = 'up';
       status.resultcode = 200;
@@ -83,13 +83,13 @@ class KoaMicro extends Application {
     router.get(options.readyPath, async (ctx) => {
       const status: any = {};
       if (process.env.APP_NAME) { status.name = process.env.APP_NAME; }
-      if (options && options.name) { status.name = options.name; }
+      if (options?.name) { status.name = options.name; }
       if (process.env.APP_VERSION) { status.version = process.env.APP_VERSION; }
-      if (options && options.version) { status.version = options.version; }
+      if (options?.version) { status.version = options.version; }
       status.check = 'readyness';
       status.status = 'not ready';
       ctx.status = 503; // service unavailable
-      if (options && options.isReady) {
+      if (options?.isReady) {
         let res = false;
         try {
           res = await options.isReady();
@@ -144,7 +144,6 @@ class KoaMicro extends Application {
       const router = new Router();
       router.get(this.apiDoc, async (ctx) => {
         ctx.status = 200;
-        // ctx.body = JSON.stringify(this.apiDocObj, null, 2);
         ctx.body = createHtml(this.apiDocObj);
       });
       this
@@ -161,8 +160,8 @@ class KoaMicro extends Application {
   });
 
   autoRoute = (routepath: string, mountpoint?: string, auth?: boolean) => {
-    mountpoint = mountpoint || '';
-    auth = auth || false;
+    mountpoint = mountpoint ?? '';
+    auth = auth ?? false;
     autoRoute(this, routepath, mountpoint, auth);
   };
 
@@ -249,12 +248,12 @@ class KoaMicro extends Application {
       if (parsedUrl.indexOf('.') !== -1) { return next(); }
 
       let ignore: any;
-      if (options && options.ignore && typeof options.ignore === 'string') {
+      if (options?.ignore && typeof options.ignore === 'string') {
         ignore = [options.ignore];
       } else {
         ignore = options ? options.ignore : null;
       }
-      if (ignore && ignore.length) {
+      if (ignore?.length) {
         let found = false;
         ignore.forEach((item: string) => {
           if (parsedUrl.indexOf(item) !== -1) {
@@ -263,7 +262,7 @@ class KoaMicro extends Application {
         });
         if (found) { return next(); }
       }
-      const redirectUrl = options && options.index ? options.index : '/index.html';
+      const redirectUrl = options?.index ? options.index : '/index.html';
       ctx.url = redirectUrl;
 
       // serve this file
@@ -299,11 +298,6 @@ namespace KoaMicro {
   export class KoaMicro { }
 }
 
-// let app: KoaMicro | null = null;
-
-// if (!app) {
-//   app = new KoaMicro();
-// }
 const app = new KoaMicro();
 
 export {

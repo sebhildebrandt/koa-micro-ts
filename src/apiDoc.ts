@@ -99,7 +99,7 @@ const parseKeyValue = (keyValues: string[], secure: boolean): any => {
     const parts = keyValue.split(' ');
     if (parts.length > 1) {
       let key: string;
-      key = parts.length > 1 ? parts.shift() || '' : '';
+      key = parts.length > 1 ? parts.shift() ?? '' : '';
       let value = parts.join(' ').replace(/\n \*\n/g, '\n').replace(/\n \*/g, '\n');
       if (value.endsWith('\n *')) { value = value.substring(0, value.length - 4); }
       if (value.endsWith('\n')) { value = value.substring(0, value.length - 1); }
@@ -137,7 +137,7 @@ const parseFileApiDoc = (fileName: string, secure: boolean) => {
 
   parts.forEach((part: any) => {
     const keyValues = part.split(EOL + ' */' + EOL)[0].split(EOL + ' * @');
-    if (keyValues && keyValues[0] && keyValues[0].startsWith(' * @')) { keyValues[0] = keyValues[0].replace(' * @', ''); };
+    if (keyValues[0]?.startsWith(' * @')) { keyValues[0] = keyValues[0].replace(' * @', ''); };
     const parsedKeyValues = parseKeyValue(keyValues, secure);
 
     const apiGroup = parsedKeyValues.apiGroup || '-';
@@ -146,7 +146,7 @@ const parseFileApiDoc = (fileName: string, secure: boolean) => {
     if (api) {
       const apiParts = api.trim().split(' ');
       // method
-      const methodPart = apiParts && apiParts[0] && apiParts[0].indexOf('}') > -1 ? 0 : (apiParts && apiParts[1] && apiParts[1].indexOf('}') > -1 ? 1 : -1);
+      const methodPart = apiParts[0] && apiParts[0].indexOf('}') > -1 ? 0 : (apiParts[1]?.indexOf('}') > -1 ? 1 : -1);
       const method = methodPart > -1 ? apiParts[methodPart].replace('{', '').replace('}', '').trim() : '';
       apiObj.method = method;
       // path
@@ -187,7 +187,6 @@ const parseFileApiDoc = (fileName: string, secure: boolean) => {
       if (!(apiGroup in apiDoc)) {
         apiDoc[apiGroup] = [];
       }
-      // console.log(apiObj);
       apiDoc[apiGroup].push(apiObj);
     }
   });
@@ -245,7 +244,6 @@ const replaceMacro = (text: string, vars: any) => {
   for (let varName in vars) {
     if (vars.hasOwnProperty(varName)) {
       result = result.replace(new RegExp('{{' + varName + '}}', "gm"), vars[varName]);
-      // console.log(result);
     }
   }
   return (result);
@@ -662,12 +660,11 @@ const createHtml = (apiDocObj: any) => {
     if (apiDocObj.hasOwnProperty(varName)) {
       const groupObj = apiDocObj[varName];
       let tabs = '';
-      // console.log(varName);
       groupObj.forEach((endpoint: any) => { // TABS LEVEL
 
         let params = '';
         // params
-        if (endpoint.params && endpoint.params.length) {
+        if (endpoint.params?.length) {
           let queryParams = '';
           endpoint.params.forEach((queryParam: any) => {
             let description = queryParam.description ? queryParam.description : '';
@@ -683,7 +680,7 @@ const createHtml = (apiDocObj: any) => {
         }
 
         // bodyparams
-        if (endpoint.bodyParams && endpoint.bodyParams.length) {
+        if (endpoint.bodyParams?.length) {
           let bodyParams = '';
           endpoint.bodyParams.forEach((bodyParam: any) => {
             let description = bodyParam.description ? bodyParam.description : '';
@@ -700,7 +697,7 @@ const createHtml = (apiDocObj: any) => {
 
         // success
         let success = '';
-        if (endpoint.success && endpoint.success.length) {
+        if (endpoint.success?.length) {
           let successParams = '';
           endpoint.success.forEach((successParam: any) => {
             successParams = successParams + replaceMacro(htmlParamLines, {
@@ -733,13 +730,10 @@ const createHtml = (apiDocObj: any) => {
       });
       groups = groups + replaceMacro(htmlGroup, { GROUPLABEL: varName, TABS: tabs });
 
-      // text = text.replace(new RegExp('[' + varName + ']', "gm"),);
     }
   }
 
   html = replaceMacro(htmlBody, { GROUPS: groups });
-  // console.log(JSON.stringify(apiDocObj, null, 2));
-  // html = htmlBody;
 
   return html;
 };

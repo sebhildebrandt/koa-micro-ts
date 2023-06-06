@@ -1,6 +1,6 @@
 # Auto-Routes
 
-This is one of the smart features of this package:
+Directory based routing is one of the smart features of this package:
 
 `autoRoute` allows you to just write your API endpoints and place them into a directory structure. When calling `app.autoRoute(...directory..., mountpoint)`, this directory will be parsed recursivly and all TypeScript files with extension `.route.ts` are added as routes. All routes then will be mounted to the given `mountpoint`. Your API structure then matches exactly your directory structure. This makes writing and maintaining your API endpoints super simple.
 

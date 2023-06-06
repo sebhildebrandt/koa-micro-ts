@@ -36,6 +36,7 @@ const fs_1 = require("fs");
 ;
 class KoaMicro extends koa_1.default {
     constructor() {
+        var _a;
         super();
         this.ready = false;
         this.helmet = () => {
@@ -66,13 +67,13 @@ class KoaMicro extends koa_1.default {
                 if (process.env.APP_NAME) {
                     status.name = process.env.APP_NAME;
                 }
-                if (options && options.name) {
+                if (options === null || options === void 0 ? void 0 : options.name) {
                     status.name = options.name;
                 }
                 if (process.env.APP_VERSION) {
                     status.version = process.env.APP_VERSION;
                 }
-                if (options && options.version) {
+                if (options === null || options === void 0 ? void 0 : options.version) {
                     status.version = options.version;
                 }
                 status.check = 'liveness';
@@ -85,19 +86,19 @@ class KoaMicro extends koa_1.default {
                 if (process.env.APP_NAME) {
                     status.name = process.env.APP_NAME;
                 }
-                if (options && options.name) {
+                if (options === null || options === void 0 ? void 0 : options.name) {
                     status.name = options.name;
                 }
                 if (process.env.APP_VERSION) {
                     status.version = process.env.APP_VERSION;
                 }
-                if (options && options.version) {
+                if (options === null || options === void 0 ? void 0 : options.version) {
                     status.version = options.version;
                 }
                 status.check = 'readyness';
                 status.status = 'not ready';
                 ctx.status = 503;
-                if (options && options.isReady) {
+                if (options === null || options === void 0 ? void 0 : options.isReady) {
                     let res = false;
                     try {
                         res = yield options.isReady();
@@ -159,8 +160,8 @@ class KoaMicro extends koa_1.default {
             level: log_1.LogLevels.none
         });
         this.autoRoute = (routepath, mountpoint, auth) => {
-            mountpoint = mountpoint || '';
-            auth = auth || false;
+            mountpoint = mountpoint !== null && mountpoint !== void 0 ? mountpoint : '';
+            auth = auth !== null && auth !== void 0 ? auth : false;
             (0, autoRoute_1.autoRoute)(this, routepath, mountpoint, auth);
         };
         this.args = {};
@@ -187,7 +188,7 @@ class KoaMicro extends koa_1.default {
                 });
             }
         });
-        this.development = (process.env && process.env.DEVELOPMENT) ? true : false;
+        this.development = ((_a = process.env) === null || _a === void 0 ? void 0 : _a.DEVELOPMENT) ? true : false;
         this.staticPath = '';
     }
     logger(options) {
@@ -249,13 +250,13 @@ class KoaMicro extends koa_1.default {
                 return next();
             }
             let ignore;
-            if (options && options.ignore && typeof options.ignore === 'string') {
+            if ((options === null || options === void 0 ? void 0 : options.ignore) && typeof options.ignore === 'string') {
                 ignore = [options.ignore];
             }
             else {
                 ignore = options ? options.ignore : null;
             }
-            if (ignore && ignore.length) {
+            if (ignore === null || ignore === void 0 ? void 0 : ignore.length) {
                 let found = false;
                 ignore.forEach((item) => {
                     if (parsedUrl.indexOf(item) !== -1) {
@@ -266,7 +267,7 @@ class KoaMicro extends koa_1.default {
                     return next();
                 }
             }
-            const redirectUrl = options && options.index ? options.index : '/index.html';
+            const redirectUrl = (options === null || options === void 0 ? void 0 : options.index) ? options.index : '/index.html';
             ctx.url = redirectUrl;
             const src = (0, fs_1.createReadStream)((0, path_1.join)(staticPath, redirectUrl));
             ctx.response.set("Content-Type", "text/html; charset=utf-8");

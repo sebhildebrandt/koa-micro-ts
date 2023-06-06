@@ -56,22 +56,18 @@ const readdirSyncRecursive = (filePath: string, allFiles: string[]) => {
  */
 
 export const autoRoute = (app: any, routepath: string, mountpoint: string, auth?: boolean): void => {
-  mountpoint = mountpoint || '';
-  auth = auth || false;
+  mountpoint = mountpoint ?? '';
+  auth = auth ?? false;
 
   const routes: any = new Router({
     prefix: mountpoint
   });
   const files: any = [];
   let docObj: any = app.apiDocObj;
-  // const root = path.dirname(require.main.filename);
-  // const routepath = join(root, rpath);
 
   if (app && app.log && app.log.level && app.log.level === LogLevels.all) {
     app.log.note('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n', false, false);
   }
-  // clog.trace('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n');
-  // console.log('\n   Auto-Install Routes: (' + (auth ? 'private/auth' : 'public') + ')\n   Path: ' + routepath + '\n');
   readdirSyncRecursive(routepath, files);
 
   for (const file of files) {
@@ -91,16 +87,11 @@ export const autoRoute = (app: any, routepath: string, mountpoint: string, auth?
       const obj = require(fileName);
       let method: string;
       let url: string;
-      let admin: boolean;
-      let all: boolean;
 
       // generate routes based
       // on the exported methods
       for (const key in obj) {
         if (obj.hasOwnProperty(key)) {
-          admin = false;
-          all = false;
-          method = '';
           url = relfile;
           if (url.endsWith(routerSuffixJs)) {
             url = url.substring(url.length - routerSuffixJs.length, 0);
