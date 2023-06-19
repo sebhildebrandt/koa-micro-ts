@@ -13,20 +13,21 @@ exports.serve = void 0;
 const send = require("koa-send");
 const path_1 = require("path");
 function serve(root, opts) {
-    opts = opts || {};
+    var _a;
+    opts = opts !== null && opts !== void 0 ? opts : {};
     if (opts.index !== false)
-        opts.index = opts.index || 'index.html';
+        opts.index = (_a = opts.index) !== null && _a !== void 0 ? _a : 'index.html';
     opts.root = (0, path_1.resolve)(root);
     return function serve(ctx, next) {
         return __awaiter(this, void 0, void 0, function* () {
             let servePath = ctx.path;
             let mountPoint = '';
-            if (opts && opts.mountPoint) {
+            if (opts === null || opts === void 0 ? void 0 : opts.mountPoint) {
                 mountPoint = opts.mountPoint;
-                if (mountPoint[0] !== '/') {
+                if (!mountPoint.startsWith('/')) {
                     mountPoint = '/' + mountPoint;
                 }
-                if (mountPoint.slice(-1) === '/') {
+                if (mountPoint.endsWith('/')) {
                     mountPoint = mountPoint.slice(0, -1);
                 }
             }

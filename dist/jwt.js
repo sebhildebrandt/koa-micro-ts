@@ -51,6 +51,7 @@ const middleware = () => {
         algorithm: config.algorithm
     };
     const middleWare = (ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
         let token;
         let msg;
         let user;
@@ -81,7 +82,7 @@ const middleware = () => {
                 ctx.throw(401, 'No Authorization header found\n');
             }
         }
-        secret = (ctx.state && ctx.state.secret) ? ctx.state.secret : publicKey;
+        secret = ((_a = ctx.state) === null || _a === void 0 ? void 0 : _a.secret) ? ctx.state.secret : publicKey;
         if (!secret) {
             ctx.throw(401, 'Invalid secret\n');
         }
@@ -108,6 +109,7 @@ const sign = (claims, expiresIn) => {
     return jsonwebtoken_1.default.sign(claims, privateKey, { algorithm: config.algorithm, expiresIn });
 };
 const check = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const opts = {
         secret: publicKey,
         algorithm: config.algorithm
@@ -129,7 +131,7 @@ const check = (ctx) => __awaiter(void 0, void 0, void 0, function* () {
             }
         }
     }
-    secret = (ctx.state && ctx.state.secret) ? ctx.state.secret : publicKey;
+    secret = ((_a = ctx.state) === null || _a === void 0 ? void 0 : _a.secret) ? ctx.state.secret : publicKey;
     if (secret && token) {
         try {
             ctx.jwt = JWT.decode(token);

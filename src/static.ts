@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------------
 // Description:   static file serve wrapper (for koa)
 //                for Node.js
-// Copyright:     (c) 2022
+// Copyright:     (c) 2023
 // Author:        Sebastian Hildebrandt
 // ----------------------------------------------------------------------------------
 // Contributors:  -
@@ -16,17 +16,17 @@ import send = require("koa-send");
 import { resolve } from 'path';
 
 function serve(root: string, opts?: StaticServeOptions) {
-  opts = opts || {};
-  if (opts.index !== false) opts.index = opts.index || 'index.html';
+  opts = opts ?? {};
+  if (opts.index !== false) opts.index = opts.index ?? 'index.html';
   opts.root = resolve(root);
 
   return async function serve(ctx: any, next: any) {
     let servePath = ctx.path;
     let mountPoint = '';
-    if (opts && opts.mountPoint) {
+    if (opts?.mountPoint) {
       mountPoint = opts.mountPoint;
-      if (mountPoint[0] !== '/') { mountPoint = '/' + mountPoint; }
-      if (mountPoint.slice(-1) === '/') { mountPoint = mountPoint.slice(0, -1); }
+      if (!mountPoint.startsWith('/')) { mountPoint = '/' + mountPoint; }
+      if (mountPoint.endsWith('/')) { mountPoint = mountPoint.slice(0, -1); }
     }
     let done = false;
 

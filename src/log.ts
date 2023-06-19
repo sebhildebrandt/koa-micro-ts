@@ -5,7 +5,7 @@
 // ----------------------------------------------------------------------------------
 // Description:   console.log (color) library - configurable output levels
 //                for Node.js
-// Copyright:     (c) 2022
+// Copyright:     (c) 2023
 // Author:        Sebastian Hildebrandt
 // ----------------------------------------------------------------------------------
 // Contributors:  -
@@ -37,7 +37,7 @@
 import util from 'util';
 import readline from 'readline';
 import { mkdirSync, createWriteStream, statSync, rmSync, renameSync, existsSync, appendFileSync, createReadStream } from 'fs';
-import { parse, join } from 'path';
+import { join } from 'path';
 import * as zlib from 'zlib';
 
 const Reset = '\x1b[0m';
@@ -212,7 +212,6 @@ class Logger {
       } catch {
         this.logSize = 0;
       }
-      // this.fileStream = createWriteStream(this.logFileNameFull, { flags: 'a', start: 1000 });
     }
   }
 
@@ -255,7 +254,6 @@ class Logger {
       const logMsg = this.formatMessage(8, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.logSize += logMsg.length + 2;
-        // this.fileStream.write(logMsg);
         appendFileSync(this.logFileNameFull, logMsg);
         this.checkLogRotate();
       } else {
@@ -271,7 +269,6 @@ class Logger {
       const logMsg = this.formatMessage(7, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.logSize += logMsg.length + 2;
-        // this.fileStream.write(logMsg);
         appendFileSync(this.logFileNameFull, logMsg);
 
         this.checkLogRotate();
@@ -288,7 +285,6 @@ class Logger {
       const logMsg = this.formatMessage(6, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.logSize += logMsg.length + 2;
-        // this.fileStream.write(logMsg);
         appendFileSync(this.logFileNameFull, logMsg);
 
         this.checkLogRotate();
@@ -305,7 +301,6 @@ class Logger {
       const logMsg = this.formatMessage(5, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.logSize += logMsg.length + 2;
-        // this.fileStream.write(logMsg);
         appendFileSync(this.logFileNameFull, logMsg);
 
         this.checkLogRotate();
@@ -322,7 +317,6 @@ class Logger {
       const logMsg = this.formatMessage(4, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.logSize += logMsg.length + 2;
-        // this.fileStream.write(logMsg);
         appendFileSync(this.logFileNameFull, logMsg);
 
         this.checkLogRotate();
@@ -339,7 +333,6 @@ class Logger {
       const logMsg = this.formatMessage(3, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.logSize += logMsg.length + 2;
-        // this.fileStream.write(logMsg);
         appendFileSync(this.logFileNameFull, logMsg);
 
         this.checkLogRotate();
@@ -356,7 +349,6 @@ class Logger {
       const logMsg = this.formatMessage(2, forceTimestamp, forceLogtype, msg || '');
       if (this.logToFile) {
         this.logSize += logMsg.length + 2;
-        // this.fileStream.write(logMsg);
         appendFileSync(this.logFileNameFull, logMsg);
 
         this.checkLogRotate();
@@ -370,10 +362,9 @@ class Logger {
     if (this.levels.error) {
       forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
       forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
-      const logMsg = this.formatMessage(1, forceTimestamp, forceLogtype, msg || '');
+      const logMsg = this.formatMessage(1, forceTimestamp, forceLogtype, msg ?? '');
       if (this.logToFile) {
         this.logSize += logMsg.length + 2;
-        // this.fileStream.write(logMsg);
         appendFileSync(this.logFileNameFull, logMsg);
 
         this.checkLogRotate();

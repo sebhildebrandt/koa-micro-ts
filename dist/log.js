@@ -260,7 +260,7 @@ class Logger {
             if (this.levels.error) {
                 forceLogtype = forceLogtype === undefined ? this.logType : forceLogtype;
                 forceTimestamp = forceTimestamp === undefined ? this.logTimestamp : forceTimestamp;
-                const logMsg = this.formatMessage(1, forceTimestamp, forceLogtype, msg || '');
+                const logMsg = this.formatMessage(1, forceTimestamp, forceLogtype, msg !== null && msg !== void 0 ? msg : '');
                 if (this.logToFile) {
                     this.logSize += logMsg.length + 2;
                     (0, fs_1.appendFileSync)(this.logFileNameFull, logMsg);

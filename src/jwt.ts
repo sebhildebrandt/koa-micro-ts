@@ -5,7 +5,7 @@
 // ----------------------------------------------------------------------------------
 // Description:   jsonwebtoken wrapper (for koa)
 //                for Node.js
-// Copyright:     (c) 2022
+// Copyright:     (c) 2023
 // Author:        Sebastian Hildebrandt
 // ----------------------------------------------------------------------------------
 // Contributors:  -
@@ -25,7 +25,6 @@
 // ==================================================================================
 
 import _jwt from 'jsonwebtoken';
-import { join } from 'path';
 import { readFileSync } from 'fs';
 
 let publicKey: any;
@@ -104,7 +103,7 @@ const middleware = () => {
       }
     }
 
-    secret = (ctx.state && ctx.state.secret) ? ctx.state.secret : publicKey;
+    secret = (ctx.state?.secret) ? ctx.state.secret : publicKey;
     if (!secret) {
       ctx.throw(401, 'Invalid secret\n');
     }
@@ -125,8 +124,6 @@ const middleware = () => {
       ctx.throw(401, msg);
     }
   };
-
-  // middleWare.unless = unless;
 
   return middleWare;
 };
@@ -161,7 +158,7 @@ const check = async (ctx: any) => {
     }
   }
 
-  secret = (ctx.state && ctx.state.secret) ? ctx.state.secret : publicKey;
+  secret = (ctx.state?.secret) ? ctx.state.secret : publicKey;
   if (secret && token) {
     try {
       ctx.jwt = JWT.decode(token);
