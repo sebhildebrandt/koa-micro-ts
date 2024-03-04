@@ -61,17 +61,17 @@ Here is an example how you can use `koa-micro-ts`. Depending on your use case mo
 
 ```ts
 import { app, Application } from 'koa-micro-ts';
-import * as path from 'path';
+import { join } from 'path';
 
 // setting variables only for demo purposes.
 // You can set this as environment variables
 process.env.APP_NAME = 'micro-service';
-process.env.VERSION = 'micro-version';
+process.env.VERSION = '1.0.0';
 
 // enable body parser (with desired options)
 app.bodyParser({ multipart: true })
 
-// enable helpth endpoint (defaults to /health)
+// enable helpth endpoint (defaults to  tow endpoints /live and /ready)
 app.health();
 
 // enable helmet (optional)
@@ -87,7 +87,7 @@ app.parseArgs();
 app.catchErrors();
 
 // set up static server (optional)
-app.static(path.join(__dirname, '/public'));
+app.static(join(__dirname, '/public'));
 
 // using router
 const router: any = app.newRouter();
@@ -101,6 +101,7 @@ app.useRouter(router);
 // enable gracefull shutdown (optional)
 app.gracefulShutdown();
 
+app.ready = true;   // /health /ready endpoint now returns true
 app.start(3000);
 ```
 

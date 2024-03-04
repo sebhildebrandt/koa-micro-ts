@@ -70,7 +70,8 @@ function readyPromise(): Promise<boolean> {
   })
 };
 
-app.health('/alive', {
+app.health({
+  readyPath: '/readyness',
   isReady: readyPromise
 })
 ```
@@ -80,8 +81,23 @@ app.health('/alive', {
 If you do not set `APP_NAME` and `APP_VERSION` (which are displayed in the helth endpoint results) through ENV variables, they can be passed to the options:
 
 ```
-app.health('/alive', {
+app.health({
+  livePath: '/liveness',
+  readyPath: '/readyness',
   name: 'APP_NAME',
   version: 'APP_VERSION'
 })
 ```
+
+### All conficuration options
+
+```
+app.health({
+  livePath: '/liveness',
+  readyPath: '/readyness',
+  isReady: readyPromise,    // promise that returns true or false
+  name: 'APP_NAME',
+  version: 'APP_VERSION'
+})
+```
+
