@@ -38,6 +38,9 @@ function:
 async app.autoRoute(path.join(__dirname, '/routes'), '/api/v1');
 ```
 
+Have a look at `examples/src/example.ts` (especially line 95) and the directory
+`examples/src/routes` for a full example how to call .
+
 But how to set up the different methods (GET, PUT, DELETE, POST) and handle
 query params and body data? In the following chapter you see all examples:
 

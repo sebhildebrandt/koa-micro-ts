@@ -1,4 +1,5 @@
 # koa-micro-ts
+
 Microservice framework based on koa
 
 ```
@@ -9,23 +10,28 @@ Microservice framework based on koa
   |_|\_\___/ \__,_|     |_| |_| |_|_|\___|_|  \___/       \__|___/
 
      Koa TypeScript Microservice Framework - batteries included
-
 ```
 
-  [![NPM Version][npm-image]][npm-url]
-  [![NPM Downloads][downloads-image]][downloads-url]
-  [![Git Issues][issues-img]][issues-url]
-  [![Closed Issues][closed-issues-img]][closed-issues-url]
-  [![Caretaker][caretaker-image]][caretaker-url]
-  [![MIT license][license-img]][license-url]
+[![NPM Version][npm-image]][npm-url]
+[![NPM Downloads][downloads-image]][downloads-url]
+[![Git Issues][issues-img]][issues-url]
+[![Closed Issues][closed-issues-img]][closed-issues-url]
+[![Caretaker][caretaker-image]][caretaker-url]
+[![MIT license][license-img]][license-url]
 
 ## Quick Start
 
-This package provides a minimalistic, simple to use, [koa][koa-url] based micro service template. A few common used middleware packages are already included. To keep it small as possible, we added some own tiny libraries like CORS, JWT-wrapper, auto routes, logger, validators, APIdoc, API-History Fallback. Included middleware/libs:
+This package provides a minimalistic, simple to use, [koa][koa-url] based micro
+service template. A few common used middleware packages are already included. To
+keep it small as possible, we added some own tiny libraries like CORS,
+JWT-wrapper, auto routes, logger, validators, APIdoc, API-History Fallback.
+Included middleware/libs:
 
-- body parser (now configurable since version 3) - detailed docs for all bodyparser options [BODYPARSER.md](docs/BODYPARSER.md)
+- body parser (now configurable since version 3) - detailed docs for all
+  bodyparser options [BODYPARSER.md](docs/BODYPARSER.md)
 - basic router
-- auto router - smart directory based auto-generation of routes - detailed docs [AUTOROUTES.md](docs/AUTOROUTES.md)
+- auto router - smart directory based auto-generation of routes - detailed docs
+  [AUTOROUTES.md](docs/AUTOROUTES.md)
 - CORS - detailed docs [CORS.md](docs/CORS.md)
 - JWT - detailed docs [JWT.md](docs/JWT.md)
 - static files serving - detailed docs [STATIC.md](docs/STATIC.md)
@@ -39,11 +45,15 @@ This package provides a minimalistic, simple to use, [koa][koa-url] based micro 
 - catch errors - detailed docs [CATCHERRORS.md](docs/CATCHERRORS.md)
 - integrated API doc - detailed docs [APIDOC.md](docs/APIDOC.md)
 
-Most of these modules can be enabled with just **one line of code**. Configuration is super simple and lets you create your micro service within minutes.
+Most of these modules can be enabled with just **one line of code**.
+Configuration is super simple and lets you create your micro service within
+minutes.
 
 ## Version 3 - Breaking Change
 
-`app.bodyParser()` needs to be called now. Please call this before adding any routes. This has a configuration object, detailed documentation on body parser options can be found here [BODYPARSER.md](docs/BODYPARSER.md)
+`app.bodyParser()` needs to be called now. Please call this before adding any
+routes. This has a configuration object, detailed documentation on body parser
+options can be found here [BODYPARSER.md](docs/BODYPARSER.md)
 
 ```
 app.bodyParser({ multipart: true })
@@ -57,19 +67,20 @@ $ npm install koa-micro-ts
 
 ## Usage
 
-Here is an example how you can use `koa-micro-ts`. Depending on your use case most of the things here are optional and only required if you want to use them:
+Here is an example how you can use `koa-micro-ts`. Depending on your use case
+most of the things here are optional and only required if you want to use them:
 
 ```ts
-import { app, Application } from 'koa-micro-ts';
-import { join } from 'path';
+import { app, Application } from "koa-micro-ts";
+import { join } from "path";
 
 // setting variables only for demo purposes.
 // You can set this as environment variables
-process.env.APP_NAME = 'micro-service';
-process.env.VERSION = '1.0.0';
+process.env.APP_NAME = "micro-service";
+process.env.VERSION = "1.0.0";
 
 // enable body parser (with desired options)
-app.bodyParser({ multipart: true })
+app.bodyParser({ multipart: true });
 
 // enable helpth endpoint (defaults to  tow endpoints /live and /ready)
 app.health();
@@ -87,13 +98,13 @@ app.parseArgs();
 app.catchErrors();
 
 // set up static server (optional)
-app.static(join(__dirname, '/public'));
+app.static(join(__dirname, "/public"));
 
 // using router
 const router: any = app.newRouter();
 
-router.get('/route', (ctx: Application.Context, next: Application.Next) => {
-  ctx.body = 'OK from static route';
+router.get("/route", (ctx: Application.Context, next: Application.Next) => {
+  ctx.body = "OK from static route";
 });
 
 app.useRouter(router);
@@ -101,22 +112,32 @@ app.useRouter(router);
 // enable gracefull shutdown (optional)
 app.gracefulShutdown();
 
-app.ready = true;   // /health /ready endpoint now returns true
+app.ready = true; // /health /ready endpoint now returns true
 app.start(3000);
 ```
 
 Have a look at the function reference [APP.md](docs/APP.md) for all options
+
 ### Auto-Routes
 
 This is one of the smart features of this package:
 
-`autoRoute` allows you to just write your API endpoints and place them into a directory structure. When calling `app.autoRoute(...directory..., mountpoint)`, this directory will be parsed recursivly and all TypeScript files with extension `.route.ts` are added as routes. All routes then will be mounted to the given `mountpoint`. Your API structure then matches exactly your directory structure. This makes writing and maintaining your API endpoints super simple.
+`autoRoute` allows you to just write your API endpoints and place them into a
+directory structure. When calling
+`await app.autoRoute(...directory..., mountpoint)`, this directory will be
+parsed recursivly and all TypeScript files with extension `.route.ts` are added
+as routes. All routes then will be mounted to the given `mountpoint`. Your API
+structure then matches exactly your directory structure. This makes writing and
+maintaining your API endpoints super simple.
 
-Detailed docs with examples can be found here: [AUTOROUTES.md](docs/AUTOROUTES.md)
+Detailed docs with examples can be found here:
+[AUTOROUTES.md](docs/AUTOROUTES.md)
 
 ### Dev / Production Mode
 
-The `app` instance has a `development` property that is set to true when providing a `--dev` or `--development` argument during startup or if the environment variable `DEVELOPMENT` exists.
+The `app` instance has a `development` property that is set to true when
+providing a `--dev` or `--development` argument during startup or if the
+environment variable `DEVELOPMENT` exists.
 
 You can use this property e.g. like this:
 
@@ -125,6 +146,7 @@ if (app.development) {
   ...
 }
 ```
+
 ### Examples
 
 The example in the path `examples` shows how to use `koa-micro-ts` and
@@ -149,17 +171,21 @@ npm run example
 Now try the following routes in your browser:
 
 Static Page:
+
 - `http://localhost:3000/`
 
 Standard Routes
+
 - `http://localhost:3000/route`
 - `http://localhost:3000/route2`
 
 Health Routes
+
 - `http://localhost:3000/liveness`
 - `http://localhost:3000/readyness`
 
 Routes from autoRouter
+
 - `http://localhost:3000/api/v1/`
 - `http://localhost:3000/api/v1/hello/`
 - `http://localhost:3000/api/v1/error/`
@@ -167,7 +193,8 @@ Routes from autoRouter
 
 ## Advanced usage
 
-As `koa-micro-ts` uses some external packages, you can also refer to the documentation of the used packages to see their options:
+As `koa-micro-ts` uses some external packages, you can also refer to the
+documentation of the used packages to see their options:
 
 - [koa-router][koa-router-url]
 - [http-graceful-shutdown][gracefulShutdown-url]
@@ -175,38 +202,37 @@ As `koa-micro-ts` uses some external packages, you can also refer to the documen
 
 ## License [![MIT license][license-img]][license-url]
 
->The [`MIT`][license-url] License (MIT)
+> The [`MIT`][license-url] License (MIT)
 >
->Copyright &copy; 2023 Sebastian Hildebrandt, [+innovations](http://www.plus-innovations.com).
+> Copyright &copy; 2023 Sebastian Hildebrandt,
+> [+innovations](http://www.plus-innovations.com).
 >
->Permission is hereby granted, free of charge, to any person obtaining a copy
->of this software and associated documentation files (the "Software"), to deal
->in the Software without restriction, including without limitation the rights
->to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
->copies of the Software, and to permit persons to whom the Software is
->furnished to do so, subject to the following conditions:
+> Permission is hereby granted, free of charge, to any person obtaining a copy
+> of this software and associated documentation files (the "Software"), to deal
+> in the Software without restriction, including without limitation the rights
+> to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+> copies of the Software, and to permit persons to whom the Software is
+> furnished to do so, subject to the following conditions:
 >
->The above copyright notice and this permission notice shall be included in
->all copies or substantial portions of the Software.
+> The above copyright notice and this permission notice shall be included in all
+> copies or substantial portions of the Software.
 >
->THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
->IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
->FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
->AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
->LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
->OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
->THE SOFTWARE.
+> THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+> AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+> LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+> OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+> SOFTWARE.
 >
->Further details see [LICENSE](LICENSE) file.
+> Further details see [LICENSE](LICENSE) file.
 
 [license-url]: https://github.com/sebhildebrandt/systeminformation/blob/master/LICENSE
 [license-img]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [koa-url]: https://github.com/koajs/koa
-
 [gracefulShutdown-url]: https://github.com/sebhildebrandt/http-graceful-shutdown
 [koa-router-url]: https://github.com/koajs/router
 [koa-helmet-url]: https://github.com/venables/koa-helmet
-
 [npm-image]: https://img.shields.io/npm/v/koa-micro-ts.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/koa-micro-ts
 [downloads-image]: https://img.shields.io/npm/dm/koa-micro-ts.svg?style=flat-square
