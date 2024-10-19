@@ -1,5 +1,6 @@
 "use strict";
-module.exports = (alias) => {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = (alias) => {
     function isNumeric(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     }

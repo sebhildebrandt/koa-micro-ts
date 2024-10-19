@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -81,7 +72,7 @@ class KoaMicro extends koa_1.default {
                 status.resultcode = 200;
                 ctx.body = status;
             });
-            router.get(options.readyPath, (ctx) => __awaiter(this, void 0, void 0, function* () {
+            router.get(options.readyPath, async (ctx) => {
                 const status = {};
                 if (process.env.APP_NAME) {
                     status.name = process.env.APP_NAME;
@@ -101,7 +92,7 @@ class KoaMicro extends koa_1.default {
                 if (options === null || options === void 0 ? void 0 : options.isReady) {
                     let res = false;
                     try {
-                        res = yield options.isReady();
+                        res = await options.isReady();
                     }
                     catch (e) {
                         res = false;
@@ -117,7 +108,7 @@ class KoaMicro extends koa_1.default {
                 }
                 status.resultcode = ctx.status;
                 ctx.body = status;
-            }));
+            });
             this
                 .use(router.routes())
                 .use(router.allowedMethods());
@@ -146,10 +137,10 @@ class KoaMicro extends koa_1.default {
         this.start = (port) => {
             if (this.apiDoc) {
                 const router = new router_1.default();
-                router.get(this.apiDoc, (ctx) => __awaiter(this, void 0, void 0, function* () {
+                router.get(this.apiDoc, async (ctx) => {
                     ctx.status = 200;
                     ctx.body = (0, apiDoc_1.createHtml)(this.apiDocObj);
-                }));
+                });
                 this
                     .use(router.routes())
                     .use(router.allowedMethods());
@@ -159,15 +150,15 @@ class KoaMicro extends koa_1.default {
         this.log = new log_1.Logger({
             level: log_1.LogLevels.none
         });
-        this.autoRoute = (routepath, mountpoint, auth) => __awaiter(this, void 0, void 0, function* () {
+        this.autoRoute = async (routepath, mountpoint, auth) => {
             mountpoint = mountpoint !== null && mountpoint !== void 0 ? mountpoint : '';
             auth = auth !== null && auth !== void 0 ? auth : false;
-            yield (0, autoRoute_1.autoRoute)(this, routepath, mountpoint, auth);
-        });
+            await (0, autoRoute_1.autoRoute)(this, routepath, mountpoint, auth);
+        };
         this.args = {};
-        this.catchErrorsFn = (ctx, next) => __awaiter(this, void 0, void 0, function* () {
+        this.catchErrorsFn = async (ctx, next) => {
             try {
-                yield next();
+                await next();
             }
             catch (err) {
                 if (err === null) {
@@ -187,7 +178,7 @@ class KoaMicro extends koa_1.default {
                     description
                 });
             }
-        });
+        };
         this.development = ((_a = process.env) === null || _a === void 0 ? void 0 : _a.DEVELOPMENT) ? true : false;
         this.staticPath = '';
     }
@@ -210,13 +201,13 @@ class KoaMicro extends koa_1.default {
             }
             return result;
         }
-        return (ctx, next) => __awaiter(this, void 0, void 0, function* () {
+        return async (ctx, next) => {
             const start = ctx[Symbol.for('request-received.startTime')]
                 ? ctx[Symbol.for('request-received.startTime')].getTime()
                 : Date.now();
             try {
                 this.log.http(`  <-- ${ctx.method} ${ctx.originalUrl}`);
-                yield next();
+                await next();
                 if (ctx.status < 400) {
                     this.log.http(`  --> ${ctx.method} ${ctx.originalUrl} ${ctx.status || 500} ${time(start)} ${len(ctx)}`);
                 }
@@ -228,7 +219,7 @@ class KoaMicro extends koa_1.default {
                 this.log.error(`  xxx ${ctx.method} ${ctx.originalUrl} ${err.status || 500} ${time(start)}`);
                 throw err;
             }
-        });
+        };
     }
     apiHistoryFallbackMiddleware(options) {
         const staticPath = this.staticPath;

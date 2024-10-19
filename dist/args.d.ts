@@ -1,2 +1,2 @@
 declare const _default: (alias?: any) => any;
-export = _default;
+export default _default;

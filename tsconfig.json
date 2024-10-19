@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "ES2017",
+    "module": "node16",
     "sourceMap": true,
     "outDir": "./dist",
     "strict": true,
     "noImplicitAny": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node16",
     "removeComments": true,
     "declaration": true,
     "esModuleInterop": true

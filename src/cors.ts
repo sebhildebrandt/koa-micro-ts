@@ -24,7 +24,7 @@
 // License:       MIT
 // ==================================================================================
 
-export = (options: any = {}) => {
+export default (options: any = {}) => {
   const defaultOptions: any = {
     allowMethods: ['GET', 'PUT', 'POST', 'DELETE', 'HEAD'],
     credentials: true,

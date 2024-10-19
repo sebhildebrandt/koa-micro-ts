@@ -11,9 +11,9 @@
 // License:       MIT
 // ==================================================================================
 
-import { StaticServeOptions } from "./app.interface";
-import send = require("koa-send");
 import { resolve } from 'path';
+import { StaticServeOptions } from "./app.interface";
+const send = require("koa-send");
 
 function serve(root: string, opts?: StaticServeOptions) {
   opts = opts ?? {};

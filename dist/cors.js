@@ -1,14 +1,6 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-module.exports = (options = {}) => {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = (options = {}) => {
     const defaultOptions = {
         allowMethods: ['GET', 'PUT', 'POST', 'DELETE', 'HEAD'],
         credentials: true,
@@ -19,7 +11,7 @@ module.exports = (options = {}) => {
             options[key] = defaultOptions[key];
         }
     }
-    return (ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
+    return async (ctx, next) => {
         let origin;
         if (typeof options.origin === 'function') {
             origin = options.origin(ctx);
@@ -28,7 +20,7 @@ module.exports = (options = {}) => {
             origin = options.origin || ctx.get('Access-Control-Allow-Origin') || '*';
         }
         if (!origin) {
-            return yield next();
+            return await next();
         }
         ctx.set('Access-Control-Allow-Methods', options.allowMethods.join(','));
         ctx.set('Access-Control-Allow-Origin', origin);
@@ -51,8 +43,8 @@ module.exports = (options = {}) => {
             ctx.status = 204;
         }
         else {
-            yield next();
+            await next();
         }
-    });
+    };
 };
 //# sourceMappingURL=cors.js.map

@@ -19,7 +19,7 @@
 // License:       MIT
 // ==================================================================================
 
-export = (alias?: any) => {
+export default (alias?: any) => {
   function isNumeric(n: any) {
     return !isNaN(parseFloat(n)) && isFinite(n);
   }

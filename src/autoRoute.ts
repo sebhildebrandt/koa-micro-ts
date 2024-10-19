@@ -93,111 +93,111 @@ export const autoRoute = async (app: any, routepath: string, mountpoint: string,
       // generate routes based
       // on the exported methods
       for (const key in obj) {
-        if (obj.hasOwnProperty(key)) {
-          url = relfile;
-          if (url.endsWith(routerSuffixJs)) {
-            url = url.substring(url.length - routerSuffixJs.length, 0);
-          }
-          if (url.endsWith(routerSuffixTs)) {
-            url = url.substring(url.length - routerSuffixTs.length, 0);
-          }
-          if ('index' === url.substr(url.length - 5)) {
-            url = url.substring(url.length - 5, 0);
-          }
+        // if (obj.hasOwnProperty(key)) {
+        url = relfile;
+        if (url.endsWith(routerSuffixJs)) {
+          url = url.substring(url.length - routerSuffixJs.length, 0);
+        }
+        if (url.endsWith(routerSuffixTs)) {
+          url = url.substring(url.length - routerSuffixTs.length, 0);
+        }
+        if ('index' === url.substr(url.length - 5)) {
+          url = url.substring(url.length - 5, 0);
+        }
 
-          // "reserved" exports
-          // --if (~['name', 'prefix', 'engine', 'before', 'hidden'].indexOf(key)) continue;
+        // "reserved" exports
+        // --if (~['name', 'prefix', 'engine', 'before', 'hidden'].indexOf(key)) continue;
 
-          // route exports
-          switch (key) {
-            case 'list':
-              method = 'get';
-              break;
-            case 'get':
-              method = 'get';
-              url = join(url, '/get');
-              break;
-            case 'detail':
-              method = 'get';
-              url = join(url, '/:id');
-              break;
-            case 'detail_detail':
-              method = 'get';
-              url = join(url, '/:id/:id2');
-              break;
-            case 'detail_detail_detail':
-              method = 'get';
-              url = join(url, '/:id/:id2/:id3');
-              break;
-            case 'index':
-              method = 'get';
-              break;
-            case 'star':
-              method = 'get';
-              url = join(url, '/*');
-              break;
-            case 'set':
-              method = 'get';
-              url = join(url, '/set');
-              break;
-            case 'post':
-              method = 'post';
-              break;
-            case 'post_detail':
-              method = 'post';
-              url = join(url, '/:id');
-              break;
-            case 'post_detail_detail':
-              method = 'post';
-              url = join(url, '/:id/:id2');
-              break;
-            case 'post_detail_detail_detail':
-              method = 'post';
-              url = join(url, '/:id/:id2/:id3');
-              break;
-            case 'put':
-              method = 'put';
-              break;
-            case 'put_detail':
-              method = 'put';
-              url = join(url, '/:id');
-              break;
-            case 'put_detail_detail':
-              method = 'put';
-              url = join(url, '/:id/:id2');
-              break;
-            case 'put_detail_detail_detail':
-              method = 'put';
-              url = join(url, '/:id/:id2/:id3');
-              break;
-            case 'delete_detail':
-              method = 'delete';
-              url = join(url, '/:id');
-              break;
-            case 'delete_detail_detail':
-              method = 'delete';
-              url = join(url, '/:id/:id2');
-              break;
-            case 'delete_detail_detail_detail':
-              method = 'delete';
-              url = join(url, '/:id/:id2/:id3');
-              break;
-            default:
-              // throw new Error('unrecognized route: ' + relfile + '.' + key);
-              method = '';
-              url = '';
+        // route exports
+        switch (key) {
+          case 'list':
+            method = 'get';
+            break;
+          case 'get':
+            method = 'get';
+            url = join(url, '/get');
+            break;
+          case 'detail':
+            method = 'get';
+            url = join(url, '/:id');
+            break;
+          case 'detail_detail':
+            method = 'get';
+            url = join(url, '/:id/:id2');
+            break;
+          case 'detail_detail_detail':
+            method = 'get';
+            url = join(url, '/:id/:id2/:id3');
+            break;
+          case 'index':
+            method = 'get';
+            break;
+          case 'star':
+            method = 'get';
+            url = join(url, '/*');
+            break;
+          case 'set':
+            method = 'get';
+            url = join(url, '/set');
+            break;
+          case 'post':
+            method = 'post';
+            break;
+          case 'post_detail':
+            method = 'post';
+            url = join(url, '/:id');
+            break;
+          case 'post_detail_detail':
+            method = 'post';
+            url = join(url, '/:id/:id2');
+            break;
+          case 'post_detail_detail_detail':
+            method = 'post';
+            url = join(url, '/:id/:id2/:id3');
+            break;
+          case 'put':
+            method = 'put';
+            break;
+          case 'put_detail':
+            method = 'put';
+            url = join(url, '/:id');
+            break;
+          case 'put_detail_detail':
+            method = 'put';
+            url = join(url, '/:id/:id2');
+            break;
+          case 'put_detail_detail_detail':
+            method = 'put';
+            url = join(url, '/:id/:id2/:id3');
+            break;
+          case 'delete_detail':
+            method = 'delete';
+            url = join(url, '/:id');
+            break;
+          case 'delete_detail_detail':
+            method = 'delete';
+            url = join(url, '/:id/:id2');
+            break;
+          case 'delete_detail_detail_detail':
+            method = 'delete';
+            url = join(url, '/:id/:id2/:id3');
+            break;
+          default:
+            // throw new Error('unrecognized route: ' + relfile + '.' + key);
+            method = '';
+            url = '';
+        }
+        if (method) {
+          url = url.replace(/\\/g, "/");;
+          if (auth) {
+            routes[method](url, jwt.middleware(), obj[key]);
+          } else {
+            routes[method](url, obj[key]);
           }
-          if (method) {
-            url = url.replace(/\\/g, "/");;
-            if (auth) {
-              routes[method](url, jwt.middleware(), obj[key]);
-            } else {
-              routes[method](url, obj[key]);
-            }
-            if (app && app.log && app.log.level && app.log.level === LogLevels.all) {
-              app.log.note('       ' + mountpoint + url + '   ---   ' + method + ' - Function: ' + key, false, false);
-            }
+          if (app && app.log && app.log.level && app.log.level === LogLevels.all) {
+            app.log.note('       ' + mountpoint + url + '   ---   ' + method + ' - Function: ' + key, false, false);
           }
+          // }
         }
       }
     }
