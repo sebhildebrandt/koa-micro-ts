@@ -49,6 +49,22 @@ Most of these modules can be enabled with just **one line of code**.
 Configuration is super simple and lets you create your micro service within
 minutes.
 
+## Version 4 - Breaking Change
+
+`app.autoRoute()` is now an async function.
+
+So you need to call it within an async/await block ... here an example:
+
+```
+const main = async () => {
+  await app.autoRoute(path.join(__dirname, '/routes'), '/api/v1');
+  ...
+  app.start(3000);
+}
+
+main()
+```
+
 ## Version 3 - Breaking Change
 
 `app.bodyParser()` needs to be called now. Please call this before adding any
