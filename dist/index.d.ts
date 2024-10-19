@@ -1,10 +1,10 @@
 /// <reference types="koa__router" />
 import Router from '@koa/router';
-import { HttpStatusCode } from './httpStatus';
-import { KoaErrors, BodyParserOptions, FallbackOptions, StaticServeOptions } from './app.interface';
-import { Logger, LogLevels, iLogOptions } from './log';
-import validators from './validators';
 import Application from 'koa';
+import { BodyParserOptions, FallbackOptions, KoaErrors, StaticServeOptions } from './app.interface';
+import { HttpStatusCode } from './httpStatus';
+import { iLogOptions, Logger, LogLevels } from './log';
+import validators from './validators';
 interface HealthOptions {
     livePath?: string;
     readyPath?: string;
@@ -37,7 +37,7 @@ declare class KoaMicro extends Application {
     };
     start: (port: number) => void;
     log: Logger;
-    autoRoute: (routepath: string, mountpoint?: string, auth?: boolean) => void;
+    autoRoute: (routepath: string, mountpoint?: string, auth?: boolean) => Promise<void>;
     logger(options: iLogOptions): Logger;
     args: any;
     development: boolean;
@@ -55,4 +55,4 @@ declare namespace KoaMicro {
     }
 }
 declare const app: KoaMicro;
-export { app, LogLevels, validators, Application, KoaMicro, HttpStatusCode, KoaErrors };
+export { app, Application, HttpStatusCode, KoaErrors, KoaMicro, LogLevels, validators };

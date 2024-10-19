@@ -11,23 +11,23 @@
 // index.js - version 3.x
 // --------------------------------------------------------------------
 
-import koaBody from 'koa-body';
-import gracefulShutdown, { Options } from 'http-graceful-shutdown';
-import helmet from 'koa-helmet';
 import Router from '@koa/router';
-import { serve } from './static';
-import { HttpStatusCode } from './httpStatus';
-import { KoaErrors, BodyParserOptions, FallbackOptions, StaticServeOptions } from './app.interface';
-import cors from './cors';
-import { Logger, LogLevels, iLogOptions } from './log';
-import parseArgs from './args';
-import jwt from './jwt';
-import { autoRoute } from './autoRoute';
-import validators from './validators';
-import Application from 'koa';
-import { healthDocObj, createHtml, mergeDeep } from './apiDoc';
-import { join } from 'path';
 import { createReadStream } from 'fs';
+import gracefulShutdown from 'http-graceful-shutdown';
+import Application from 'koa';
+import koaBody from 'koa-body';
+import helmet from 'koa-helmet';
+import { join } from 'path';
+import { createHtml, healthDocObj, mergeDeep } from './apiDoc';
+import { BodyParserOptions, FallbackOptions, KoaErrors, StaticServeOptions } from './app.interface';
+import parseArgs from './args';
+import { autoRoute } from './autoRoute';
+import cors from './cors';
+import { HttpStatusCode } from './httpStatus';
+import jwt from './jwt';
+import { iLogOptions, Logger, LogLevels } from './log';
+import { serve } from './static';
+import validators from './validators';
 
 
 interface HealthOptions { livePath?: string, readyPath?: string, isReady?: any, name?: string, version?: string; };
@@ -158,10 +158,10 @@ class KoaMicro extends Application {
     level: LogLevels.none
   });
 
-  autoRoute = (routepath: string, mountpoint?: string, auth?: boolean) => {
+  autoRoute = async (routepath: string, mountpoint?: string, auth?: boolean) => {
     mountpoint = mountpoint ?? '';
     auth = auth ?? false;
-    autoRoute(this, routepath, mountpoint, auth);
+    await autoRoute(this, routepath, mountpoint, auth);
   };
 
   logger(options: iLogOptions) {
@@ -300,11 +300,8 @@ namespace KoaMicro {
 const app = new KoaMicro();
 
 export {
-  app,
-  LogLevels,
-  validators,
-  Application,
-  KoaMicro,
-  HttpStatusCode,
-  KoaErrors
+  app, Application, HttpStatusCode,
+  KoaErrors, KoaMicro, LogLevels,
+  validators
 };
+

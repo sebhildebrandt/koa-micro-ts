@@ -1,5 +1,5 @@
-import { app, Application, LogLevels } from '../../dist/index';
 import * as path from 'path';
+import { app, Application, LogLevels } from '../../dist/index.js';
 
 // setting variables only for demo purposes.
 // You can set this as environment variables
@@ -84,30 +84,35 @@ router.get('/route2', (ctx: Application.Context, next: Application.Next) => {
 
 app.useRouter(router);
 
-// using autoRoute: use all routes in path /routes and mount it to /api/v1
-app.autoRoute(path.join(__dirname, '/routes'), '/api/v1');
-
-
-// set up static server (optional)
-app.static(path.join(__dirname, '/public'));
-app.apiHistoryFallback();
-
 // get command line arguments with alias (example) - see docs
 app.parseArgs({
   v: 'verbose'             // alias - alternative arg
 });
 
-// gracefull shutdown (optional)
-app.gracefulShutdown({
-  finally: () => {
-    console.log();
-    app.log.info('Server gracefully terminated');
-  }
-});
 
-app.start(3000);
-app.log.info('Server started');
-app.log.note('---------------------------------');
-app.log.note('Port: 3000');
-app.log.note('Mode: ' + (app.development ? 'Development' : 'Production'));
-app.log.note('---------------------------------');
+// using autoRoute: use all routes in path /routes and mount it to /api/v1
+const main = async () => {
+  await app.autoRoute(path.join(__dirname, '/routes'), '/api/v1');
+
+  // set up static server (optional)
+  app.static(path.join(__dirname, '/public'));
+  app.apiHistoryFallback({ ignore: ['/api'] });
+
+  // gracefull shutdown (optional)
+  app.gracefulShutdown({
+    finally: () => {
+      console.log();
+      app.log.info('Server gracefully terminated');
+    }
+  });
+
+  app.start(3000);
+  app.log.info('Server started');
+  app.log.note('---------------------------------');
+  app.log.note('Port: 3000');
+  app.log.note('Mode: ' + (app.development ? 'Development' : 'Production'));
+  app.log.note('---------------------------------');
+
+};
+
+main();

@@ -1,15 +1,47 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.autoRoute = void 0;
-const path_1 = require("path");
 const router_1 = __importDefault(require("@koa/router"));
+const fs_1 = require("fs");
+const path_1 = require("path");
+const apiDoc_1 = require("./apiDoc");
 const jwt_1 = __importDefault(require("./jwt"));
 const log_1 = require("./log");
-const apiDoc_1 = require("./apiDoc");
-const fs_1 = require("fs");
 const routerSuffixJs = '.route.js';
 const routerSuffixTs = '.route.ts';
 const readdirSyncRecursive = (filePath, allFiles) => {
@@ -28,7 +60,7 @@ const readdirSyncRecursive = (filePath, allFiles) => {
     }
     catch (e) { }
 };
-const autoRoute = (app, routepath, mountpoint, auth) => {
+const autoRoute = (app, routepath, mountpoint, auth) => __awaiter(void 0, void 0, void 0, function* () {
     mountpoint = mountpoint !== null && mountpoint !== void 0 ? mountpoint : '';
     auth = auth !== null && auth !== void 0 ? auth : false;
     const routes = new router_1.default({
@@ -49,7 +81,7 @@ const autoRoute = (app, routepath, mountpoint, auth) => {
                 const doc = (0, apiDoc_1.parseFileApiDoc)(fileName, auth) || {};
                 docObj = (0, apiDoc_1.mergeDeep)(docObj, doc);
             }
-            const obj = require(fileName);
+            const obj = yield Promise.resolve().then(() => __importStar(require(fileName)));
             let method;
             let url;
             for (const key in obj) {
@@ -138,7 +170,8 @@ const autoRoute = (app, routepath, mountpoint, auth) => {
                             url = (0, path_1.join)(url, '/:id/:id2/:id3');
                             break;
                         default:
-                            throw new Error('unrecognized route: ' + relfile + '.' + key);
+                            method = '';
+                            url = '';
                     }
                     if (method) {
                         url = url.replace(/\\/g, "/");
@@ -164,6 +197,6 @@ const autoRoute = (app, routepath, mountpoint, auth) => {
     if (app.apiDoc) {
         app.apiDocObj = docObj;
     }
-};
+});
 exports.autoRoute = autoRoute;
 //# sourceMappingURL=autoRoute.js.map

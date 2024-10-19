@@ -20,12 +20,12 @@
  * ==================================================
  */
 
-import { join } from 'path';
 import Router from '@koa/router';
+import { readdirSync, statSync } from 'fs';
+import { join } from 'path';
+import { mergeDeep, parseFileApiDoc } from './apiDoc';
 import jwt from './jwt';
 import { LogLevels } from './log';
-import { parseFileApiDoc, mergeDeep } from './apiDoc';
-import { statSync, readdirSync } from 'fs';
 
 
 const routerSuffixJs = '.route.js';
@@ -55,7 +55,7 @@ const readdirSyncRecursive = (filePath: string, allFiles: string[]) => {
  * ==================================================
  */
 
-export const autoRoute = (app: any, routepath: string, mountpoint: string, auth?: boolean): void => {
+export const autoRoute = async (app: any, routepath: string, mountpoint: string, auth?: boolean): Promise<void> => {
   mountpoint = mountpoint ?? '';
   auth = auth ?? false;
 
@@ -84,7 +84,9 @@ export const autoRoute = (app: any, routepath: string, mountpoint: string, auth?
         docObj = mergeDeep(docObj, doc);
       }
 
-      const obj = require(fileName);
+      // const obj = require(fileName);
+      const obj = await import(fileName);
+
       let method: string;
       let url: string;
 
@@ -181,7 +183,9 @@ export const autoRoute = (app: any, routepath: string, mountpoint: string, auth?
               url = join(url, '/:id/:id2/:id3');
               break;
             default:
-              throw new Error('unrecognized route: ' + relfile + '.' + key);
+              // throw new Error('unrecognized route: ' + relfile + '.' + key);
+              method = '';
+              url = '';
           }
           if (method) {
             url = url.replace(/\\/g, "/");;

@@ -12,27 +12,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HttpStatusCode = exports.KoaMicro = exports.Application = exports.validators = exports.LogLevels = exports.app = void 0;
-const koa_body_1 = __importDefault(require("koa-body"));
-const http_graceful_shutdown_1 = __importDefault(require("http-graceful-shutdown"));
-const koa_helmet_1 = __importDefault(require("koa-helmet"));
+exports.validators = exports.LogLevels = exports.KoaMicro = exports.HttpStatusCode = exports.Application = exports.app = void 0;
 const router_1 = __importDefault(require("@koa/router"));
-const static_1 = require("./static");
-const httpStatus_1 = require("./httpStatus");
-Object.defineProperty(exports, "HttpStatusCode", { enumerable: true, get: function () { return httpStatus_1.HttpStatusCode; } });
-const cors_1 = __importDefault(require("./cors"));
-const log_1 = require("./log");
-Object.defineProperty(exports, "LogLevels", { enumerable: true, get: function () { return log_1.LogLevels; } });
-const args_1 = __importDefault(require("./args"));
-const jwt_1 = __importDefault(require("./jwt"));
-const autoRoute_1 = require("./autoRoute");
-const validators_1 = __importDefault(require("./validators"));
-exports.validators = validators_1.default;
+const fs_1 = require("fs");
+const http_graceful_shutdown_1 = __importDefault(require("http-graceful-shutdown"));
 const koa_1 = __importDefault(require("koa"));
 exports.Application = koa_1.default;
-const apiDoc_1 = require("./apiDoc");
+const koa_body_1 = __importDefault(require("koa-body"));
+const koa_helmet_1 = __importDefault(require("koa-helmet"));
 const path_1 = require("path");
-const fs_1 = require("fs");
+const apiDoc_1 = require("./apiDoc");
+const args_1 = __importDefault(require("./args"));
+const autoRoute_1 = require("./autoRoute");
+const cors_1 = __importDefault(require("./cors"));
+const httpStatus_1 = require("./httpStatus");
+Object.defineProperty(exports, "HttpStatusCode", { enumerable: true, get: function () { return httpStatus_1.HttpStatusCode; } });
+const jwt_1 = __importDefault(require("./jwt"));
+const log_1 = require("./log");
+Object.defineProperty(exports, "LogLevels", { enumerable: true, get: function () { return log_1.LogLevels; } });
+const static_1 = require("./static");
+const validators_1 = __importDefault(require("./validators"));
+exports.validators = validators_1.default;
 ;
 class KoaMicro extends koa_1.default {
     constructor() {
@@ -159,11 +159,11 @@ class KoaMicro extends koa_1.default {
         this.log = new log_1.Logger({
             level: log_1.LogLevels.none
         });
-        this.autoRoute = (routepath, mountpoint, auth) => {
+        this.autoRoute = (routepath, mountpoint, auth) => __awaiter(this, void 0, void 0, function* () {
             mountpoint = mountpoint !== null && mountpoint !== void 0 ? mountpoint : '';
             auth = auth !== null && auth !== void 0 ? auth : false;
-            (0, autoRoute_1.autoRoute)(this, routepath, mountpoint, auth);
-        };
+            yield (0, autoRoute_1.autoRoute)(this, routepath, mountpoint, auth);
+        });
         this.args = {};
         this.catchErrorsFn = (ctx, next) => __awaiter(this, void 0, void 0, function* () {
             try {

@@ -7,7 +7,8 @@
     "clean": "rm -rf ./dist",
     "build": "tsc --build",
     "dev": "ts-node-dev -r tsconfig-paths/register examples/dist/dev.js",
-    "build-example": "tsc --build ./examples/tsconfig.json",
+    "build-example": "tsc --build ./examples/tsconfig.json && npm run copy-example-assets",
+    "copy-example-assets": "node -e \"require('fs').cpSync('./examples/src/public', './examples/dist/public', {recursive: true});\"",
     "example": "node examples/dist/example.js",
     "prepare": "npm run build",
     "postversion": "git push && git push --tags"
