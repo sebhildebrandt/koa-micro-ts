@@ -152,13 +152,13 @@ const validator = {
   isAfter(str: string, date?: Date | string) {
     date = date || new Date();
     const origDate = Date.parse(str);
-    const compDate = (date instanceof Date) ? date : Date.parse(date);
+    const compDate = (date instanceof Date) ? Date.parse(date.toISOString()) : Date.parse(date);
     return !(origDate && compDate && origDate <= compDate);
   },
   isBefore(str: string, date: Date | string) {
     date = date || new Date();
     const origDate = Date.parse(str);
-    const compDate = (date instanceof Date) ? date : Date.parse(date);
+    const compDate = (date instanceof Date) ? Date.parse(date.toISOString()) : Date.parse(date);
     return !(origDate && compDate && origDate >= compDate);
   },
   // isIn(str, options) {

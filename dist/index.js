@@ -289,8 +289,7 @@ exports.KoaMicro = KoaMicro;
     class KoaMicro {
     }
     KoaMicro_1.KoaMicro = KoaMicro;
-})(KoaMicro || (KoaMicro = {}));
-exports.KoaMicro = KoaMicro;
+})(KoaMicro || (exports.KoaMicro = KoaMicro = {}));
 const app = new KoaMicro();
 exports.app = app;
 //# sourceMappingURL=index.js.map

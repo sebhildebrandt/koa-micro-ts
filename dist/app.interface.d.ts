@@ -25,7 +25,7 @@ export interface FallbackOptions {
     index?: string;
     ignore?: string | string[];
 }
-declare type SetHeaders = (res: ParameterizedContext["res"], path: string, stats: Stats) => any;
+type SetHeaders = (res: ParameterizedContext["res"], path: string, stats: Stats) => any;
 export interface StaticServeOptions {
     maxAge?: number | undefined;
     immutable?: boolean | undefined;

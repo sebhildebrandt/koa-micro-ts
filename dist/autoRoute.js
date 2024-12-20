@@ -73,15 +73,15 @@ const autoRoute = async (app, routepath, mountpoint, auth) => {
                         break;
                     case 'detail':
                         method = 'get';
-                        url = (0, path_1.join)(url, '/:id');
+                        url = (0, path_1.join)(url, '/detail');
                         break;
                     case 'detail_detail':
                         method = 'get';
-                        url = (0, path_1.join)(url, '/:id/:id2');
+                        url = (0, path_1.join)(url, '/detail/detail');
                         break;
                     case 'detail_detail_detail':
                         method = 'get';
-                        url = (0, path_1.join)(url, '/:id/:id2/:id3');
+                        url = (0, path_1.join)(url, '/detail/detail/detail');
                         break;
                     case 'index':
                         method = 'get';
@@ -99,42 +99,42 @@ const autoRoute = async (app, routepath, mountpoint, auth) => {
                         break;
                     case 'post_detail':
                         method = 'post';
-                        url = (0, path_1.join)(url, '/:id');
+                        url = (0, path_1.join)(url, '/detail');
                         break;
                     case 'post_detail_detail':
                         method = 'post';
-                        url = (0, path_1.join)(url, '/:id/:id2');
+                        url = (0, path_1.join)(url, '/detail/detail');
                         break;
                     case 'post_detail_detail_detail':
                         method = 'post';
-                        url = (0, path_1.join)(url, '/:id/:id2/:id3');
+                        url = (0, path_1.join)(url, '/detail/detail/detail');
                         break;
                     case 'put':
                         method = 'put';
                         break;
                     case 'put_detail':
                         method = 'put';
-                        url = (0, path_1.join)(url, '/:id');
+                        url = (0, path_1.join)(url, '/detail');
                         break;
                     case 'put_detail_detail':
                         method = 'put';
-                        url = (0, path_1.join)(url, '/:id/:id2');
+                        url = (0, path_1.join)(url, '/detail/detail');
                         break;
                     case 'put_detail_detail_detail':
                         method = 'put';
-                        url = (0, path_1.join)(url, '/:id/:id2/:id3');
+                        url = (0, path_1.join)(url, '/detail/detail/detail');
                         break;
                     case 'delete_detail':
                         method = 'delete';
-                        url = (0, path_1.join)(url, '/:id');
+                        url = (0, path_1.join)(url, '/detail');
                         break;
                     case 'delete_detail_detail':
                         method = 'delete';
-                        url = (0, path_1.join)(url, '/:id/:id2');
+                        url = (0, path_1.join)(url, '/detail/detail');
                         break;
                     case 'delete_detail_detail_detail':
                         method = 'delete';
-                        url = (0, path_1.join)(url, '/:id/:id2/:id3');
+                        url = (0, path_1.join)(url, '/detail/detail/detail');
                         break;
                     default:
                         method = '';
@@ -142,7 +142,11 @@ const autoRoute = async (app, routepath, mountpoint, auth) => {
                 }
                 if (method) {
                     url = url.replace(/\\/g, "/");
-                    ;
+                    url = url.replace('/detail', '/:id');
+                    url = url.replace('/detail', '/:id2');
+                    url = url.replace('/detail', '/:id3');
+                    url = url.replace('/detail', '/:id4');
+                    url = url.replace('/detail', '/:id5');
                     if (auth) {
                         routes[method](url, jwt_1.default.middleware(), obj[key]);
                     }

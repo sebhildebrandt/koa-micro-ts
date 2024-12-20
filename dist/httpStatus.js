@@ -32,5 +32,5 @@ var HttpStatusCode;
     HttpStatusCode[HttpStatusCode["SERVICE_UNAVAILABLE"] = 503] = "SERVICE_UNAVAILABLE";
     HttpStatusCode[HttpStatusCode["GATEWAY_TIMEOUT"] = 504] = "GATEWAY_TIMEOUT";
     HttpStatusCode[HttpStatusCode["HTTP_VERSION_NOT_SUPPORTED"] = 505] = "HTTP_VERSION_NOT_SUPPORTED";
-})(HttpStatusCode = exports.HttpStatusCode || (exports.HttpStatusCode = {}));
+})(HttpStatusCode || (exports.HttpStatusCode = HttpStatusCode = {}));
 //# sourceMappingURL=httpStatus.js.map

@@ -210,3 +210,21 @@ exports.delete_detail = async (ctx: any, next: any) => {
   }
 )
 ```
+
+### /:id within a route
+
+If you create a subdirectory `detail`, this will then also be interpreted as an
+:id parameter
+
+e.g.: if your directory structure is like:
+
+```
+DIRECTORY-STRUCTURE                      will lead to                API-STRUCTURE
+
+./routes                                                             /api/v1
+  └─ customers                                                          └─ /customers ...
+       └─ detail                                                           └─ /:id ...
+          └─ partners                                                         └─ /partners ...
+              └─ index.route.ts                                                   └─ /:id2
+                 (containing get/:id)
+```

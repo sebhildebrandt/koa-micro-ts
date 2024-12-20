@@ -119,15 +119,15 @@ export const autoRoute = async (app: any, routepath: string, mountpoint: string,
             break;
           case 'detail':
             method = 'get';
-            url = join(url, '/:id');
+            url = join(url, '/detail');
             break;
           case 'detail_detail':
             method = 'get';
-            url = join(url, '/:id/:id2');
+            url = join(url, '/detail/detail');
             break;
           case 'detail_detail_detail':
             method = 'get';
-            url = join(url, '/:id/:id2/:id3');
+            url = join(url, '/detail/detail/detail');
             break;
           case 'index':
             method = 'get';
@@ -145,42 +145,42 @@ export const autoRoute = async (app: any, routepath: string, mountpoint: string,
             break;
           case 'post_detail':
             method = 'post';
-            url = join(url, '/:id');
+            url = join(url, '/detail');
             break;
           case 'post_detail_detail':
             method = 'post';
-            url = join(url, '/:id/:id2');
+            url = join(url, '/detail/detail');
             break;
           case 'post_detail_detail_detail':
             method = 'post';
-            url = join(url, '/:id/:id2/:id3');
+            url = join(url, '/detail/detail/detail');
             break;
           case 'put':
             method = 'put';
             break;
           case 'put_detail':
             method = 'put';
-            url = join(url, '/:id');
+            url = join(url, '/detail');
             break;
           case 'put_detail_detail':
             method = 'put';
-            url = join(url, '/:id/:id2');
+            url = join(url, '/detail/detail');
             break;
           case 'put_detail_detail_detail':
             method = 'put';
-            url = join(url, '/:id/:id2/:id3');
+            url = join(url, '/detail/detail/detail');
             break;
           case 'delete_detail':
             method = 'delete';
-            url = join(url, '/:id');
+            url = join(url, '/detail');
             break;
           case 'delete_detail_detail':
             method = 'delete';
-            url = join(url, '/:id/:id2');
+            url = join(url, '/detail/detail');
             break;
           case 'delete_detail_detail_detail':
             method = 'delete';
-            url = join(url, '/:id/:id2/:id3');
+            url = join(url, '/detail/detail/detail');
             break;
           default:
             // throw new Error('unrecognized route: ' + relfile + '.' + key);
@@ -188,7 +188,12 @@ export const autoRoute = async (app: any, routepath: string, mountpoint: string,
             url = '';
         }
         if (method) {
-          url = url.replace(/\\/g, "/");;
+          url = url.replace(/\\/g, "/");
+          url = url.replace('/detail', '/:id');
+          url = url.replace('/detail', '/:id2');
+          url = url.replace('/detail', '/:id3');
+          url = url.replace('/detail', '/:id4');
+          url = url.replace('/detail', '/:id5');
           if (auth) {
             routes[method](url, jwt.middleware(), obj[key]);
           } else {
