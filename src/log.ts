@@ -5,7 +5,7 @@
 // ----------------------------------------------------------------------------------
 // Description:   console.log (color) library - configurable output levels
 //                for Node.js
-// Copyright:     (c) 2023
+// Copyright:     (c) 2025
 // Author:        Sebastian Hildebrandt
 // ----------------------------------------------------------------------------------
 // Contributors:  -
@@ -34,10 +34,10 @@
  * ==================================================
  */
 
-import util from 'util';
-import readline from 'readline';
-import { mkdirSync, createWriteStream, statSync, rmSync, renameSync, existsSync, appendFileSync, createReadStream } from 'fs';
+import { appendFileSync, createReadStream, createWriteStream, existsSync, mkdirSync, renameSync, rmSync, statSync } from 'fs';
 import { join } from 'path';
+import readline from 'readline';
+import util from 'util';
 import * as zlib from 'zlib';
 
 const Reset = '\x1b[0m';
@@ -429,7 +429,7 @@ class Logger {
 }
 
 export {
-  Logger,
-  LogLevels,
-  iLogOptions
+  iLogOptions, Logger,
+  LogLevels
 };
+

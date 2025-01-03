@@ -220,7 +220,7 @@ documentation of the used packages to see their options:
 
 > The [`MIT`][license-url] License (MIT)
 >
-> Copyright &copy; 2023 Sebastian Hildebrandt,
+> Copyright &copy; 2025 Sebastian Hildebrandt,
 > [+innovations](http://www.plus-innovations.com).
 >
 > Permission is hereby granted, free of charge, to any person obtaining a copy

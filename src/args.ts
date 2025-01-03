@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------------
 // Description:   tiny CLI args parser
 //                for Node.js
-// Copyright:     (c) 2023
+// Copyright:     (c) 2025
 // Author:        Sebastian Hildebrandt
 // ----------------------------------------------------------------------------------
 // Contributors:  -

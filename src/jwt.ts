@@ -5,7 +5,7 @@
 // ----------------------------------------------------------------------------------
 // Description:   jsonwebtoken wrapper (for koa)
 //                for Node.js
-// Copyright:     (c) 2023
+// Copyright:     (c) 2025
 // Author:        Sebastian Hildebrandt
 // ----------------------------------------------------------------------------------
 // Contributors:  -
@@ -24,8 +24,8 @@
 // License:       MIT
 // ==================================================================================
 
-import _jwt from 'jsonwebtoken';
 import { readFileSync } from 'fs';
+import _jwt from 'jsonwebtoken';
 
 let publicKey: any;
 let privateKey: any;

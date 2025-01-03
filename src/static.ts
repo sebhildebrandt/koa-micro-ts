@@ -3,7 +3,7 @@
 // ----------------------------------------------------------------------------------
 // Description:   static file serve wrapper (for koa)
 //                for Node.js
-// Copyright:     (c) 2023
+// Copyright:     (c) 2025
 // Author:        Sebastian Hildebrandt
 // ----------------------------------------------------------------------------------
 // Contributors:  -
@@ -50,3 +50,4 @@ function serve(root: string, opts?: StaticServeOptions) {
 export {
   serve
 };
+
