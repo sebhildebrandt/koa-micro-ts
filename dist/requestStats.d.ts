@@ -8,4 +8,4 @@ declare const requestStats: {
     avgResponseTime: number;
 };
 declare const requestStatsMiddleware: Middleware;
-export { requestStatsMiddleware, requestStats };
+export { requestStats, requestStatsMiddleware };

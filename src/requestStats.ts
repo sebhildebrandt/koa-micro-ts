@@ -1,4 +1,3 @@
-import Koa from 'koa';
 import { Middleware } from 'koa';
 
 
@@ -26,7 +25,7 @@ const requestStatsMiddleware: Middleware = async (ctx, next) => {
   await next();
 
   const ms = Math.ceil(new Date().valueOf() - start.valueOf());
-  const statustype = Math.floor(ctx.status / 100).toString();
+  const statustype = Math.floor(ctx.status / 100).toString() + 'xx';
   requestStats.responseTimes.push(ms);
   // max first 100 request times
   if (requestStats.responseTimes.length > 100) {
@@ -45,4 +44,5 @@ const requestStatsMiddleware: Middleware = async (ctx, next) => {
 
 };
 
-export { requestStatsMiddleware, requestStats };
+export { requestStats, requestStatsMiddleware };
+
