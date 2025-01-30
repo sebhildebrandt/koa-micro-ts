@@ -27,10 +27,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LogLevels = exports.Logger = void 0;
-const util_1 = __importDefault(require("util"));
-const readline_1 = __importDefault(require("readline"));
 const fs_1 = require("fs");
 const path_1 = require("path");
+const readline_1 = __importDefault(require("readline"));
+const util_1 = __importDefault(require("util"));
 const zlib = __importStar(require("zlib"));
 const Reset = '\x1b[0m';
 const Bright = '\x1b[1m';

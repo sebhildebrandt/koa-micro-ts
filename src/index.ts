@@ -18,11 +18,12 @@ import Application from 'koa';
 import koaBody from 'koa-body';
 import helmet from 'koa-helmet';
 import { join } from 'path';
-import { createHtml, healthDocObj, mergeDeep } from './apiDoc';
+import { createHtml, healthDocObj, statsDocObj, mergeDeep } from './apiDoc';
 import { BodyParserOptions, FallbackOptions, KoaErrors, StaticServeOptions } from './app.interface';
 import parseArgs from './args';
 import { autoRoute } from './autoRoute';
 import cors from './cors';
+import { requestStatsMiddleware, requestStats } from './requestStats';
 import { HttpStatusCode } from './httpStatus';
 import jwt from './jwt';
 import { iLogOptions, Logger, LogLevels } from './log';
@@ -114,6 +115,23 @@ class KoaMicro extends Application {
       const healthDoc = healthDocObj(options.readyPath, options.livePath);
       // this.apiDocObj = { ...this.apiDocObj, ...healthDoc }
       this.apiDocObj = mergeDeep(this.apiDocObj, healthDoc);
+    }
+  };
+
+  stats = (statsPath = '/stats') => {
+    this.use(requestStatsMiddleware);
+    const router = new Router();
+    router.get(statsPath, (ctx) => {
+      ctx.body = {
+        message: "Request statistics",
+        stats: requestStats
+      };
+      ctx.status = 200;
+    });
+    this.use(router.routes());
+    if (this.apiDoc) {
+      const statsDoc = statsDocObj(statsPath);
+      this.apiDocObj = mergeDeep(this.apiDocObj, statsDoc);
     }
   };
 

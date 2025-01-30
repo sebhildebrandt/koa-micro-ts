@@ -1,5 +1,5 @@
-import { EOL } from 'os';
 import { readFileSync } from 'fs';
+import { EOL } from 'os';
 
 let html = '';
 const mergeDeep = (target: any, source: any): any => {
@@ -234,6 +234,45 @@ const healthDocObj = (healthPath: string, livePath: string) => {
           '       "check": "readyness"\n' +
           '       "status": "not ready"\n' +
           '     }'
+      }
+    ]
+  };
+};
+
+const statsDocObj = (statsPath: string) => {
+  return {
+    Stats: [
+      {
+        method: 'get',
+        path: statsPath,
+        description: 'Request stats for micro service',
+        params: [],
+        bodyParams: [],
+        success: [],
+        successExample: 'Success Response:\n' +
+          '     HTTP/1.1 200 OK\n' +
+          '     {\n' +
+          '       "message": "Request statistics",\n' +
+          '       "stats": {\n' +
+          '       "totalRequests": 7,\n' +
+          '       "statusCounts": {\n' +
+          '         "2xx": 4,\n' +
+          '         "4xx": 3\n' +
+          '       },\n' +
+          '       "pathCounts": {\n' +
+          '         "/": 1,\n' +
+          '         "/...": 1,\n' +
+          '         ...,\n' +
+          '         "/stats": 1\n' +
+          '       },\n' +
+          '       "lastRequestTime": "20XX-01-01T20:54:19.373Z",\n' +
+          '       "responseTimes": [5, 1, 0, 7, 7, 6, 0],\n' +
+          '       "avgResponseTime": 3.7142857142857144\n' +
+          '       }\n' +
+          '     }',
+        error: 'No stats available',
+        errorExample: 'Error-Response:\n' +
+          '     HTTP/1.1 503 Service unavailable'
       }
     ]
   };
@@ -739,8 +778,6 @@ const createHtml = (apiDocObj: any) => {
 };
 
 export {
-  parseFileApiDoc,
-  healthDocObj,
-  mergeDeep,
-  createHtml
+  createHtml, healthDocObj, mergeDeep, parseFileApiDoc, statsDocObj
 };
+

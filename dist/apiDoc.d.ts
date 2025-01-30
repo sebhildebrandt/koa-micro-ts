@@ -13,5 +13,18 @@ declare const healthDocObj: (healthPath: string, livePath: string) => {
         errorExample: string;
     }[];
 };
+declare const statsDocObj: (statsPath: string) => {
+    Stats: {
+        method: string;
+        path: string;
+        description: string;
+        params: never[];
+        bodyParams: never[];
+        success: never[];
+        successExample: string;
+        error: string;
+        errorExample: string;
+    }[];
+};
 declare const createHtml: (apiDocObj: any) => string;
-export { parseFileApiDoc, healthDocObj, mergeDeep, createHtml };
+export { createHtml, healthDocObj, mergeDeep, parseFileApiDoc, statsDocObj };

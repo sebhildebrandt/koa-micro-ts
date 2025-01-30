@@ -48,4 +48,4 @@ declare class Logger {
     logLevel: () => number;
     private formatMessage;
 }
-export { Logger, LogLevels, iLogOptions };
+export { iLogOptions, Logger, LogLevels };

@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createHtml = exports.mergeDeep = exports.healthDocObj = exports.parseFileApiDoc = void 0;
-const os_1 = require("os");
+exports.statsDocObj = exports.parseFileApiDoc = exports.mergeDeep = exports.healthDocObj = exports.createHtml = void 0;
 const fs_1 = require("fs");
+const os_1 = require("os");
 let html = '';
 const mergeDeep = (target, source) => {
     for (let key in source) {
@@ -216,6 +216,45 @@ const healthDocObj = (healthPath, livePath) => {
     };
 };
 exports.healthDocObj = healthDocObj;
+const statsDocObj = (statsPath) => {
+    return {
+        Stats: [
+            {
+                method: 'get',
+                path: statsPath,
+                description: 'Request stats for micro service',
+                params: [],
+                bodyParams: [],
+                success: [],
+                successExample: 'Success Response:\n' +
+                    '     HTTP/1.1 200 OK\n' +
+                    '     {\n' +
+                    '       "message": "Request statistics",\n' +
+                    '       "stats": {\n' +
+                    '       "totalRequests": 7,\n' +
+                    '       "statusCounts": {\n' +
+                    '         "2xx": 4,\n' +
+                    '         "4xx": 3\n' +
+                    '       },\n' +
+                    '       "pathCounts": {\n' +
+                    '         "/": 1,\n' +
+                    '         "/...": 1,\n' +
+                    '         ...,\n' +
+                    '         "/stats": 1\n' +
+                    '       },\n' +
+                    '       "lastRequestTime": "20XX-01-01T20:54:19.373Z",\n' +
+                    '       "responseTimes": [5, 1, 0, 7, 7, 6, 0],\n' +
+                    '       "avgResponseTime": 3.7142857142857144\n' +
+                    '       }\n' +
+                    '     }',
+                error: 'No stats available',
+                errorExample: 'Error-Response:\n' +
+                    '     HTTP/1.1 503 Service unavailable'
+            }
+        ]
+    };
+};
+exports.statsDocObj = statsDocObj;
 const replaceMacro = (text, vars) => {
     let result = text;
     for (let varName in vars) {

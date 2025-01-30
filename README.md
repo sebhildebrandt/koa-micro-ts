@@ -43,6 +43,7 @@ Included middleware/libs:
 - parsing command line arguments - detailed docs [ARGS.md](docs/ARGS.md)
 - dev/production mode detection - see below in this README.md
 - catch errors - detailed docs [CATCHERRORS.md](docs/CATCHERRORS.md)
+- request stats - detailed docs [REQUESTSTATS.md](docs/REQUESTSTATS.md)
 - integrated API doc - detailed docs [APIDOC.md](docs/APIDOC.md)
 
 Most of these modules can be enabled with just **one line of code**.

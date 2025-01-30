@@ -16,6 +16,7 @@ const apiDoc_1 = require("./apiDoc");
 const args_1 = __importDefault(require("./args"));
 const autoRoute_1 = require("./autoRoute");
 const cors_1 = __importDefault(require("./cors"));
+const requestStats_1 = require("./requestStats");
 const httpStatus_1 = require("./httpStatus");
 Object.defineProperty(exports, "HttpStatusCode", { enumerable: true, get: function () { return httpStatus_1.HttpStatusCode; } });
 const jwt_1 = __importDefault(require("./jwt"));
@@ -115,6 +116,22 @@ class KoaMicro extends koa_1.default {
             if (this.apiDoc) {
                 const healthDoc = (0, apiDoc_1.healthDocObj)(options.readyPath, options.livePath);
                 this.apiDocObj = (0, apiDoc_1.mergeDeep)(this.apiDocObj, healthDoc);
+            }
+        };
+        this.stats = (statsPath = '/stats') => {
+            this.use(requestStats_1.requestStatsMiddleware);
+            const router = new router_1.default();
+            router.get(statsPath, (ctx) => {
+                ctx.body = {
+                    message: "Request statistics",
+                    stats: requestStats_1.requestStats
+                };
+                ctx.status = 200;
+            });
+            this.use(router.routes());
+            if (this.apiDoc) {
+                const statsDoc = (0, apiDoc_1.statsDocObj)(statsPath);
+                this.apiDocObj = (0, apiDoc_1.mergeDeep)(this.apiDocObj, statsDoc);
             }
         };
         this.newRouter = (prefix) => {

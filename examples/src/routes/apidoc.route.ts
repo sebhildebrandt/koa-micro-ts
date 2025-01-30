@@ -41,13 +41,6 @@
  */
 
 /**
- * @api {get} /helth/another
- * @apiName health
- * @apiGroup Health
- * @apiParam {Number} id Customer unique ID.
- */
-
-/**
  * @api {post} /user/
  * @apiGroup User
  * @apiBody {String} [firstname]       Optional Firstname of the User.

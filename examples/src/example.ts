@@ -47,6 +47,8 @@ app.health({
   isReady: readyPromise,
 });
 
+app.stats();
+
 // readyness alternative:
 // ----------------------
 // you could also just set app.ready to true as soon as your appo is ready:
